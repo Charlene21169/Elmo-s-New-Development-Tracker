@@ -32,8 +32,9 @@
   .cloud-pill.saving{background:rgba(200,168,110,.28);color:#f4e7ca;}
   .cloud-pill.warn{background:rgba(224,84,84,.3);color:#ffdcdc;}
   .version-tag{display:flex;align-items:center;font-size:11px;font-weight:600;padding:0 10px;height:40px;color:var(--gold-soft);opacity:.7;white-space:nowrap;letter-spacing:.2px;}
-  .update-banner{background:#fff3cd;color:#7a5b00;padding:9px 24px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:14px;justify-content:center;flex-wrap:wrap;border-bottom:1px solid #f0d98c;}
-  .update-banner-btn{background:#7a5b00;color:#fff;border:none;border-radius:8px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;flex:0 0 auto;}
+  [hidden]{display:none!important;} /* a display:flex rule must never override the hidden attribute */
+  .update-banner{background:#fff3cd;color:#7a5b00;padding:6px 6px 6px 12px;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;gap:10px;border:1px solid #f0d98c;border-radius:12px;line-height:1.2;}
+  .update-banner-btn{background:#7a5b00;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;flex:0 0 auto;}
   .update-banner-btn:hover{opacity:.85;}
   .projects-bar{background:var(--green);padding:0 24px;display:flex;align-items:flex-end;gap:6px;overflow-x:auto;flex:1 1 auto;scrollbar-width:none;scroll-behavior:smooth;}
   .projects-bar::-webkit-scrollbar{display:none;}
@@ -442,7 +443,6 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       <button class="icon-btn" id="settingsBtn" title="Edit dropdown lists">⚙</button>
     </div>
   </div>
-  <div id="updateBanner" class="update-banner" hidden>⚠️ A newer version of this tracker is live — please reload before making more edits, so you don't overwrite someone else's work. <button id="updateBannerReload" class="update-banner-btn">Reload now</button></div>
   <div class="projects-bar-wrap">
     <button class="proj-scroll left" id="projScrollLeft" title="Scroll left">‹</button>
     <div class="projects-bar" id="projectsBar"></div>
@@ -450,10 +450,11 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   </div>
   <div class="toolbar">
     <div class="left">
-      <button class="btn btn-primary" id="addRowBtn">＋ Add row</button>
+      <div id="updateBanner" class="update-banner" hidden title="A newer version of this tracker is live — please reload before making more edits, so you don't overwrite someone else's work.">⚠️ Newer version live — reload before editing <button id="updateBannerReload" class="update-banner-btn">Reload now</button></div>
+      <button class="btn btn-primary" id="addRowBtn">＋ Add Row</button>
+      <button class="btn btn-danger" id="clearBtn">Clear Rows</button>
       <button class="btn btn-gold" id="pptBtn">⤓ Export to PowerPoint</button>
       <button class="btn btn-ghost" id="exportBtn">CSV</button>
-      <button class="btn btn-danger" id="clearBtn">Clear rows</button>
     </div>
   </div>
   <div class="wrap">
@@ -881,7 +882,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.08-4";
+  var APP_VERSION="2026.10.08-5";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};

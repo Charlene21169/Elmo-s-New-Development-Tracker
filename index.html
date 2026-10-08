@@ -152,15 +152,60 @@
   .verdict.neutral{background:#F0F0F2;color:#6b6b70;}
 
   @media (min-width:901px){
+    /* one-page view: the page is exactly the screen height; the grid fills what is left under the project card */
+    body{height:100vh;min-height:0;overflow:hidden;}
+    .wrap{margin-bottom:12px;}
     .card{flex:1 1 auto;min-height:0;}
     .grid-scroll{max-height:none;flex:1 1 auto;min-height:0;}
   }
+  /* short PC screens (laptops): tighten everything above the grid so all steps still fit on one page */
+  @media (min-width:901px) and (max-height:900px){
+    .topbar{padding:6px 24px;}
+    .logo{height:36px;padding:2px 7px;border-radius:8px;}
+    .logo img{height:31px;}
+    .brand h1{font-size:15px;}
+    .brand p{font-size:11px;margin-top:1px;}
+    .icon-btn,.cloud-pill,.version-tag{height:32px;}
+    .icon-btn{width:32px;border-radius:10px;font-size:15px;}
+    .proj-tab{padding:7px 14px;font-size:13px;}
+    .proj-sort,.proj-add{margin-top:3px;padding-top:5px;padding-bottom:5px;}
+    .toolbar{margin-top:7px;}
+    .toolbar .btn{padding:6px 14px;font-size:13px;}
+    .wrap{margin-top:7px;margin-bottom:8px;}
+    .proj-card{padding:6px 12px 7px;gap:5px;margin-bottom:7px;}
+    .pc-photos .photo-grid .thumb{width:62px;height:44px;}
+    .pc-fields .customer-block{padding:3px 10px 4px;}
+  }
+  /* compact rows — --row-h / --cell-fs are set by fitGrid() */
+  .card.fit thead th{padding:7px 10px;font-size:10.5px;}
+  .card.fit th.row-h{padding:7px 4px;}
+  .card.fit tbody td{height:var(--row-h);}
+  .card.fit .cellwrap{padding:1px 6px;}
+  .card.fit select,.card.fit input.cell{padding:2px 8px;font-size:var(--cell-fs);line-height:1.25;border-radius:8px;}
+  .card.fit select{padding-right:20px;}
+  .card.fit select.status{padding:2px 10px;}
+  .card.fit select.progress{padding:0 8px;font-size:calc(var(--cell-fs) + 1px);}
+  .card.fit .person-btn{padding:2px 8px;font-size:var(--cell-fs);line-height:1.25;border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .card.fit .person-cellwrap{justify-content:center;}
+  .card.fit .note-input{min-height:0;height:min(calc(var(--row-h) - 4px),calc(var(--cell-fs) * 1.3 + 7px));padding:3px 7px;font-size:calc(var(--cell-fs) - 1px);line-height:1.3;border-radius:7px;}
+  .card.fit .note-input:focus{position:relative;z-index:5;}
+  .card.fit .note-input.has-more{box-shadow:inset -3px 0 0 var(--gold);}
+  .card.fit td.rownum{font-size:11px;}
+  .card.fit td.rownum .row-actions button{width:17px;height:17px;font-size:10px;border-radius:5px;}
+  /* very small rows (many steps on a short screen): no inner padding so the controls never push a row taller */
+  .card.fit.tight thead th{padding:4px 8px;font-size:10px;}
+  .card.fit.tight th.row-h{padding:4px 2px;}
+  .card.fit.tight .cellwrap{padding:0 5px;}
+  .card.fit.tight select,.card.fit.tight input.cell,.card.fit.tight .person-btn,.card.fit.tight select.status,.card.fit.tight select.progress{padding-top:0;padding-bottom:0;line-height:1.15;border-radius:6px;}
+  .card.fit.tight .note-input{padding:1px 7px;line-height:1.15;border-radius:6px;}
+  .card.fit.tight td.rownum{font-size:10px;}
+  .card.fit.tight td.rownum .row-actions button{width:14px;height:14px;font-size:9px;border-radius:4px;}
   .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;}
   .grid-scroll{overflow:auto;max-height:60vh;}
   table{width:100%;border-collapse:separate;border-spacing:0;min-width:900px;}
   thead th{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#1f4536,var(--green));color:#fff;text-align:left;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:14px 16px;white-space:nowrap;box-shadow:0 1px 0 var(--green-line),0 2px 6px rgba(0,0,0,.06);}
   th.row-h{width:48px;text-align:center;padding:14px 4px;}
-  th.c-process{width:16%;}th.c-machine{width:7%;}th.c-equip{width:10%;}th.c-person{width:13%;}th.c-date{width:10%;}th.c-notes{width:18%;}th.c-status{width:12%;}
+  th.c-process{width:18%;}th.c-machine{width:8%;}th.c-equip{width:10%;}th.c-person{width:15%;}th.c-notes{width:24%;}th.c-status{width:12%;}
   td.cell-na{background:repeating-linear-gradient(135deg,var(--line-soft),var(--line-soft) 6px,transparent 6px,transparent 12px);}
   th.c-prog{width:13%;text-align:center;white-space:nowrap;}
   tbody td{padding:0;border-bottom:1px solid var(--line-soft);height:52px;vertical-align:middle;transition:background .12s;}
@@ -386,11 +431,12 @@
     .sched{padding:10px;gap:10px;}
     .grid-scroll{max-height:none;}
     table{min-width:0;width:100%;table-layout:fixed;}
+    /* phones show Process · Person · Notes · Status (columns: 1 # · 2 Process · 3 Laser/CNC · 4 Machine · 5 Person · 6 Notes · 7 Status · 8 Progress) */
     th:nth-child(1),td:nth-child(1),
-    th:nth-child(5),td:nth-child(5),
-    th:nth-child(6),td:nth-child(6),
+    th:nth-child(3),td:nth-child(3),
+    th:nth-child(4),td:nth-child(4),
     th:nth-child(8),td:nth-child(8){display:none;}
-    th.c-process{width:30%;}th.c-person{width:24%;}th.c-date{width:26%;}th.c-notes{width:30%;}th.c-status{width:18%;}
+    th.c-process{width:30%;}th.c-person{width:24%;}th.c-notes{width:28%;}th.c-status{width:18%;}
     thead th{padding:11px 8px;font-size:10px;letter-spacing:.3px;}
     tbody td{height:auto;}
     .cellwrap{padding:6px 4px;}
@@ -514,7 +560,6 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
             <th class="c-machine">Laser / CNC</th>
             <th class="c-equip">Machine</th>
             <th class="c-person">Person Responsible</th>
-            <th class="c-date">Our Due Date</th>
             <th class="c-notes">Notes</th>
             <th class="c-status">Status</th>
             <th class="c-prog">Progress Tracker</th>
@@ -884,7 +929,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.08-6";
+  var APP_VERSION="2026.10.08-7";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -1366,16 +1411,29 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   }
   function makeNoteCell(row,idx){
     var td=document.createElement("td"); var w=document.createElement("div"); w.className="cellwrap";
-    var ta=document.createElement("textarea"); ta.className="note-input"; ta.rows=1; ta.placeholder="Add a note…"; ta.value=row.comment||"";
-    function grow(){ ta.style.height="auto"; ta.style.height=Math.min(220,ta.scrollHeight)+"px"; }
-    ta.addEventListener("input",function(){ activeProject().rows[idx].comment=ta.value; grow(); persist(); });
+    var ta=document.createElement("textarea"); ta.className="note-input"; ta.rows=1; ta.placeholder="Add a note…"; ta.value=row.comment||""; ta.title=ta.value;
+    // One-page view: notes sit on one line (full text on hover, "more" marker if cut off) and open up while being edited.
+    function grow(){
+      if(isFitMode()&&document.activeElement!==ta){
+        ta.style.height="";
+        // "more" marker only when the note runs past one line: compare with the height of a one-line note
+        var v=ta.value, more=false;
+        if(v.trim()){ ta.value="x"; var oneLine=ta.scrollHeight; ta.value=v; more=ta.scrollHeight>oneLine+2; }
+        ta.classList.toggle("has-more",more); return;
+      }
+      ta.classList.remove("has-more"); ta.style.height="auto"; ta.style.height=Math.min(220,ta.scrollHeight)+"px";
+    }
+    ta._fit=grow;
+    ta.addEventListener("input",function(){ activeProject().rows[idx].comment=ta.value; ta.title=ta.value; grow(); persist(); });
+    ta.addEventListener("focus",grow);
+    ta.addEventListener("blur",function(){ ta.scrollTop=0; grow(); });
     w.appendChild(ta); td.appendChild(w);
     setTimeout(grow,0);
     return td;
   }
   function renderGrid(){
     var rows=activeProject().rows; tbody.innerHTML="";
-    if(rows.length===0){ var tr=document.createElement("tr"); tr.innerHTML='<td colspan="9"><div class="empty-state">No rows yet. Tap “Add row” to start tracking.</div></td>'; tbody.appendChild(tr); return; }
+    if(rows.length===0){ var tr=document.createElement("tr"); tr.innerHTML='<td colspan="8"><div class="empty-state">No rows yet. Tap “Add Row” to start tracking.</div></td>'; tbody.appendChild(tr); fitGrid(); return; }
     rows.forEach(function(row,idx){
       var tr=document.createElement("tr");
       var numTd=document.createElement("td"); numTd.className="rownum";
@@ -1384,13 +1442,44 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       tr.appendChild(makeMachineCell(row,idx));
       tr.appendChild(makeEquipmentCell(row,idx));
       tr.appendChild(makePersonCell(row,idx));
-      tr.appendChild(makeInput("dueDate",row.dueDate,idx,"","—"));
       tr.appendChild(makeNoteCell(row,idx));
       tr.appendChild(makeSelect("status",row.status,idx,"status"));
       tr.appendChild(makeSelect("progress",row.progress,idx,"progress"));
       tbody.appendChild(tr);
     });
+    fitGrid();
   }
+
+  // One-page view (PC screens): share the space under the project card equally between the rows,
+  // so every step is visible without scrolling. Phones keep normal scrolling.
+  var FIT_MIN_ROW=16, FIT_MAX_ROW=44;
+  var gridCard=document.querySelector(".wrap > .card"), gridScroll=gridCard&&gridCard.querySelector(".grid-scroll");
+  function isFitMode(){ return !!(gridCard&&gridCard.classList.contains("fit")); }
+  function fitGrid(){
+    if(!gridScroll) return;
+    if(!(window.matchMedia&&window.matchMedia("(min-width:901px)").matches)){
+      gridCard.classList.remove("fit","tight"); gridCard.style.removeProperty("--row-h"); gridCard.style.removeProperty("--cell-fs"); return;
+    }
+    gridCard.classList.add("fit"); // compact heading first, so its real height is measured
+    var n=Math.max(1,tbody.rows.length), head=gridScroll.querySelector("thead");
+    var avail=gridScroll.clientHeight-(head?head.offsetHeight:0)-1;
+    if(avail<=0) return; // not laid out yet
+    function apply(h){
+      h=Math.max(FIT_MIN_ROW,Math.min(FIT_MAX_ROW,h));
+      gridCard.classList.toggle("tight",h<24);
+      gridCard.style.setProperty("--row-h",h+"px");
+      gridCard.style.setProperty("--cell-fs",(h<20?10.5:Math.max(11,Math.min(14,Math.round(h*0.46))))+"px");
+      return h;
+    }
+    var h=apply(Math.floor(avail/n)-1);
+    // second pass: measure the real table (borders, compact heading) and share any leftover or overflow between the rows
+    var table=gridScroll.querySelector("table"), spare=gridScroll.clientHeight-(table?table.offsetHeight:0);
+    var step=spare>=0?Math.floor(spare/n):-Math.ceil(-spare/n);
+    if(step) apply(h+step);
+    Array.prototype.forEach.call(tbody.querySelectorAll(".note-input"),function(ta){ if(ta._fit) ta._fit(); });
+  }
+  window.addEventListener("resize",fitGrid);
+  if(window.ResizeObserver&&gridScroll) new ResizeObserver(function(){ fitGrid(); }).observe(gridScroll);
 
   /* photos */
   function heroData(p){ if(!p.photos||!p.photos.length) return null; var h=p.photos.filter(function(x){return x.id===p.heroId;})[0]||p.photos[0]; return h?h.data:null; }
@@ -1555,8 +1644,8 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   document.getElementById("addRowBtn").addEventListener("click",function(){ activeProject().rows.push(blankRow()); persist(); renderGrid(); var last=tbody.lastElementChild; last&&last.scrollIntoView({behavior:"smooth",block:"nearest"}); });
   document.getElementById("clearBtn").addEventListener("click",function(){ if(!confirm('Clear all rows in "'+activeProject().name+'"? This cannot be undone.')) return; activeProject().rows=blankRows(); persist(); renderGrid(); renderHeading(); renderSched(); toast("Rows cleared"); });
   document.getElementById("exportBtn").addEventListener("click",function(){
-    var p=activeProject(); var head=["Process","Person Responsible","Our Due Date","Notes","Status","Progress Tracker"]; var lines=[head.join(",")];
-    p.rows.forEach(function(r){ if(!hasContent(r)) return; lines.push([r.process,r.person,r.dueDate,r.comment||"",r.status,r.progress].map(function(c){ c=(c==null?"":String(c)); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(",")); });
+    var p=activeProject(); var head=["Process","Person Responsible","Notes","Status","Progress Tracker"]; var lines=[head.join(",")];
+    p.rows.forEach(function(r){ if(!hasContent(r)) return; lines.push([r.process,r.person,r.comment||"",r.status,r.progress].map(function(c){ c=(c==null?"":String(c)); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(",")); });
     var safeName=p.name+(p.revisions&&p.revisions.length>1?"_"+activeRevisionOf(p).name:"");
     var safe=safeName.replace(/[^a-z0-9]+/gi,"_"); var blob=new Blob([lines.join("\n")],{type:"text/csv;charset=utf-8;"});
     var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=safe+"_"+new Date().toISOString().slice(0,10)+".csv"; a.click(); URL.revokeObjectURL(a.href); toast("CSV exported");

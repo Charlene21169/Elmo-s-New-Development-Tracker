@@ -929,7 +929,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.08-7";
+  var APP_VERSION="2026.10.08-8";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -2076,7 +2076,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     }
     var MAX_ROW_H=0.4, MIN_CELL_FS=4, MAX_CELL_FS=11.5;
     var GRID_LINE={type:"solid",color:"999999",pt:0.75};
-    var HEADERS=["Process","Person","Due Date","Notes","Status","Progress"];
+    var HEADERS=["Process","Person","Notes","Status","Progress"];
     /* A "Back to Overview" pill only makes sense when an overview slide actually
        exists in this export — that's "both" mode only, and it's always slide 2
        there (cover is always slide 1, summary always comes right after it). */
@@ -2112,8 +2112,8 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       var revLabel=(p.revisions&&p.revisions.length>1)?"Current revision — "+s.pct+"% complete":s.pct+"% complete";
       slide.addText([{text:revLabel,options:{bold:true,color:GREEN}},{text:"    "+s.verdict.text,options:{color:vColor}}],{x:0.52,y:0.92+headerShift,w:textW,h:0.28,fontSize:10.5,fontFace:"Arial",valign:"middle",wrap:false,fit:"shrink"});
       var filled=p.rows.filter(hasContent);
-      var measureRows=filled.map(function(r){ return [r.process,r.person,r.dueDate,r.comment||"",r.status,r.progress]; });
-      var colW=estColW(HEADERS,measureRows,11.5,[1.25,0.85,1.0,1.2,1.15,0.7],[3.0,1.8,2.8,3.6,1.75,0.9]);
+      var measureRows=filled.map(function(r){ return [r.process,r.person,r.comment||"",r.status,r.progress]; });
+      var colW=estColW(HEADERS,measureRows,11.5,[1.25,0.85,1.2,1.15,0.7],[3.0,1.8,4.6,1.75,0.9]);
       var totalW=colW.reduce(function(a,b){return a+b;},0), availW=12.3;
       if(totalW<availW){ var k2=availW/totalW; colW=colW.map(function(x){return x*k2;}); totalW=availW; }
       else if(totalW>availW){ var k=availW/totalW; colW=colW.map(function(x){return x*k;}); totalW=availW; }
@@ -2139,14 +2139,14 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       var totH=rowHs.reduce(function(a,b){return a+b;},0);
       if(totH>availH){ var kh=availH/totH; rowHs=rowHs.map(function(h){return h*kh;}); }
       var rowH=rowHs;
-      var head=HEADERS.map(function(h,i){ return pptCell(h,{fill:GREEN,color:"FFFFFF",bold:true,align:(i>=4?"center":"left"),fontSize:cellFS}); });
+      var head=HEADERS.map(function(h,i){ return pptCell(h,{fill:GREEN,color:"FFFFFF",bold:true,align:(i>=3?"center":"left"),fontSize:cellFS}); });
       var body=filled.map(function(r){
         var st=STATUS_STYLE[r.status]||{fill:"FFFFFF",color:"555555"};
-        return [ pptCell(r.process,{align:"left",fontSize:cellFS}), pptCell(r.person,{align:"left",fontSize:cellFS}), pptCell(r.dueDate,{align:"left",fontSize:cellFS}), pptCell(r.comment||"",{align:"left",fontSize:cellFS}),
+        return [ pptCell(r.process,{align:"left",fontSize:cellFS}), pptCell(r.person,{align:"left",fontSize:cellFS}), pptCell(r.comment||"",{align:"left",fontSize:cellFS}),
           pptCell(r.status,{fill:st.fill,color:st.color,bold:true,align:"center",fontSize:cellFS}),
           pptCell(r.progress,{color:r.progress==="✔"?"177A3F":(r.progress==="✘"?"C0392B":"999999"),bold:true,align:"center",fontSize:Math.min(13,cellFS+1.5)}) ];
       });
-      var table=body.length?[head].concat(body):[head,[pptCell("No items captured yet",{colspan:6,align:"center",color:"999999",fontSize:cellFS})]];
+      var table=body.length?[head].concat(body):[head,[pptCell("No items captured yet",{colspan:5,align:"center",color:"999999",fontSize:cellFS})]];
       slide.addTable(table,{x:0.5,y:tableY,w:totalW,colW:colW,rowH:rowH,border:GRID_LINE,margin:CELL_MARGIN,fontFace:"Arial",fontSize:cellFS,valign:"middle",autoPage:false});
     }
     pptx.writeFile({fileName:"New_Developments_"+new Date().toISOString().slice(0,10)+".pptx"}).then(function(){ toast("PowerPoint exported"); }).catch(function(){ toast("Export failed — try again"); });

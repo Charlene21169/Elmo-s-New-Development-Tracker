@@ -66,15 +66,8 @@
   .proj-sort:hover{background:rgba(255,255,255,.12);color:#fff;}
   .proj-add{flex:0 0 auto;margin:6px 0 0 4px;background:transparent;border:none;color:var(--gold-soft);font-size:20px;cursor:pointer;padding:8px 12px;border-radius:10px;line-height:1;transition:.15s;}
   .proj-add:hover{background:rgba(255,255,255,.12);color:#fff;}
-  .summary{background:var(--card);border-bottom:1px solid var(--line);padding:11px 24px;display:flex;gap:9px;flex-wrap:wrap;flex:0 0 auto;}
-  .stat{display:flex;align-items:center;gap:9px;background:var(--line-soft);padding:8px 15px;border-radius:12px;font-size:12.5px;font-weight:600;color:#5a5a62;transition:.15s;}
-  .stat:hover{background:#ECEDEF;}
-  .stat .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 0 3px rgba(0,0,0,.03);}
-  .stat b{font-weight:800;color:var(--ink);font-size:14px;letter-spacing:-.2px;}
-  .dot.total{background:var(--gold);}.dot.prog{background:#1a56db;}.dot.behind{background:#d64545;}.dot.done{background:#1a7f42;}
-  .toolbar{max-width:none;width:100%;margin:18px auto 0;padding:0 24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;flex:0 0 auto;}
+  .toolbar{max-width:none;width:100%;margin:12px auto 0;padding:0 24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;flex:0 0 auto;}
   .toolbar .left{display:flex;gap:9px;flex-wrap:wrap;align-items:center;}
-  .count{font-size:13px;color:var(--muted);font-weight:500;}
   .btn{border:none;border-radius:12px;padding:10px 17px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;line-height:1;}
   .btn-primary{background:var(--green);color:#fff;box-shadow:0 2px 8px rgba(27,61,47,.25);}
   .btn-primary:hover{background:var(--green-soft);}
@@ -85,23 +78,17 @@
   .btn-gold{background:var(--gold);color:var(--green);box-shadow:0 2px 8px rgba(200,168,110,.3);}
   .btn-gold:hover{filter:brightness(1.04);}
   .wrap{max-width:none;width:100%;margin:14px auto 30px;padding:0 24px;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;}
-  .proj-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:2px 4px 8px;}
   .proj-title-wrap{display:flex;align-items:center;gap:8px;min-width:0;}
-  .proj-heading h2{margin:0;font-size:18px;font-weight:700;color:var(--green);}
   .rename-btn{border:none;background:#EFEFF2;color:var(--green);width:30px;height:30px;border-radius:9px;font-size:14px;cursor:pointer;flex:0 0 auto;transition:.15s;display:flex;align-items:center;justify-content:center;}
   .rename-btn:hover{background:var(--gold-soft);}
   .proj-sub{font-size:13px;color:var(--muted);cursor:text;margin-top:3px;padding-left:2px;}
   .proj-sub.empty{color:var(--faint);font-style:italic;}
-  .proj-heading .meta{font-size:13px;color:var(--muted);font-weight:500;white-space:nowrap;padding-top:5px;}
-  .revision-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:0 4px 8px;}
-  .customer-row{display:flex;gap:10px;flex-wrap:wrap;padding:0 4px 10px;}
   .customer-block{flex:1 1 160px;background:#fff;border:1.5px solid var(--gold);border-radius:11px;padding:6px 12px 7px;box-shadow:0 1px 2px rgba(20,30,25,.04);}
   .customer-block label{display:block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gold);margin-bottom:1px;}
   .customer-block input{width:100%;border:none;outline:none;font-size:15px;font-weight:700;color:var(--green);font-family:inherit;background:transparent;padding:1px 0;}
   .customer-block.checker-block{border-color:var(--line);}
   .customer-block.checker-block label{color:var(--muted);}
   .customer-block input::placeholder{color:var(--faint);font-weight:500;font-style:italic;}
-  .revision-row label{font-size:14px;font-weight:700;color:var(--green);white-space:nowrap;}
   .rev-select{border:1.5px solid var(--line);border-radius:11px;padding:9px 30px 9px 13px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff;font-weight:650;cursor:pointer;max-width:260px;}
   .rev-select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,168,110,.18);}
   .rev-btn{border:none;background:#EFEFF2;color:#3a3a40;width:34px;height:34px;border-radius:10px;font-size:14px;cursor:pointer;flex:0 0 auto;}
@@ -162,19 +149,10 @@
   .verdict.warn{background:#FCE9E9;color:#c0392b;}
   .verdict.neutral{background:#F0F0F2;color:#6b6b70;}
 
-  .top-split{display:flex;gap:16px;align-items:stretch;margin-bottom:10px;}
-  .top-left,.top-right{flex:1 1 0;min-width:0;}
-  .top-left{display:flex;flex-direction:column;}
-  .top-right{display:flex;}
-  .top-left .sched{margin-bottom:0;}
-  .top-left .sched .ctrls{padding-left:0;border-left:none;}
-  .top-right .photos{margin-top:0;width:100%;display:flex;flex-direction:column;min-height:0;}
-  .top-right .photo-grid{flex:1 1 auto;min-height:0;overflow:auto;align-content:flex-start;}
   @media (min-width:901px){
     .card{flex:1 1 auto;min-height:0;}
     .grid-scroll{max-height:none;flex:1 1 auto;min-height:0;}
   }
-  @media (max-width:900px){.top-split{flex-direction:column;}}
   .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;}
   .grid-scroll{overflow:auto;max-height:60vh;}
   table{width:100%;border-collapse:separate;border-spacing:0;min-width:900px;}
@@ -248,6 +226,44 @@
   .thumb-actions button:hover{background:rgba(0,0,0,.78);}
   .hero-badge{position:absolute;left:6px;bottom:6px;background:var(--gold);color:var(--green);font-size:10px;font-weight:800;padding:3px 8px;border-radius:7px;letter-spacing:.4px;}
   .photo-empty{color:var(--muted);font-size:13px;padding:6px 0;}
+
+  /* compact project card (replaces the old two-column top area) */
+  .proj-card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:9px 14px 10px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;flex:0 0 auto;}
+  .pc-main{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .pc-title{flex:0 1 280px;min-width:180px;}
+  .pc-title .proj-title-wrap h2{margin:0;font-size:18px;font-weight:700;color:var(--green);line-height:1.2;}
+  .pc-title .rename-btn{width:26px;height:26px;font-size:12px;border-radius:8px;}
+  .pc-title .proj-sub{margin-top:1px;font-size:12.5px;}
+  .proj-card .sched{flex:1 1 300px;min-width:240px;display:block;background:none;border:none;box-shadow:none;padding:0;margin:0;border-radius:0;}
+  .proj-card .sched .pct-block{min-width:0;}
+  .proj-card .pct-top{margin-bottom:4px;}
+  .proj-card .pct-num{font-size:16px;}
+  .proj-card .track-compare{margin-top:3px;font-size:11.5px;}
+  .pc-photos{flex:0 1 auto;display:flex;align-items:center;gap:8px;margin:0;padding:0;background:none;box-shadow:none;border-radius:0;max-width:100%;min-width:0;}
+  .pc-photos .photo-grid{flex-wrap:nowrap;overflow-x:auto;gap:6px;max-width:330px;scrollbar-width:thin;}
+  .pc-photos .photo-grid .thumb{width:76px;height:54px;border-radius:8px;aspect-ratio:auto;}
+  .pc-photos .thumb-actions{top:3px;right:3px;gap:3px;}
+  .pc-photos .thumb-actions button{width:22px;height:22px;font-size:11px;border-radius:6px;}
+  .pc-photos .hero-badge{left:3px;bottom:3px;font-size:8.5px;padding:2px 5px;border-radius:5px;}
+  .pc-photos .photo-empty{font-size:12px;padding:0;white-space:nowrap;}
+  .pc-photos .add-photo{padding:7px 11px;font-size:12px;white-space:nowrap;border-radius:9px;}
+  .pc-fields{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch;}
+  .pc-fields .customer-block{flex:1 1 150px;padding:4px 10px 5px;border-radius:9px;}
+  .pc-fields .customer-block label{font-size:9.5px;margin-bottom:0;}
+  .pc-fields .customer-block input{font-size:13.5px;}
+  .pc-dates{display:contents;}
+  .pc-fields .date-block{flex:0 1 auto;border-color:var(--line);}
+  .pc-fields .date-block label{color:var(--muted);}
+  .pc-fields .date-block input.start-date{width:130px;}
+  .pc-fields .date-block .date-group{gap:4px;}
+  .pc-fields .date-block .dsel{border:none;padding:1px 2px;font-size:13.5px;font-weight:700;color:var(--green);background:transparent;}
+  .pc-fields .pc-rev{flex:0 1 auto;border-color:var(--line);}
+  .pc-fields .pc-rev label{color:var(--muted);}
+  .pc-rev-line{display:flex;align-items:center;gap:4px;}
+  .pc-rev .rev-select{border:none;padding:1px 4px 1px 0;font-size:13.5px;font-weight:700;color:var(--green);max-width:180px;background:transparent;}
+  .pc-rev .rev-btn{width:26px;height:26px;font-size:12px;border-radius:7px;}
+  .pc-rev .rev-btn.add{width:auto;padding:0 8px;font-size:12px;}
+  .pc-rev .icon-badge{top:-6px;right:-6px;}
 
   .overlay{position:fixed;inset:0;background:rgba(15,25,20,.42);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;}
   .overlay.open{display:flex;}
@@ -359,15 +375,13 @@
     .icon-btn{width:38px;height:38px;font-size:17px;}
     .cloud-pill{padding:0 11px;height:38px;font-size:11px;}
     .version-tag{display:none;}
-    .summary{overflow-x:auto;flex-wrap:nowrap;padding:10px 16px;gap:8px;scrollbar-width:none;}
-    .summary::-webkit-scrollbar{display:none;}
-    .stat{flex:0 0 auto;padding:7px 13px;}
     .wrap,.toolbar{padding-left:14px;padding-right:14px;}
     .wrap{margin:12px auto 24px;}
     .toolbar{margin-top:14px;}
     .projects-bar{padding-left:14px;padding-right:14px;}
     .proj-tab{padding:10px 13px;font-size:13px;max-width:170px;}
-    .proj-heading h2{font-size:17px;}
+    .pc-title .proj-title-wrap h2{font-size:17px;}
+    .pc-photos .photo-grid{max-width:calc(100vw - 140px);}
     .sched{padding:10px;gap:10px;}
     .grid-scroll{max-height:none;}
     table{min-width:0;width:100%;table-layout:fixed;}
@@ -385,7 +399,7 @@
     .btn{padding:10px 14px;font-size:13.5px;}
     .photo-grid .thumb{width:calc(50% - 6px);height:auto;aspect-ratio:3/2;}
   }
-  @media print{.topbar,.summary,.toolbar,.projects-bar-wrap,.icon-btn,.del,.photos,.sched{display:none!important;}body{background:#fff;}.wrap{margin:0;padding:16px;}.card{box-shadow:none;border-radius:0;}.grid-scroll{overflow:visible;max-height:none;}.proj-heading{padding-top:0;}thead th{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact;}select,input.cell{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+  @media print{.topbar,.toolbar,.projects-bar-wrap,.icon-btn,.del,.photos,.sched,.pc-rev{display:none!important;}body{background:#fff;}.wrap{margin:0;padding:16px;}.card{box-shadow:none;border-radius:0;}.grid-scroll{overflow:visible;max-height:none;}.proj-card{box-shadow:none;}thead th{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact;}select,input.cell{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
 </style>
 <script>
 /* PptxGenJS 3.12.0 @ 2023-03-20T03:12:31.375Z */
@@ -436,12 +450,6 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     <div class="projects-bar" id="projectsBar"></div>
     <button class="proj-scroll right" id="projScrollRight" title="Scroll right">›</button>
   </div>
-  <div class="summary">
-    <div class="stat"><span class="dot total"></span><b id="s-total">0</b> items</div>
-    <div class="stat"><span class="dot prog"></span><b id="s-prog">0</b> in progress</div>
-    <div class="stat"><span class="dot behind"></span><b id="s-behind">0</b> behind schedule</div>
-    <div class="stat"><span class="dot done"></span><b id="s-done">0</b> finished</div>
-  </div>
   <div class="toolbar">
     <div class="left">
       <button class="btn btn-primary" id="addRowBtn">＋ Add row</button>
@@ -449,60 +457,52 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       <button class="btn btn-ghost" id="exportBtn">CSV</button>
       <button class="btn btn-danger" id="clearBtn">Clear rows</button>
     </div>
-    <span class="count" id="count"></span>
   </div>
   <div class="wrap">
-    <div class="top-split">
-      <div class="top-left">
-    <div class="proj-heading">
-      <div>
-        <div class="proj-title-wrap">
-          <h2 id="projTitle"></h2>
-          <button id="renameBtn" class="rename-btn" title="Rename project">✎</button>
-        </div>
-        <div id="projSub" class="proj-sub" title="Click to edit"></div>
-      </div>
-      <span class="meta" id="projMeta"></span>
-    </div>
-
-    <div class="customer-row">
-      <div class="customer-block">
-        <label for="customerInput">Customer</label>
-        <input id="customerInput" type="text" placeholder="Customer name…" autocomplete="off">
-      </div>
-      <div class="customer-block">
-        <label for="customerDeadlineInput">Customer Deadline</label>
-        <input id="customerDeadlineInput" type="date">
-      </div>
-      <div class="customer-block checker-block">
-        <label for="checkerInput">Start to Finish Inspector</label>
-        <input id="checkerInput" type="text" placeholder="Type name…" autocomplete="off">
-      </div>
-    </div>
-
-    <div class="revision-row">
-      <label for="revisionSelect">Revision:</label>
-      <select class="rev-select" id="revisionSelect"></select>
-      <button class="rev-btn add" id="addRevisionBtn" title="Start a new revision">＋ New revision</button>
-      <button class="rev-btn" id="renameRevisionBtn" title="Rename this revision">✎</button>
-      <button class="rev-btn" id="archiveRevisionBtn" title="Archive this revision">🗄</button>
-      <button class="rev-btn danger" id="deleteRevisionBtn" title="Delete this revision">✕</button>
-      <button class="rev-btn" id="revArchiveBtn" title="Archived revisions" style="position:relative;">📂<span class="icon-badge" id="revArchiveBadge" hidden>0</span></button>
-    </div>
-
-    <div class="sched" id="sched"></div>
-      </div><!-- /top-left -->
-      <div class="top-right">
-        <div class="photos">
-          <div class="photos-head">
-            <h3>Photos</h3>
-            <button class="add-photo" id="addPhotoBtn">＋ Add photos</button>
-            <input type="file" id="photoInput" accept="image/*" multiple hidden />
+    <!-- One compact card per development: title · time bar · photos, then the key fields on one line -->
+    <div class="proj-card">
+      <div class="pc-main">
+        <div class="pc-title">
+          <div class="proj-title-wrap">
+            <h2 id="projTitle"></h2>
+            <button id="renameBtn" class="rename-btn" title="Rename project">✎</button>
           </div>
-          <div class="photo-grid" id="photoGrid"></div>
+          <div id="projSub" class="proj-sub" title="Click to edit"></div>
         </div>
-      </div><!-- /top-right -->
-    </div><!-- /top-split -->
+        <div class="sched" id="sched"></div>
+        <div class="pc-photos photos">
+          <div class="photo-grid" id="photoGrid"></div>
+          <button class="add-photo" id="addPhotoBtn" title="Add photos">＋ Photos</button>
+          <input type="file" id="photoInput" accept="image/*" multiple hidden />
+        </div>
+      </div>
+      <div class="pc-fields">
+        <div class="customer-block">
+          <label for="customerInput">Customer</label>
+          <input id="customerInput" type="text" placeholder="Customer name…" autocomplete="off">
+        </div>
+        <div class="customer-block">
+          <label for="customerDeadlineInput">Customer Deadline</label>
+          <input id="customerDeadlineInput" type="date">
+        </div>
+        <div class="customer-block checker-block">
+          <label for="checkerInput">Start to Finish Inspector</label>
+          <input id="checkerInput" type="text" placeholder="Type name…" autocomplete="off">
+        </div>
+        <div class="pc-dates" id="schedDates"></div>
+        <div class="customer-block pc-rev">
+          <label for="revisionSelect">Revision</label>
+          <div class="pc-rev-line">
+            <select class="rev-select" id="revisionSelect"></select>
+            <button class="rev-btn add" id="addRevisionBtn" title="Start a new revision">＋ New</button>
+            <button class="rev-btn" id="renameRevisionBtn" title="Rename this revision">✎</button>
+            <button class="rev-btn" id="archiveRevisionBtn" title="Archive this revision">🗄</button>
+            <button class="rev-btn danger" id="deleteRevisionBtn" title="Delete this revision">✕</button>
+            <button class="rev-btn" id="revArchiveBtn" title="Archived revisions" style="position:relative;">📂<span class="icon-badge" id="revArchiveBadge" hidden>0</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="card">
       <div class="grid-scroll">
@@ -883,7 +883,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.08-1";
+  var APP_VERSION="2026.10.08-2";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -912,12 +912,12 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   (function(){ var ap=state.projects.filter(function(x){return x.id===state.activeProjectId;})[0]; if(!ap||ap.archived){ state.activeProjectId=firstVisibleId(); } })();
   function activeProject(){ for(var i=0;i<state.projects.length;i++) if(state.projects[i].id===state.activeProjectId) return state.projects[i]; return state.projects[0]; }
 
-  var tbody=document.getElementById("tbody"),countEl=document.getElementById("count"),bar=document.getElementById("projectsBar");
+  var tbody=document.getElementById("tbody"),bar=document.getElementById("projectsBar");
   var projScrollLeft=document.getElementById("projScrollLeft"),projScrollRight=document.getElementById("projScrollRight");
   var archiveBtn=document.getElementById("archiveBtn"),archiveBadge=document.getElementById("archiveBadge");
   var archiveOverlay=document.getElementById("archiveOverlay"),archiveList=document.getElementById("archiveList"),closeArchiveBtn=document.getElementById("closeArchive");
-  var projTitle=document.getElementById("projTitle"),projMeta=document.getElementById("projMeta"),projSub=document.getElementById("projSub");
-  var schedEl=document.getElementById("sched"),photoGrid=document.getElementById("photoGrid");
+  var projTitle=document.getElementById("projTitle"),projSub=document.getElementById("projSub");
+  var schedEl=document.getElementById("sched"),schedDatesEl=document.getElementById("schedDates"),photoGrid=document.getElementById("photoGrid");
 
   function businessDaysUntil(iso){
     var today=new Date(); today.setHours(0,0,0,0);
@@ -1165,8 +1165,6 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     projTitle.textContent=p.name;
     if(p.subtitle){ projSub.textContent=p.subtitle; projSub.classList.remove("empty"); }
     else { projSub.textContent="Add a subtitle / deadline…"; projSub.classList.add("empty"); }
-    var f=p.rows.filter(hasContent).length, d=p.rows.filter(isDone).length;
-    projMeta.textContent=f+" items · "+d+" done";
   }
   projTitle.addEventListener("dblclick",startRename);
   document.getElementById("renameBtn").addEventListener("click",startRename);
@@ -1196,13 +1194,14 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     schedEl.innerHTML="";
     var pctBlock=document.createElement("div"); pctBlock.className="pct-block"; schedEl.appendChild(pctBlock);
 
-    var ctrls=document.createElement("div"); ctrls.className="ctrls";
-    var f0=document.createElement("div"); f0.className="field";
+    // Start / Due date boxes live on the fields line of the project card (#schedDates).
+    schedDatesEl.innerHTML="";
+    var f0=document.createElement("div"); f0.className="customer-block date-block";
     var l0=document.createElement("label"); l0.textContent="Start date";
     var i0=document.createElement("input"); i0.type="date"; i0.className="start-date"; i0.value=cleanDate(activeRevisionOf(p).startedAt);
     i0.title="When work on this revision started";
     f0.appendChild(l0); f0.appendChild(i0);
-    var f1=document.createElement("div"); f1.className="field";
+    var f1=document.createElement("div"); f1.className="customer-block date-block";
     var l1=document.createElement("label"); l1.textContent="Due date";
     var dg=document.createElement("div"); dg.className="date-group";
     var cur=parseISO(p.targetDate), yNow=new Date().getFullYear();
@@ -1217,41 +1216,17 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       for(var d=1;d<=dim;d++) opt(daySel,d,d,prev===d);
     }
     opt(monSel,"","Month",!(cur&&cur.mo)); MON.forEach(function(nm,i){ opt(monSel,i+1,nm, !!(cur&&cur.mo===i+1)); });
-    opt(yrSel,"","Year",!(cur&&cur.y)); for(var y=yNow;y<=yNow+4;y++) opt(yrSel,y,y, !!(cur&&cur.y===y));
+    // Include last year (and the stored year, if older) so an overdue due date can still be shown and corrected.
+    var yFirst=Math.min(yNow-1,(cur&&cur.y)||yNow);
+    opt(yrSel,"","Year",!(cur&&cur.y)); for(var y=yFirst;y<=yNow+4;y++) opt(yrSel,y,y, !!(cur&&cur.y===y));
     fillDays();
     dg.appendChild(daySel); dg.appendChild(monSel); dg.appendChild(yrSel);
     f1.appendChild(l1); f1.appendChild(dg);
-
-    var f2=document.createElement("div"); f2.className="field";
-    var l2=document.createElement("label"); l2.textContent="Hrs/day";
-    var i2=document.createElement("input"); i2.type="number"; i2.min="1"; i2.max="24"; i2.step="0.5"; i2.className="cap"; i2.value=p.hoursPerDay||9;
-    f2.appendChild(l2); f2.appendChild(i2);
-
-    var f3=document.createElement("div"); f3.className="field";
-    var l3=document.createElement("label"); l3.textContent="Total time";
-    var totalSpan=document.createElement("div"); totalSpan.className="est-value";
-    f3.appendChild(l3); f3.appendChild(totalSpan);
-
-    var f4=document.createElement("div"); f4.className="field";
-    var l4=document.createElement("label"); l4.textContent="Est. completion";
-    var estSpan=document.createElement("div"); estSpan.className="est-value";
-    f4.appendChild(l4); f4.appendChild(estSpan);
-
-    ctrls.appendChild(f0); ctrls.appendChild(f1); ctrls.appendChild(f2); ctrls.appendChild(f3); ctrls.appendChild(f4); schedEl.appendChild(ctrls);
-
-    var v=document.createElement("div"); v.className="verdict"; schedEl.appendChild(v);
+    schedDatesEl.appendChild(f0); schedDatesEl.appendChild(f1);
 
     function refresh(){
-      var sc=recomputeSchedule(p);
-      totalSpan.textContent=fmtDaysHours(sc.totalHours,p.hoursPerDay||9);
-      if(sc.projectedDate){
-        var pd=new Date(sc.projectedDate+"T00:00:00");
-        estSpan.textContent=pd.getDate()+" "+MON[pd.getMonth()]+" "+pd.getFullYear();
-        estSpan.classList.toggle("over-target", !!(p.targetDate && pd>new Date(p.targetDate+"T00:00:00")));
-      } else { estSpan.textContent="—"; estSpan.classList.remove("over-target"); }
-      var s=computeStats(p);
+      recomputeSchedule(p); // keeps duration-based step due dates up to date (data only; no longer shown here)
       pctBlock.innerHTML=timeTrackHtml(p);
-      v.className="verdict "+s.verdict.kind; v.textContent=s.verdict.text;
     }
     function commitDate(){
       var d=+daySel.value, m=+monSel.value, y=+yrSel.value;
@@ -1262,7 +1237,6 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     monSel.addEventListener("change",function(){ fillDays(); commitDate(); });
     yrSel.addEventListener("change",function(){ fillDays(); commitDate(); });
     daySel.addEventListener("change",commitDate);
-    i2.addEventListener("change",function(){ p.hoursPerDay=parseFloat(i2.value)||9; persist(); refresh(); });
     i0.addEventListener("change",function(){ activeRevisionOf(p).startedAt=cleanDate(i0.value); persist(); refresh(); });
     refresh();
   }
@@ -1279,7 +1253,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     sel.innerHTML=optionsHtml(listKey,value); sel.setAttribute("data-v",value||"");
     sel.addEventListener("change",function(){
       activeProject().rows[idx][listKey]=sel.value; sel.setAttribute("data-v",sel.value); sel.classList.toggle("empty",!sel.value);
-      persist(); updateSummary(); renderHeading(); renderSched();
+      persist(); renderHeading(); renderSched();
     });
     wrap.appendChild(sel); var td=document.createElement("td"); td.appendChild(wrap); return td;
   }
@@ -1296,11 +1270,11 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         if(!name){ sel.value=row.process||""; return; }
         if(state.lists.process.indexOf(name)<0) state.lists.process.push(name);
         activeProject().rows[idx].process=name; persist();
-        updateSummary(); renderHeading(); renderSched(); renderGrid();
+        renderHeading(); renderSched(); renderGrid();
         return;
       }
       activeProject().rows[idx].process=sel.value; sel.setAttribute("data-v",sel.value); sel.classList.toggle("empty",!sel.value);
-      persist(); updateSummary(); renderHeading(); renderSched(); renderGrid();
+      persist(); renderHeading(); renderSched(); renderGrid();
     });
     wrap.appendChild(sel); var td=document.createElement("td"); td.appendChild(wrap); return td;
   }
@@ -1354,7 +1328,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
           var joined=names.join(", ");
           activeProject().rows[idx].person=joined;
           btn.textContent=names.length?joined:"— Select —"; btn.classList.toggle("empty",!names.length);
-          persist(); updateSummary(); renderHeading(); renderSched();
+          persist(); renderHeading(); renderSched();
         });
         opt.appendChild(cb); opt.appendChild(document.createTextNode(" "+nm));
         pop.appendChild(opt);
@@ -1406,7 +1380,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       p.rows[idx].durDays=parseFloat(dIn.value)||0;
       p.rows[idx].durHours=parseFloat(hIn.value)||0;
       recomputeSchedule(p); persist();
-      renderGrid(); updateSummary(); renderSched();
+      renderGrid(); renderSched();
     }
     dIn.addEventListener("change",commit); hIn.addEventListener("change",commit);
     inputs.appendChild(dIn); inputs.appendChild(hIn);
@@ -1440,15 +1414,6 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       tbody.appendChild(tr);
     });
   }
-  function updateSummary(){
-    var rows=activeProject().rows,filled=0,prog=0,behind=0,done=0;
-    rows.forEach(function(r){ if(hasContent(r)) filled++; if(r.status==="In Progress"||r.status==="Started") prog++; if(r.status==="Behind Schedule") behind++; if(r.status==="Finished"||r.status==="In Production") done++; });
-    document.getElementById("s-total").textContent=filled;
-    document.getElementById("s-prog").textContent=prog;
-    document.getElementById("s-behind").textContent=behind;
-    document.getElementById("s-done").textContent=done;
-    countEl.textContent=filled+" filled · "+rows.length+" rows";
-  }
 
   /* photos */
   function heroData(p){ if(!p.photos||!p.photos.length) return null; var h=p.photos.filter(function(x){return x.id===p.heroId;})[0]||p.photos[0]; return h?h.data:null; }
@@ -1456,7 +1421,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   function renderPhotos(){
     var p=activeProject(); photoGrid.innerHTML="";
     var photos=p.photos||[];
-    if(!photos.length){ photoGrid.innerHTML='<div class="photo-empty">No photos yet. Add reference photos — the ★ hero photo appears on the export slide.</div>'; return; }
+    if(!photos.length){ photoGrid.innerHTML='<div class="photo-empty" title="The ★ hero photo appears on the export slide">No photos yet</div>'; return; }
     if(!p.heroId||!photos.some(function(ph){return ph.id===p.heroId;})){ p.heroId=photos[0].id; }
     photos.forEach(function(ph){
       var t=document.createElement("div"); t.className="thumb";
@@ -1503,7 +1468,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     var cu=document.getElementById("customerInput"); if(cu) cu.value=p.customer||"";
     var cd=document.getElementById("customerDeadlineInput"); if(cd) cd.value=p.customerDeadline||"";
   }
-  function renderAll(){ renderProjects(); renderHeading(); renderRevisionBar(); renderSched(); renderChecker(); renderGrid(); updateSummary(); renderPhotos(); }
+  function renderAll(){ renderProjects(); renderHeading(); renderRevisionBar(); renderSched(); renderChecker(); renderGrid(); renderPhotos(); }
 
   /* revision picker */
   var revisionSelect=document.getElementById("revisionSelect"),addRevisionBtn=document.getElementById("addRevisionBtn"),renameRevisionBtn=document.getElementById("renameRevisionBtn"),archiveRevisionBtn=document.getElementById("archiveRevisionBtn"),deleteRevisionBtn=document.getElementById("deleteRevisionBtn");
@@ -1607,11 +1572,11 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
 
   tbody.addEventListener("click",function(e){
     var ins=e.target.closest("[data-ins]");
-    if(ins){ var i=parseInt(ins.getAttribute("data-ins"),10); activeProject().rows.splice(i+1,0,blankRow()); persist(); renderGrid(); updateSummary(); renderHeading(); renderSched(); return; }
-    var b=e.target.closest("[data-del]"); if(b){ activeProject().rows.splice(parseInt(b.getAttribute("data-del"),10),1); persist(); renderGrid(); updateSummary(); renderHeading(); renderSched(); }
+    if(ins){ var i=parseInt(ins.getAttribute("data-ins"),10); activeProject().rows.splice(i+1,0,blankRow()); persist(); renderGrid(); renderHeading(); renderSched(); return; }
+    var b=e.target.closest("[data-del]"); if(b){ activeProject().rows.splice(parseInt(b.getAttribute("data-del"),10),1); persist(); renderGrid(); renderHeading(); renderSched(); }
   });
-  document.getElementById("addRowBtn").addEventListener("click",function(){ activeProject().rows.push(blankRow()); persist(); renderGrid(); updateSummary(); var last=tbody.lastElementChild; last&&last.scrollIntoView({behavior:"smooth",block:"nearest"}); });
-  document.getElementById("clearBtn").addEventListener("click",function(){ if(!confirm('Clear all rows in "'+activeProject().name+'"? This cannot be undone.')) return; activeProject().rows=blankRows(); persist(); renderGrid(); updateSummary(); renderHeading(); renderSched(); toast("Rows cleared"); });
+  document.getElementById("addRowBtn").addEventListener("click",function(){ activeProject().rows.push(blankRow()); persist(); renderGrid(); var last=tbody.lastElementChild; last&&last.scrollIntoView({behavior:"smooth",block:"nearest"}); });
+  document.getElementById("clearBtn").addEventListener("click",function(){ if(!confirm('Clear all rows in "'+activeProject().name+'"? This cannot be undone.')) return; activeProject().rows=blankRows(); persist(); renderGrid(); renderHeading(); renderSched(); toast("Rows cleared"); });
   document.getElementById("exportBtn").addEventListener("click",function(){
     var p=activeProject(); var head=["Process","Person Responsible","Our Due Date","Notes","Status","Progress Tracker"]; var lines=[head.join(",")];
     p.rows.forEach(function(r){ if(!hasContent(r)) return; lines.push([r.process,r.person,r.dueDate,r.comment||"",r.status,r.progress].map(function(c){ c=(c==null?"":String(c)); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(",")); });
@@ -2283,7 +2248,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   var overlay=document.getElementById("overlay"),listTabs=document.getElementById("listTabs"),itemsBox=document.getElementById("itemsBox"),listHint=document.getElementById("listHint");
   var activeList="process";
   function openModal(){ overlay.classList.add("open"); renderTabs(); renderItems(); }
-  function closeModal(){ overlay.classList.remove("open"); renderGrid(); updateSummary(); renderSched(); }
+  function closeModal(){ overlay.classList.remove("open"); renderGrid(); renderSched(); }
   document.getElementById("settingsBtn").addEventListener("click",openModal);
   document.getElementById("closeModal").addEventListener("click",closeModal);
   overlay.addEventListener("click",function(e){ if(e.target===overlay) closeModal(); });

@@ -138,6 +138,16 @@
   .track-compare{font-size:12px;font-weight:650;margin-top:5px;color:var(--muted);}
   .track-compare .tc-behind{color:#c0392b;}
   .track-compare .tc-ahead{color:#177A3F;}
+  .bar.track{height:10px;}
+  .bar.track>i.t-green,.bar.track>i.t-done{background:#2E9E5B;}
+  .bar.track>i.t-orange{background:#E08A1E;}
+  .bar.track>i.t-red{background:#C0392B;}
+  .bar.track>i.t-grey{background:#C4C4CA;}
+  .pct-num.t-green,.pct-num.t-done{color:#177A3F;}
+  .pct-num.t-orange{color:#C46F08;}
+  .pct-num.t-red{color:#C0392B;}
+  .pct-num.t-grey{color:#8A8A90;}
+  .field input.start-date{width:140px;}
   .sched .ctrls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
   .field{display:flex;flex-direction:column;gap:2px;}
   .field label{font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--muted);}
@@ -671,7 +681,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
      .rows / .photos / .heroId as accessor properties that transparently
      read/write the currently active revision, so existing code that already
      works with p.rows etc. keeps working unchanged. */
-  function normRevision(r){ return {id:r.id||uid(),name:r.name||"Revision",rows:Array.isArray(r.rows)?r.rows.map(normRow):blankRows(),photos:Array.isArray(r.photos)?r.photos:[],heroId:r.heroId||null,archived:!!r.archived,startedAt:r.startedAt||isoDate(new Date())}; }
+  function normRevision(r){ return {id:r.id||uid(),name:r.name||"Revision",rows:Array.isArray(r.rows)?r.rows.map(normRow):blankRows(),photos:Array.isArray(r.photos)?r.photos:[],heroId:r.heroId||null,archived:!!r.archived,startedAt:(typeof r.startedAt==="string")?r.startedAt:isoDate(new Date())}; }
   function findRevision(p,id){ return (p.revisions||[]).filter(function(r){return r.id===id;})[0]; }
   function visibleRevisions(p){ return (p.revisions||[]).filter(function(r){return !r.archived;}); }
   function activeRevisionOf(p){
@@ -873,7 +883,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.09.04-3";
+  var APP_VERSION="2026.10.08-1";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -944,6 +954,37 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       verdict={kind:"neutral",text:stepsDone+" / "+stepsTotal+" steps done · add due dates to track schedule",short:stepsDone+"/"+stepsTotal+" done"};
     }
     return {pct:pct,stepsDone:stepsDone,stepsTotal:stepsTotal,overdueCount:overdueRows.length,verdict:verdict};
+  }
+
+  // Time tracking: how much of the Start date → Due date window has gone by (calendar days).
+  // green = on track, orange = ≥ TRACK_WARN_PCT of the time used, red = past the due date,
+  // grey = dates missing, done = every filled step finished (the clock stops).
+  var TRACK_WARN_PCT=75;
+  var MON_SHORT=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function dayIndex(iso){ var d=parseISO(iso); return d?Math.round(Date.UTC(d.y,d.mo-1,d.d)/86400000):null; }
+  function fmtShortDate(iso){ var d=parseISO(iso); return d?d.d+" "+MON_SHORT[d.mo-1]+" "+d.y:""; }
+  function plural(n,word){ return n+" "+word+(n===1?"":"s"); }
+  function trackStatus(p){
+    var rev=activeRevisionOf(p);
+    var start=cleanDate(rev.startedAt), due=cleanDate(p.targetDate);
+    var filled=rev.rows.filter(hasContent);
+    var dates=(start?"Start "+fmtShortDate(start):"No start date")+" → "+(due?"Due "+fmtShortDate(due):"no due date");
+    if(filled.length&&filled.every(isDone)) return {kind:"done",pct:100,label:"Completed",detail:"All "+plural(filled.length,"step")+" done",dates:dates};
+    if(!start||!due) return {kind:"grey",pct:0,label:"Not tracked",detail:"Set a "+(!start&&!due?"Start date and Due date":!start?"Start date":"Due date")+" to track time",dates:dates};
+    var s=dayIndex(start), e=dayIndex(due), now=dayIndex(isoDate(new Date()));
+    if(e<s) return {kind:"grey",pct:0,label:"Check dates",detail:"The Due date is before the Start date",dates:dates};
+    if(now<s) return {kind:"green",pct:0,label:"Not started yet",detail:"Starts in "+plural(s-now,"day"),dates:dates};
+    if(now>e) return {kind:"red",pct:100,label:"Behind",detail:plural(now-e,"day")+" overdue",dates:dates};
+    var left=e-now, pct=left===0?100:Math.min(100,Math.round((now-s)/(e-s)*100));
+    var detail=(left===0?"Due today":plural(left,"day")+" left")+" · "+pct+"% of time used";
+    if(pct>=TRACK_WARN_PCT) return {kind:"orange",pct:pct,label:"Falling behind",detail:detail,dates:dates};
+    return {kind:"green",pct:pct,label:"On track",detail:detail,dates:dates};
+  }
+  function timeTrackHtml(p){
+    var t=trackStatus(p);
+    return '<div class="pct-top"><div class="pct-num t-'+t.kind+'">'+escapeHtml(t.label)+'</div><div class="pct-hours">'+escapeHtml(t.detail)+'</div></div>'+
+      '<div class="bar track" title="Share of the Start → Due time that has gone by"><i class="t-'+t.kind+'" style="width:'+t.pct+'%"></i></div>'+
+      '<div class="track-compare">'+escapeHtml(t.dates)+'</div>';
   }
 
   function projectDeadlineKey(p){
@@ -1156,8 +1197,13 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     var pctBlock=document.createElement("div"); pctBlock.className="pct-block"; schedEl.appendChild(pctBlock);
 
     var ctrls=document.createElement("div"); ctrls.className="ctrls";
+    var f0=document.createElement("div"); f0.className="field";
+    var l0=document.createElement("label"); l0.textContent="Start date";
+    var i0=document.createElement("input"); i0.type="date"; i0.className="start-date"; i0.value=cleanDate(activeRevisionOf(p).startedAt);
+    i0.title="When work on this revision started";
+    f0.appendChild(l0); f0.appendChild(i0);
     var f1=document.createElement("div"); f1.className="field";
-    var l1=document.createElement("label"); l1.textContent="Target date";
+    var l1=document.createElement("label"); l1.textContent="Due date";
     var dg=document.createElement("div"); dg.className="date-group";
     var cur=parseISO(p.targetDate), yNow=new Date().getFullYear();
     var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -1191,7 +1237,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     var estSpan=document.createElement("div"); estSpan.className="est-value";
     f4.appendChild(l4); f4.appendChild(estSpan);
 
-    ctrls.appendChild(f1); ctrls.appendChild(f2); ctrls.appendChild(f3); ctrls.appendChild(f4); schedEl.appendChild(ctrls);
+    ctrls.appendChild(f0); ctrls.appendChild(f1); ctrls.appendChild(f2); ctrls.appendChild(f3); ctrls.appendChild(f4); schedEl.appendChild(ctrls);
 
     var v=document.createElement("div"); v.className="verdict"; schedEl.appendChild(v);
 
@@ -1204,24 +1250,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         estSpan.classList.toggle("over-target", !!(p.targetDate && pd>new Date(p.targetDate+"T00:00:00")));
       } else { estSpan.textContent="—"; estSpan.classList.remove("over-target"); }
       var s=computeStats(p);
-      var hoursLabel = s.stepsDone+" / "+s.stepsTotal+" steps done";
-      var hpd=p.hoursPerDay||9;
-      var rev=activeRevisionOf(p);
-      var actualHrs=businessHoursElapsed(rev.startedAt,hpd);
-      var estHrs=estimatedHoursForCompleted(p.rows,hpd);
-      var compareHtml="";
-      if(s.stepsDone>0 || actualHrs>0){
-        var actualTxt=fmtDaysHours(actualHrs,hpd), estTxt=estHrs>0?fmtDaysHours(estHrs,hpd):"—";
-        var diffCls="", diffTxt="";
-        if(estHrs>0){
-          var diff=actualHrs-estHrs;
-          if(diff>0.25){ diffCls="tc-behind"; diffTxt=" (+"+fmtDaysHours(diff,hpd)+" over estimate)"; }
-          else if(diff<-0.25){ diffCls="tc-ahead"; diffTxt=" ("+fmtDaysHours(-diff,hpd)+" ahead of estimate)"; }
-          else { diffTxt=" (on pace)"; }
-        }
-        compareHtml='<div class="track-compare">Actual time gone: '+actualTxt+' &nbsp;·&nbsp; Estimated for completed steps: '+estTxt+'<span class="'+diffCls+'">'+diffTxt+'</span></div>';
-      }
-      pctBlock.innerHTML='<div class="pct-top"><div class="pct-num">'+s.pct+'%<small>complete</small></div><div class="pct-hours">'+hoursLabel+'</div></div><div class="bar"><i style="width:'+s.pct+'%"></i></div>'+compareHtml;
+      pctBlock.innerHTML=timeTrackHtml(p);
       v.className="verdict "+s.verdict.kind; v.textContent=s.verdict.text;
     }
     function commitDate(){
@@ -1234,6 +1263,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     yrSel.addEventListener("change",function(){ fillDays(); commitDate(); });
     daySel.addEventListener("change",commitDate);
     i2.addEventListener("change",function(){ p.hoursPerDay=parseFloat(i2.value)||9; persist(); refresh(); });
+    i0.addEventListener("change",function(){ activeRevisionOf(p).startedAt=cleanDate(i0.value); persist(); refresh(); });
     refresh();
   }
 

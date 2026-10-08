@@ -255,9 +255,6 @@
   .pc-dates{display:contents;}
   .pc-fields .date-block{min-width:165px;border-color:var(--line);}
   .pc-fields .date-block label{color:var(--muted);}
-  .pc-fields .date-block input.start-date{width:100%;}
-  .pc-fields .date-block .date-group{gap:4px;}
-  .pc-fields .date-block .dsel{border:none;padding:1px 2px;font-size:13.5px;font-weight:700;color:var(--green);background:transparent;}
   .pc-fields .pc-rev{min-width:260px;border-color:var(--line);}
   .pc-fields .pc-rev label{color:var(--muted);}
   .pc-rev-line{display:flex;align-items:center;gap:4px;}
@@ -884,7 +881,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.08-3";
+  var APP_VERSION="2026.10.08-4";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -1204,40 +1201,16 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     f0.appendChild(l0); f0.appendChild(i0);
     var f1=document.createElement("div"); f1.className="customer-block date-block";
     var l1=document.createElement("label"); l1.textContent="Elmo's Due Date";
-    var dg=document.createElement("div"); dg.className="date-group";
-    var cur=parseISO(p.targetDate), yNow=new Date().getFullYear();
-    var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    var daySel=document.createElement("select"); daySel.className="dsel";
-    var monSel=document.createElement("select"); monSel.className="dsel";
-    var yrSel=document.createElement("select"); yrSel.className="dsel";
-    function opt(sel,val,label,sels){ var o=document.createElement("option"); o.value=val; o.textContent=label; if(sels)o.selected=true; sel.appendChild(o); }
-    function fillDays(){
-      var mm=+monSel.value, yy=+yrSel.value||yNow, dim=mm?daysInMonth(mm,yy):31, prev=+daySel.value||(cur?cur.d:0);
-      daySel.innerHTML=""; opt(daySel,"","Day",!prev);
-      for(var d=1;d<=dim;d++) opt(daySel,d,d,prev===d);
-    }
-    opt(monSel,"","Month",!(cur&&cur.mo)); MON.forEach(function(nm,i){ opt(monSel,i+1,nm, !!(cur&&cur.mo===i+1)); });
-    // Include last year (and the stored year, if older) so an overdue due date can still be shown and corrected.
-    var yFirst=Math.min(yNow-1,(cur&&cur.y)||yNow);
-    opt(yrSel,"","Year",!(cur&&cur.y)); for(var y=yFirst;y<=yNow+4;y++) opt(yrSel,y,y, !!(cur&&cur.y===y));
-    fillDays();
-    dg.appendChild(daySel); dg.appendChild(monSel); dg.appendChild(yrSel);
-    f1.appendChild(l1); f1.appendChild(dg);
+    var i1=document.createElement("input"); i1.type="date"; i1.className="due-date"; i1.value=cleanDate(p.targetDate);
+    i1.title="Elmo's internal due date for this development";
+    f1.appendChild(l1); f1.appendChild(i1);
     schedDatesEl.appendChild(f0); schedDatesEl.appendChild(f1);
 
     function refresh(){
       recomputeSchedule(p); // keeps duration-based step due dates up to date (data only; no longer shown here)
       pctBlock.innerHTML=timeTrackHtml(p);
     }
-    function commitDate(){
-      var d=+daySel.value, m=+monSel.value, y=+yrSel.value;
-      if(m&&y){ var dim=daysInMonth(m,y); if(d>dim) d=dim; }
-      p.targetDate=(d&&m&&y)?(y+"-"+pad2(m)+"-"+pad2(d)):"";
-      persist(); refresh();
-    }
-    monSel.addEventListener("change",function(){ fillDays(); commitDate(); });
-    yrSel.addEventListener("change",function(){ fillDays(); commitDate(); });
-    daySel.addEventListener("change",commitDate);
+    i1.addEventListener("change",function(){ p.targetDate=cleanDate(i1.value); persist(); refresh(); });
     i0.addEventListener("change",function(){ activeRevisionOf(p).startedAt=cleanDate(i0.value); persist(); refresh(); });
     refresh();
   }

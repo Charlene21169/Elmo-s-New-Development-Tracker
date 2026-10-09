@@ -328,7 +328,7 @@
     .main-area.dash-on th.c-process{width:22%;} .main-area.dash-on th.c-notes{width:18%;}
     .dash-tile span{font-size:8.5px;}
   }
-  .dash-head{background:linear-gradient(180deg,#1f4536,var(--green));color:#fff;padding:9px 14px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex:0 0 auto;}
+  .dash-head{background:linear-gradient(180deg,#1f4536,var(--green));color:#fff;padding:8px 12px 8px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex:0 0 auto;}
   .dash-title{font-size:13px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;}
   .dash-date{font-size:11.5px;color:var(--gold-soft);font-weight:600;white-space:nowrap;}
   .dash-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:9px 10px 8px;border-bottom:1px solid var(--green-line);flex:0 0 auto;}
@@ -380,6 +380,57 @@
   .dash-list.tight .dash-sec{padding:5px 6px 3px;}
   .dash-empty{padding:18px 10px;text-align:center;color:var(--gold-soft);font-size:12.5px;}
   .icon-btn.on{background:rgba(200,168,110,.35);}
+  /* CAD board: full-screen copy of the CAD office whiteboard (people = rows, CAD steps = columns) */
+  .cad-light{display:inline-block;width:9px;height:9px;border-radius:50%;background:#2ECC71;box-shadow:0 0 0 2px rgba(46,204,113,.22),0 0 7px rgba(46,204,113,.95);margin-right:6px;vertical-align:middle;flex:0 0 auto;position:relative;top:-1px;}
+  .proj-tab .cad-light{margin-right:0;}
+  .dash-cad{border:none;background:rgba(255,255,255,.12);color:#fff;font-family:inherit;font-size:10.5px;font-weight:700;border-radius:7px;padding:1px 8px;line-height:1.5;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+  .dash-cad:hover{background:rgba(255,255,255,.22);}
+  .dash-cad .n{color:#9BF0BE;}
+  .dash-head-r{display:flex;align-items:center;gap:8px;}
+  .overlay.cad-full{padding:12px;}
+  .cad-modal{background:var(--bg);border-radius:16px;width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.35);}
+  .cad-head{background:linear-gradient(180deg,#1f4536,var(--green));color:#fff;padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;flex:0 0 auto;}
+  .cad-head h2{margin:0;font-size:16px;font-weight:700;letter-spacing:.3px;}
+  .cad-legend{display:flex;gap:6px;flex-wrap:wrap;flex:1 1 auto;}
+  .cad-legend>span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;background:rgba(255,255,255,.1);border-radius:8px;padding:4px 9px;}
+  .cad-legend i{width:12px;height:12px;border-radius:3px;display:inline-block;}
+  .cad-legend .working{color:#9BF0BE;}
+  .cad-head .btn{padding:7px 13px;font-size:12.5px;}
+  .cad-head .btn-ghost{background:rgba(255,255,255,.12);color:#fff;box-shadow:none;}
+  .cad-head .btn-ghost:hover{background:rgba(255,255,255,.22);}
+  .cad-board-wrap{flex:1 1 auto;min-height:0;overflow:auto;padding:10px 12px 12px;}
+  .cad-board{display:grid;gap:0;background:#fff;border:1px solid var(--line);border-radius:12px;min-width:1100px;}
+  .cad-colh{position:sticky;top:0;z-index:2;background:var(--green);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:8px 6px;text-align:center;border-right:1px solid var(--green-line);line-height:1.2;display:flex;align-items:center;justify-content:center;}
+  .cad-colh:first-child{border-top-left-radius:11px;} .cad-colh:last-child{border-top-right-radius:11px;border-right:none;}
+  .cad-colh.wait{background:#5d6b64;} .cad-colh.finish{background:#2F5597;}
+  .cad-person{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:3px;padding:8px 10px;border-right:2px solid var(--line);border-bottom:2px solid var(--line);font-size:15px;font-weight:800;color:var(--green);cursor:pointer;}
+  .cad-person small{font-size:10.5px;font-weight:600;color:var(--muted);}
+  .cad-person .sw{width:100%;height:4px;border-radius:2px;}
+  .cad-cell{border-right:1px solid var(--line);border-bottom:2px solid var(--line);padding:5px;display:flex;flex-direction:column;gap:5px;min-height:70px;position:relative;transition:background .1s;}
+  .cad-cell.wait{background:#F7F8F7;} .cad-cell.finish{background:#F4F7FC;}
+  .cad-cell.drop{background:#FCF6E7;box-shadow:inset 0 0 0 2px var(--gold);}
+  .cad-cell .cad-add{opacity:0;border:1.5px dashed var(--line);background:transparent;color:var(--muted);border-radius:7px;font-size:12px;padding:2px 0;cursor:pointer;margin-top:auto;}
+  .cad-cell:hover .cad-add{opacity:1;}
+  .cad-card{position:relative;background:#fff;border:1px solid #E2E2E6;border-radius:7px;box-shadow:0 1px 2px rgba(0,0,0,.07);cursor:grab;overflow:hidden;font-size:12px;line-height:1.25;}
+  .cad-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.12);}
+  .cad-card.dragging{opacity:.4;}
+  .cad-card .lbl{display:block;font-size:9px;font-weight:700;text-align:center;padding:2px 20px;min-height:17px;color:#fff;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cad-card .ttl{display:block;padding:4px 7px 5px;font-weight:650;color:var(--ink);overflow-wrap:break-word;hyphens:auto;}
+  .cad-card .lnk{display:block;padding:0 7px 4px;font-size:10px;font-weight:700;color:var(--green);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cad-card.on{border-color:#2ECC71;box-shadow:0 0 0 1px #2ECC71,0 2px 8px rgba(46,204,113,.25);}
+  .cad-card.done{opacity:.72;}
+  .cad-lamp{position:absolute;right:3px;top:2px;width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:rgba(0,0,0,.18);cursor:pointer;padding:0;}
+  .cad-lamp:hover{border-color:#fff;background:rgba(46,204,113,.55);}
+  @media (max-width:1500px){ .cad-card{font-size:11px;} .cad-card .ttl{padding:3px 6px 4px;} .cad-cell{padding:4px;gap:4px;} .cad-person{font-size:13.5px;padding:6px 8px;} }
+  .cad-card.on .cad-lamp{border-color:#fff;background:#2ECC71;box-shadow:0 0 8px rgba(46,204,113,.95);}
+  .cad-form label{display:block;font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--muted);margin:12px 0 4px;}
+  .cad-form input[type=text],.cad-form select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff;}
+  .cad-form input[type=text]:focus,.cad-form select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,168,110,.18);}
+  .cad-form .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .cad-switch{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 12px;border-radius:10px;background:#F4F4F6;cursor:pointer;font-size:14px;font-weight:650;}
+  .cad-switch input{width:18px;height:18px;accent-color:#2ECC71;}
+  .cad-form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;}
+  .cad-form-actions .btn-danger{margin-right:auto;}
   .overlay{position:fixed;inset:0;background:rgba(15,25,20,.42);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;}
   .overlay.open{display:flex;}
   .modal{background:var(--card);border-radius:22px;width:100%;max-width:560px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.35);}
@@ -515,7 +566,7 @@
     .btn{padding:10px 14px;font-size:13.5px;}
     .photo-grid .thumb{width:calc(50% - 6px);height:auto;aspect-ratio:3/2;}
   }
-  @media print{.dash,.topbar,.toolbar,.projects-bar-wrap,.icon-btn,.del,.photos,.sched,.pc-rev{display:none!important;}body{background:#fff;}.wrap{margin:0;padding:16px;}.card{box-shadow:none;border-radius:0;}.grid-scroll{overflow:visible;max-height:none;}.proj-card{box-shadow:none;}thead th{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact;}select,input.cell{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+  @media print{.cad-light,.dash,.topbar,.toolbar,.projects-bar-wrap,.icon-btn,.del,.photos,.sched,.pc-rev{display:none!important;}body{background:#fff;}.wrap{margin:0;padding:16px;}.card{box-shadow:none;border-radius:0;}.grid-scroll{overflow:visible;max-height:none;}.proj-card{box-shadow:none;}thead th{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact;}select,input.cell{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
 </style>
 <script>
 /* PptxGenJS 3.12.0 @ 2023-03-20T03:12:31.375Z */
@@ -554,6 +605,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       <div class="version-tag" id="versionTag" title="App version — check this matches after a hard refresh">v2026.08.28-1</div>
       <div class="cloud-pill local" id="cloudPill" title="Sync status — click to sync now">● Local only</div>
       <button class="icon-btn" id="archiveBtn" title="Archived developments">🗄<span class="icon-badge" id="archiveBadge" hidden>0</span></button>
+      <button class="icon-btn" id="cadBtn" title="CAD Board — the CAD office whiteboard" style="font-size:11px;font-weight:800;letter-spacing:.3px;">CAD</button>
       <button class="icon-btn" id="dashBtn" title="Show / hide the dashboard">◧</button>
       <button class="icon-btn" id="overviewBtn" title="Overview — all developments">▦</button>
       <button class="icon-btn" id="printBtn" title="Slide / print view">⎙</button>
@@ -644,7 +696,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   </div>
   <!-- Dashboard: one line per development, worst first; click one to open it -->
   <aside class="dash" id="dash">
-    <div class="dash-head"><div class="dash-title">Dashboard</div><div class="dash-date" id="dashDate"></div></div>
+    <div class="dash-head"><div class="dash-title">Dashboard</div><div class="dash-head-r"><button type="button" class="dash-cad" id="dashCadBtn" title="Open the CAD Board">CAD Board <span class="n" id="dashCadCount"></span></button><div class="dash-date" id="dashDate"></div></div></div>
     <div class="dash-tiles" id="dashTiles"></div>
     <div class="dash-list" id="dashList"></div>
   </aside>
@@ -699,6 +751,42 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     </div>
   </div>
 
+  <div class="overlay cad-full" id="cadOverlay">
+    <div class="cad-modal">
+      <div class="cad-head">
+        <h2>CAD Board</h2>
+        <div class="cad-legend" id="cadLegend"></div>
+        <button class="btn btn-gold" id="cadAddBtn" type="button">＋ Card</button>
+        <button class="btn btn-ghost" id="cadAddPersonBtn" type="button">＋ CAD person</button>
+        <button class="btn btn-ghost" id="cadClearFinishBtn" type="button">Clear Finish</button>
+        <button class="icon-btn" id="closeCad" type="button" title="Close">✕</button>
+      </div>
+      <div class="cad-board-wrap"><div class="cad-board" id="cadBoard"></div></div>
+    </div>
+  </div>
+  <div class="overlay" id="cadEditOverlay">
+    <div class="modal">
+      <div class="modal-head"><h2 id="cadEditTitle">CAD card</h2><button class="icon-btn" id="closeCadEdit" type="button">✕</button></div>
+      <div class="modal-body cad-form">
+        <label for="cadFTitle">Item</label>
+        <input type="text" id="cadFTitle" placeholder="e.g. Devon Diner upholstered" autocomplete="off">
+        <div class="two">
+          <div><label for="cadFPerson">CAD person (row)</label><select id="cadFPerson"></select></div>
+          <div><label for="cadFOwner">Card label (whose item)</label><select id="cadFOwner"></select></div>
+        </div>
+        <label for="cadFStage">CAD step (column)</label>
+        <select id="cadFStage"></select>
+        <label for="cadFProject">Linked development</label>
+        <select id="cadFProject"></select>
+        <label class="cad-switch"><input type="checkbox" id="cadFWorking"> <span class="cad-light"></span>Working on it now</label>
+        <div class="cad-form-actions">
+          <button class="btn btn-danger" id="cadFDelete" type="button">Delete card</button>
+          <button class="btn btn-ghost" id="cadFCancel" type="button">Cancel</button>
+          <button class="btn btn-primary" id="cadFSave" type="button">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="overlay" id="overviewOverlay">
     <div class="modal wide">
       <div class="modal-head"><h2>Overview — All Developments</h2><button class="icon-btn" id="closeOverview">✕</button></div>
@@ -985,8 +1073,8 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     Object.keys(knownFP).forEach(function(id){ if(!seen[id]){ delete knownFP[id]; delete dirtyIds[id]; deletedIds[id]=ts; } });
     var mfp=metaFP(); if(mfp!==knownMetaFP){ knownMetaFP=mfp; metaDirty=true; state.metaUpdatedAt=ts; }
   }
-  function saveSyncQueue(){ try{ localStorage.setItem(STORE_KEY+"_sync",JSON.stringify({dirty:dirtyIds,deleted:deletedIds,metaDirty:metaDirty})); }catch(e){} }
-  function loadSyncQueue(){ var q=loadRaw(STORE_KEY+"_sync"); if(q){ dirtyIds=q.dirty||{}; deletedIds=q.deleted||{}; metaDirty=!!q.metaDirty; } }
+  function saveSyncQueue(){ try{ localStorage.setItem(STORE_KEY+"_sync",JSON.stringify({dirty:dirtyIds,deleted:deletedIds,metaDirty:metaDirty,cadDirty:cadDirty})); }catch(e){} }
+  function loadSyncQueue(){ var q=loadRaw(STORE_KEY+"_sync"); if(q){ dirtyIds=q.dirty||{}; deletedIds=q.deleted||{}; metaDirty=!!q.metaDirty; cadDirty=!!q.cadDirty; } }
   function persist(){
     if(!applyingRemote && !initializing) markChanges();
     try{ localStorage.setItem(STORE_KEY,JSON.stringify(state)); }catch(e){}
@@ -1010,7 +1098,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.09-7";
+  // CAD board: synced as its own row ("cad") in nd_meta; merged card-by-card (newest edit of each card wins).
+  var CAD_ID="cad", cadDirty=false, cadMerging=false;
+  var APP_VERSION="2026.10.09-8";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -1020,6 +1110,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     state.projects=saved.projects.map(normProject);
     state.activeProjectId=saved.activeProjectId||state.projects[0].id;
     state.priorityReviewedWeek=saved.priorityReviewedWeek||"";
+    state.cad=saved.cad;
   } else {
     state.projects=seedProjects();
     state.activeProjectId=state.projects[0].id;
@@ -1193,6 +1284,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       var star=document.createElement("button"); star.className="proj-star"+(p.priority?" on":""); star.title=p.priority?"Remove from top 6":"Mark as top 6 priority";
       star.textContent=p.priority?PRIORITY_BADGES[rank]||"★":"☆";
       star.addEventListener("click",function(e){ e.stopPropagation(); togglePriority(p); }); tab.appendChild(star);
+      var cw=cadWorkingFor(p.id); if(cw.length){ var lt=document.createElement("span"); lt.className="cad-light"; lt.title=cadLightTitle(cw); tab.appendChild(lt); }
       var nm=document.createElement("span"); nm.className="proj-name"; nm.textContent=p.name; tab.appendChild(nm);
       var arch=document.createElement("button"); arch.className="proj-archive"; arch.textContent="🗄"; arch.title="Archive development";
       arch.addEventListener("click",function(e){ e.stopPropagation(); archiveProject(p.id); }); tab.appendChild(arch);
@@ -1617,10 +1709,264 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   }
   function renderAll(){ renderProjects(); renderHeading(); renderRevisionBar(); renderSched(); renderChecker(); renderGrid(); renderPhotos(); renderDashboard(); }
 
+
+  /* ---------------- CAD board ----------------
+     A copy of the CAD office whiteboard: one row per CAD person, one column per CAD step.
+     Each card can be linked to a development; when a linked card's "working on it now" light is on,
+     that development shows a green light on the dashboard and on its tab. */
+  var CAD_STAGES=[["wait","Waiting"],["prediscus","Pre-Discus"],["draftcad","Draft CAD"],["finaldiscus","Final Discus"],["finalcad","Final CAD"],["program","Program"],["partsorder","Parts Order"],["factorysample","Factory Sample"],["prodfinal","Production Final"],["jigs","Jigs & Templates"],["finish","Finish"]];
+  var CAD_STAGE_NAME={}; CAD_STAGES.forEach(function(x){ CAD_STAGE_NAME[x[0]]=x[1]; });
+  var CAD_COLORS=["#2F6FD6","#E2AE00","#E8672A","#7A4FC8","#1E9C8C","#C2417A","#6B7A2F"];
+  var CAD_SEED_TS="2026-10-09T00:00:00.000Z";
+  // Read from the CAD office whiteboard photo (9 Oct 2026): [row person, card label, step, item, linked development]
+  var CAD_SEED=[
+    ["Quintin","Quintin","wait","Gigolo Diner Redraw – B2"],
+    ["Quintin","Quintin","wait","Kauai Diner Welding Jig"],
+    ["Quintin","Quintin","prediscus","Steel Dust Extractor Exhaust"],
+    ["Quintin","Quintin","draftcad","RCP Bowtie Cylinder Improvement"],
+    ["Quintin","Quintin","finaldiscus","Kirsten Bar Feedback"],
+    ["Quintin","Maria","program","Devon Diner","Devon Diner"],
+    ["Quintin","Quintin","program","Eydie Bar Up"],
+    ["Quintin","Quintin","program","OBI Grande"],
+    ["Quintin","Quintin","program","Waterfall Bar Up FC6"],
+    ["Quintin","Maria","factorysample","Kirsten Hout","Kirsten Hout Pote"],
+    ["Quintin","Maria","factorysample","OBI Large Bar Steel / Wood Sleeve"],
+    ["Quintin","Maria","factorysample","Slope Wood","Slope Wood Leg"],
+    ["Quintin","Quintin","jigs","Monica Press Jig"],
+    ["Quintin","Quintin","finish","Davis Diner (CoriCraft)"],
+    ["Quintin","Quintin","finish","Mell Café Sit Werk","Mell Café"],
+    ["Quintin","Maria","finish","OBI Large Steel Sleeve"],
+    ["Quintin","Maria","finish","Weld Gun Stander"],
+    ["Maria","Maria","prediscus","Charlie Curved Back Hout Holder"],
+    ["Maria","Maria","prediscus","3D Print Boksies"],
+    ["Maria","Maria","draftcad","Gigolo Diner Check Jig"],
+    ["Maria","Maria","finaldiscus","Boxx Diner Jig"],
+    ["Maria","Maria","finaldiscus","Flint Weld Jig"],
+    ["Maria","Maria","finalcad","Pyp Connection"],
+    ["Maria","Maria","program","Devon Diner Upholstered","Devon Diner"],
+    ["Maria","Maria","factorysample","Booth Bench Robot Weld Jig"],
+    ["Maria","Maria","prodfinal","Office Storage Space"],
+    ["Maria","Maria","prodfinal","OBI Large Hout"],
+    ["Maria","Maria","jigs","RCP Bar Swaged"],
+    ["Maria","Maria","jigs","Kirsten Wood"],
+    ["Maria","Maria","finish","OBI L Hek Latch"],
+    ["Maria","Maria","finish","SportsCrete Skerm"],
+    ["Maria","Maria","finish","Curvy Balustrade"],
+    ["Maria","Maria","finish","TV Stand"],
+    ["Maria","Maria","finish","Oger Chute"],
+    ["Pieter","Pieter","draftcad","Quintin Press Tool Nest"],
+    ["Pieter","Pieter","draftcad","Corner Block Masjien"],
+    ["Pieter","Pieter","draftcad","Improvement Cutter Jig"],
+    ["Pieter","Pieter","draftcad","Jason Improvement (Forklift)"],
+    ["Pieter","Pieter","draftcad","LW Trolley"],
+    ["Pieter","Pieter","factorysample","Bolts Masjien Wiel"],
+    ["Pieter","Pieter","prodfinal","Office Kas"],
+    ["Pieter","Pieter","prodfinal","Manisha Clipboard (Toolboard)"],
+    ["Pieter","Pieter","prodfinal","Oom John Trays"],
+    ["Pieter","Pieter","prodfinal","Tymo Boks"],
+    ["Pieter","Pieter","finish","Maintenance Perspex Kanban"],
+    ["Pieter","Pieter","finish","Quinti 6mm Birch Ply"],
+    ["Pieter","Pieter","finish","Tymo Cutter Box"],
+    ["Pieter","Pieter","finish","LW Jigs Rak"],
+    ["Pieter","Pieter","finish","Kombuis (name unclear)"]
+  ];
+  function normCad(c){
+    c=(c&&typeof c==="object")?c:{};
+    var o={people:Array.isArray(c.people)?c.people.filter(function(x){return x&&x.name;}).map(function(x){return {name:String(x.name),color:x.color||"#888"};}):[],
+      cards:{}, deleted:(c.deleted&&typeof c.deleted==="object")?c.deleted:{}, peopleUpdatedAt:c.peopleUpdatedAt||"", updatedAt:c.updatedAt||"", seeded:!!c.seeded};
+    var cards=c.cards&&typeof c.cards==="object"?c.cards:{};
+    Object.keys(cards).forEach(function(id){ var k=cards[id]; if(!k) return;
+      o.cards[id]={id:id,title:String(k.title||""),person:String(k.person||""),owner:String(k.owner||""),stage:CAD_STAGE_NAME[k.stage]?k.stage:"wait",projectId:k.projectId||"",working:!!k.working,order:+k.order||0,updatedAt:k.updatedAt||""}; });
+    // forget deletions older than 60 days
+    var cut=new Date(Date.now()-60*86400000).toISOString(); Object.keys(o.deleted).forEach(function(id){ if(o.deleted[id]<cut) delete o.deleted[id]; });
+    return o;
+  }
+  function cadPayload(){ var c=state.cad; return {people:c.people,cards:c.cards,deleted:c.deleted,peopleUpdatedAt:c.peopleUpdatedAt,updatedAt:c.updatedAt,seeded:c.seeded}; }
+  function normName(n){ return String(n||"").toLowerCase().replace(/[^a-z0-9]/g,""); }
+  function findProjectByName(n){ var k=normName(n); if(!k) return null; var hit=null; state.projects.forEach(function(p){ if(!hit&&normName(p.name)===k) hit=p; }); return hit; }
+  function seedCad(){
+    var c=state.cad; c.seeded=true; c.peopleUpdatedAt=c.peopleUpdatedAt||CAD_SEED_TS; c.updatedAt=nowISO();
+    if(!c.people.length) c.people=[{name:"Quintin",color:CAD_COLORS[0]},{name:"Maria",color:CAD_COLORS[1]},{name:"Pieter",color:CAD_COLORS[2]}];
+    CAD_SEED.forEach(function(x,i){
+      var id="cad-seed-"+(i<9?"0":"")+(i+1); if(c.cards[id]||c.deleted[id]) return;
+      var lp=x[4]?findProjectByName(x[4]):null;
+      c.cards[id]={id:id,person:x[0],owner:x[1],stage:x[2],title:x[3],projectId:lp?lp.id:"",working:false,order:i,updatedAt:CAD_SEED_TS};
+    });
+  }
+  function saveCadLocal(){ try{ localStorage.setItem(STORE_KEY,JSON.stringify(state)); }catch(e){} saveSyncQueue(); }
+  function cadTouch(card){ var ts=nowISO(); if(card) card.updatedAt=ts; state.cad.updatedAt=ts; cadDirty=true; persist(); renderCad(); renderProjects(); renderDashboard(); }
+  function applyRemoteCad(row){
+    if(!row||!row.data) return;
+    var r=normCad(row.data), L=state.cad, ahead=false, changed=false;
+    Object.keys(r.cards).forEach(function(id){
+      var rc=r.cards[id], lc=L.cards[id];
+      if(L.deleted[id]&&L.deleted[id]>=rc.updatedAt){ ahead=true; return; }
+      if(!lc||rc.updatedAt>lc.updatedAt){ L.cards[id]=rc; delete L.deleted[id]; changed=true; }
+      else if(lc.updatedAt>rc.updatedAt) ahead=true;
+    });
+    Object.keys(L.cards).forEach(function(id){
+      if(r.cards[id]) return;
+      var rd=r.deleted[id];
+      if(rd&&rd>=L.cards[id].updatedAt){ delete L.cards[id]; L.deleted[id]=rd; changed=true; }
+      else ahead=true;
+    });
+    Object.keys(r.deleted).forEach(function(id){ if(!L.deleted[id]||r.deleted[id]>L.deleted[id]) L.deleted[id]=r.deleted[id]; });
+    Object.keys(L.deleted).forEach(function(id){ if(!r.deleted[id]) ahead=true; });
+    if(r.peopleUpdatedAt>L.peopleUpdatedAt){ L.people=r.people; L.peopleUpdatedAt=r.peopleUpdatedAt; changed=true; }
+    else if(L.peopleUpdatedAt>r.peopleUpdatedAt) ahead=true;
+    if(r.seeded) L.seeded=true;
+    if(r.updatedAt>L.updatedAt) L.updatedAt=r.updatedAt;
+    if(ahead){ cadDirty=true; L.updatedAt=nowISO(); }
+    saveCadLocal();
+    if(changed){ renderCad(); renderProjects(); renderDashboard(); }
+    if(ahead) schedulePush();
+  }
+  function cadCards(){ var c=state.cad.cards; return Object.keys(c).map(function(id){ return c[id]; }); }
+  function cadWorkingFor(pid){ if(!state.cad) return []; return cadCards().filter(function(k){ return k.working&&k.projectId===pid&&k.stage!=="finish"; }); }
+  function cadWorkingCount(){ return state.cad?cadCards().filter(function(k){ return k.working&&k.stage!=="finish"; }).length:0; }
+  function cadLightTitle(list){ return "CAD working on it now: "+list.map(function(k){ return k.person+" — "+CAD_STAGE_NAME[k.stage]+" ("+k.title+")"; }).join("; "); }
+  function cadPersonColor(name){ var hit=null; state.cad.people.forEach(function(x){ if(x.name===name) hit=x.color; }); return hit||"#9A9AA0"; }
+
+  var cadOverlay=document.getElementById("cadOverlay"), cadBoard=document.getElementById("cadBoard"), cadLegend=document.getElementById("cadLegend");
+  var cadDragId=null;
+  function openCad(){ cadOverlay.classList.add("open"); renderCad(); }
+  function closeCad(){ cadOverlay.classList.remove("open"); }
+  document.getElementById("cadBtn").addEventListener("click",openCad);
+  document.getElementById("dashCadBtn").addEventListener("click",openCad);
+  document.getElementById("closeCad").addEventListener("click",closeCad);
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"){ if(cadEditOverlay.classList.contains("open")) closeCadEdit(); else if(cadOverlay.classList.contains("open")) closeCad(); } });
+  function renderCad(){
+    if(!cadOverlay.classList.contains("open")) return;
+    var people=state.cad.people, cards=cadCards();
+    var nWork=cardsWorking(cards);
+    cadLegend.innerHTML=people.map(function(x){ return '<span><i style="background:'+x.color+'"></i>'+escapeHtml(x.name)+'</span>'; }).join("")+
+      '<span class="working"><span class="cad-light"></span>'+nWork+' working on it now</span>';
+    cadBoard.style.gridTemplateColumns="120px repeat("+CAD_STAGES.length+",minmax(96px,1fr))";
+    cadBoard.innerHTML="";
+    var corner=document.createElement("div"); corner.className="cad-colh"; corner.textContent="CAD person"; cadBoard.appendChild(corner);
+    CAD_STAGES.forEach(function(st){ var h=document.createElement("div"); h.className="cad-colh "+st[0]; h.textContent=st[1]; h.title=st[1]; cadBoard.appendChild(h); });
+    var known={}; people.forEach(function(x){ known[x.name]=true; });
+    var rows=people.map(function(x){ return x.name; });
+    if(cards.some(function(k){ return !known[k.person]; })) rows.push(""); // cards whose person was removed
+    rows.forEach(function(person){
+      var pc=document.createElement("div"); pc.className="cad-person";
+      var mine=cards.filter(function(k){ return (known[k.person]?k.person:"")===person; });
+      var active=mine.filter(function(k){ return k.stage!=="finish"&&k.stage!=="wait"; }).length, on=mine.filter(function(k){ return k.working&&k.stage!=="finish"; }).length;
+      pc.innerHTML='<div class="sw" style="background:'+(person?cadPersonColor(person):"#C4C4CA")+'"></div>'+escapeHtml(person||"(no person)")+'<small>'+active+' on the go'+(on?' · '+on+' working':'')+'</small>';
+      if(person){ pc.title="Click to rename or remove "+person; pc.addEventListener("click",function(){ editCadPerson(person); }); }
+      cadBoard.appendChild(pc);
+      CAD_STAGES.forEach(function(st){
+        var cell=document.createElement("div"); cell.className="cad-cell "+st[0];
+        mine.filter(function(k){ return k.stage===st[0]; }).sort(function(a,b){ return a.order-b.order||(a.updatedAt<b.updatedAt?-1:1); })
+          .forEach(function(k){ cell.appendChild(cadCardEl(k)); });
+        var add=document.createElement("button"); add.type="button"; add.className="cad-add"; add.textContent="＋"; add.title="Add a card here";
+        add.addEventListener("click",function(){ openCadEdit(null,{person:person,stage:st[0]}); }); cell.appendChild(add);
+        cell.addEventListener("dragover",function(e){ if(!cadDragId) return; e.preventDefault(); cell.classList.add("drop"); });
+        cell.addEventListener("dragleave",function(){ cell.classList.remove("drop"); });
+        cell.addEventListener("drop",function(e){ e.preventDefault(); cell.classList.remove("drop"); moveCadCard(cadDragId,person,st[0]); cadDragId=null; });
+        cadBoard.appendChild(cell);
+      });
+    });
+  }
+  function cardsWorking(cards){ return cards.filter(function(k){ return k.working&&k.stage!=="finish"; }).length; }
+  function cadCardEl(k){
+    var el=document.createElement("div"); el.className="cad-card"+(k.working&&k.stage!=="finish"?" on":"")+(k.stage==="finish"?" done":""); el.draggable=true;
+    var lp=k.projectId?projectById(k.projectId):null;
+    el.innerHTML='<span class="lbl" style="background:'+cadPersonColor(k.owner||k.person)+'">'+escapeHtml(k.owner||k.person||"")+'</span><span class="ttl"></span>'+(lp?'<span class="lnk">🔗 '+escapeHtml(lp.name)+'</span>':'');
+    el.querySelector(".ttl").textContent=k.title||"(no name)";
+    el.title=(k.title||"")+(lp?"\nLinked to: "+lp.name:"")+"\nClick to edit · drag to move";
+    if(k.stage!=="finish"){
+      var lamp=document.createElement("button"); lamp.type="button"; lamp.className="cad-lamp"; lamp.title=k.working?"Working on it now — click to switch off":"Click when working on it now";
+      lamp.addEventListener("click",function(e){ e.stopPropagation(); k.working=!k.working; cadTouch(k); });
+      el.appendChild(lamp);
+    }
+    el.addEventListener("click",function(){ openCadEdit(k); });
+    el.addEventListener("dragstart",function(e){ cadDragId=k.id; el.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; try{ e.dataTransfer.setData("text/plain",k.id); }catch(err){} });
+    el.addEventListener("dragend",function(){ el.classList.remove("dragging"); cadDragId=null; });
+    return el;
+  }
+  function moveCadCard(id,person,stage){
+    var k=state.cad.cards[id]; if(!k) return;
+    if(k.person===person&&k.stage===stage) return;
+    var maxO=0; cadCards().forEach(function(x){ if(x.person===person&&x.stage===stage) maxO=Math.max(maxO,x.order); });
+    if(person) k.person=person; k.stage=stage; k.order=maxO+1;
+    if(stage==="finish") k.working=false;
+    cadTouch(k);
+  }
+  function editCadPerson(name){
+    var nn=prompt("Rename CAD person \""+name+"\" (leave empty to remove them):",name);
+    if(nn===null) return; nn=nn.trim();
+    var c=state.cad;
+    if(!nn){
+      if(cadCards().some(function(k){ return k.person===name; })){ toast("Move or delete "+name+"'s cards first"); return; }
+      c.people=c.people.filter(function(x){ return x.name!==name; });
+    } else if(nn!==name){
+      if(c.people.some(function(x){ return x.name===nn; })){ toast(nn+" is already on the board"); return; }
+      c.people.forEach(function(x){ if(x.name===name) x.name=nn; });
+      cadCards().forEach(function(k){ var hit=false; if(k.person===name){ k.person=nn; hit=true; } if(k.owner===name){ k.owner=nn; hit=true; } if(hit) k.updatedAt=nowISO(); });
+    } else return;
+    c.peopleUpdatedAt=nowISO(); cadTouch(null);
+  }
+  document.getElementById("cadAddPersonBtn").addEventListener("click",function(){
+    var nn=prompt("Name of the new CAD person:",""); if(!nn) return; nn=nn.trim(); if(!nn) return;
+    var c=state.cad; if(c.people.some(function(x){ return x.name===nn; })){ toast(nn+" is already on the board"); return; }
+    c.people.push({name:nn,color:CAD_COLORS[c.people.length%CAD_COLORS.length]}); c.peopleUpdatedAt=nowISO(); cadTouch(null);
+  });
+  document.getElementById("cadClearFinishBtn").addEventListener("click",function(){
+    var done=cadCards().filter(function(k){ return k.stage==="finish"; });
+    if(!done.length){ toast("Nothing in Finish"); return; }
+    if(!confirm("Remove all "+done.length+" cards in Finish from the CAD Board?")) return;
+    var ts=nowISO(); done.forEach(function(k){ delete state.cad.cards[k.id]; state.cad.deleted[k.id]=ts; });
+    cadTouch(null); toast(done.length+" finished cards cleared");
+  });
+  document.getElementById("cadAddBtn").addEventListener("click",function(){ openCadEdit(null,{person:(state.cad.people[0]||{}).name||"",stage:"wait"}); });
+
+  /* card editor */
+  var cadEditOverlay=document.getElementById("cadEditOverlay"), cadEditId=null;
+  var cadF={title:document.getElementById("cadFTitle"),person:document.getElementById("cadFPerson"),owner:document.getElementById("cadFOwner"),stage:document.getElementById("cadFStage"),project:document.getElementById("cadFProject"),working:document.getElementById("cadFWorking")};
+  function fillSelect(sel,opts,val){ sel.innerHTML=""; opts.forEach(function(o){ var op=document.createElement("option"); op.value=o[0]; op.textContent=o[1]; sel.appendChild(op); }); sel.value=val; if(sel.value!==val&&opts.length) sel.value=opts[0][0]; }
+  function openCadEdit(card,defaults){
+    var k=card||{title:"",person:(defaults&&defaults.person)||"",owner:"",stage:(defaults&&defaults.stage)||"wait",projectId:"",working:false};
+    cadEditId=card?card.id:null;
+    document.getElementById("cadEditTitle").textContent=card?"Edit CAD card":"New CAD card";
+    var ppl=state.cad.people.map(function(x){ return [x.name,x.name]; });
+    cadF.title.value=k.title;
+    fillSelect(cadF.person,ppl,k.person);
+    fillSelect(cadF.owner,[["","(same as CAD person)"]].concat(ppl),k.owner&&k.owner!==k.person?k.owner:"");
+    fillSelect(cadF.stage,CAD_STAGES,k.stage);
+    var projs=state.projects.filter(function(p){ return !p.archived||p.id===k.projectId; }).slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
+    fillSelect(cadF.project,[["","— not linked to a development —"]].concat(projs.map(function(p){ return [p.id,p.name]; })),k.projectId||"");
+    cadF.working.checked=!!k.working;
+    document.getElementById("cadFDelete").hidden=!card;
+    cadEditOverlay.classList.add("open");
+    setTimeout(function(){ cadF.title.focus(); },30);
+  }
+  function closeCadEdit(){ cadEditOverlay.classList.remove("open"); cadEditId=null; }
+  document.getElementById("closeCadEdit").addEventListener("click",closeCadEdit);
+  document.getElementById("cadFCancel").addEventListener("click",closeCadEdit);
+  cadF.title.addEventListener("keydown",function(e){ if(e.key==="Enter") document.getElementById("cadFSave").click(); });
+  document.getElementById("cadFSave").addEventListener("click",function(){
+    var title=cadF.title.value.trim(); if(!title){ toast("Give the card a name"); cadF.title.focus(); return; }
+    var c=state.cad, k=cadEditId?c.cards[cadEditId]:null;
+    if(!k){ var id="cad-"+uid(); k={id:id,order:0}; c.cards[id]=k; }
+    var stageChanged=k.stage!==cadF.stage.value||k.person!==cadF.person.value;
+    k.title=title; k.person=cadF.person.value; k.owner=cadF.owner.value===k.person?"":cadF.owner.value; k.stage=cadF.stage.value; k.projectId=cadF.project.value;
+    k.working=cadF.working.checked&&k.stage!=="finish";
+    if(stageChanged||!cadEditId){ var maxO=0; cadCards().forEach(function(x){ if(x!==k&&x.person===k.person&&x.stage===k.stage) maxO=Math.max(maxO,x.order); }); k.order=maxO+1; }
+    closeCadEdit(); cadTouch(k);
+  });
+  document.getElementById("cadFDelete").addEventListener("click",function(){
+    var k=cadEditId&&state.cad.cards[cadEditId]; if(!k) return;
+    if(!confirm("Delete the card \""+k.title+"\"?")) return;
+    delete state.cad.cards[k.id]; state.cad.deleted[k.id]=nowISO(); closeCadEdit(); cadTouch(null);
+  });
+  state.cad=normCad(state.cad);
+  if(!cloudOn&&!state.cad.seeded){ seedCad(); persist(); } // with sync on, seeding waits for the first cloud pull
+
   /* dashboard: always-on summary of every (non-archived) development.
      Uses the same time-tracking status as the project card (trackStatus) and the same step counts (computeStats). */
   var mainArea=document.getElementById("mainArea"), dashBtn=document.getElementById("dashBtn");
-  var dashTiles=document.getElementById("dashTiles"), dashList=document.getElementById("dashList"), dashDate=document.getElementById("dashDate");
+  var dashTiles=document.getElementById("dashTiles"), dashList=document.getElementById("dashList"), dashDate=document.getElementById("dashDate"), dashCadCount=document.getElementById("dashCadCount");
   var DASH_KEY="coreNewDevTracker_dash", DASH_ORDER={red:0,orange:1,green:2,grey:3,done:4};
   var DAY_SHORT=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   function dashOn(){ try{ return localStorage.getItem(DASH_KEY)!=="off"; }catch(e){ return true; } }
@@ -1649,7 +1995,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   function dashChip(info){
     var p=info.p, b=document.createElement("button");
     b.type="button"; b.className="dash-chip k-"+info.t.kind+(p.id===state.activeProjectId?" active":"");
-    b.textContent=(p.priority?priorityBadgeText(p)+" ":"")+p.name; b.title=p.name+" — "+info.t.label+"\nClick to open";
+    var cw=cadWorkingFor(p.id);
+    b.textContent=(p.priority?priorityBadgeText(p)+" ":"")+p.name; b.title=(cw.length?cadLightTitle(cw)+"\n":"")+p.name+" — "+info.t.label+"\nClick to open";
+    if(cw.length){ var lt=document.createElement("span"); lt.className="cad-light"; b.insertBefore(lt,b.firstChild); }
     b.addEventListener("click",function(){ openFromDash(p); });
     return b;
   }
@@ -1657,8 +2005,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     var p=info.p, b=document.createElement("button");
     b.type="button"; b.className="dash-item k-"+info.t.kind+(slim?" slim":"")+(p.id===state.activeProjectId?" active":"");
     b.title=p.name+" — "+info.t.label+(info.t.detail?" · "+info.t.detail:"")+"\nClick to open";
-    var rank=p.priority?priorityBadgeText(p):"";
-    var html='<div class="di-top"><span class="di-name">'+(rank?'<span class="di-rank">'+rank+'</span>':'')+escapeHtml(p.name)+(p.customer&&!slim?'<span class="di-custname">'+escapeHtml(p.customer)+'</span>':'')+'</span><span class="di-when t-'+info.t.kind+'">'+escapeHtml(info.when)+'</span></div>';
+    var rank=p.priority?priorityBadgeText(p):"", cw=cadWorkingFor(p.id);
+    if(cw.length) b.title=cadLightTitle(cw)+"\n"+b.title;
+    var html='<div class="di-top"><span class="di-name">'+(cw.length?'<span class="cad-light"></span>':'')+(rank?'<span class="di-rank">'+rank+'</span>':'')+escapeHtml(p.name)+(p.customer&&!slim?'<span class="di-custname">'+escapeHtml(p.customer)+'</span>':'')+'</span><span class="di-when t-'+info.t.kind+'">'+escapeHtml(info.when)+'</span></div>';
     if(!slim){
       var insp=(p.checker||"").trim();
       var dueTxt=info.due?'Due <b>'+dashShortDate(info.due)+'</b>':'<span class="di-none">No due date</span>';
@@ -1675,6 +2024,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     if(!dashList) return;
     applyDashToggle();
     if(!mainArea.classList.contains("dash-on")) return;
+    var nWork=cadWorkingCount(); dashCadCount.textContent=nWork?"● "+nWork+" working":"";
     var today=new Date(); dashDate.textContent=DAY_SHORT[today.getDay()]+" "+today.getDate()+" "+MON_SHORT[today.getMonth()]+" "+today.getFullYear();
     var infos=state.projects.filter(function(p){ return !p.archived; }).map(dashInfo);
     var count={red:0,orange:0,green:0,grey:0,done:0}; infos.forEach(function(i){ count[i.t.kind]++; });
@@ -2593,7 +2943,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     retryTimer=setTimeout(function(){ retryDelay=Math.min(60000,retryDelay*2); if(sb){ pullCloud(false).then(function(){ if(hasPending()) doPush(); }); } },retryDelay);
   }
   function syncOk(){ retryDelay=5000; clearTimeout(retryTimer); lastSyncError=""; var el=document.getElementById("cloudPill"); if(el) el.title="Sync status — click to sync now"; }
-  function hasPending(){ return Object.keys(dirtyIds).length>0 || Object.keys(deletedIds).length>0 || metaDirty; }
+  function hasPending(){ return Object.keys(dirtyIds).length>0 || Object.keys(deletedIds).length>0 || metaDirty || cadDirty; }
   function projectById(id){ for(var i=0;i<state.projects.length;i++) if(state.projects[i].id===id) return state.projects[i]; return null; }
   function schedulePush(){ if(!sb) return; clearTimeout(pushTimer); pushTimer=null; setCloud("saving"); pushTimer=setTimeout(doPush,1200); }
   function doPush(){
@@ -2602,7 +2952,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     if(pushInFlight){ pushAgain=true; return; }
     if(!hasPending()){ setCloud("synced"); return; }
     pushInFlight=true; setCloud("saving");
-    var ids=Object.keys(dirtyIds), dels=Object.keys(deletedIds), meta=metaDirty;
+    var ids=Object.keys(dirtyIds), dels=Object.keys(deletedIds), meta=metaDirty, cad=cadDirty&&!cadMerging;
     var rows=[]; ids.forEach(function(id){ var p=projectById(id); if(p){ if(!p.updatedAt) p.updatedAt=nowISO(); rows.push({id:p.id,data:p,updated_at:p.updatedAt}); } });
     var delSnapshot={}; dels.forEach(function(id){ delSnapshot[id]=deletedIds[id]; });
     var metaTs=state.metaUpdatedAt||nowISO();
@@ -2630,6 +2980,15 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         if(res.error){ failed=true; reportSyncError(res.error,"saving settings"); return; }
         if(!(res.data&&res.data.length)){ metaDirty=false; pullMeta(); } // cloud meta was newer
         else if(state.metaUpdatedAt===metaTs) metaDirty=false;
+      }));
+    }
+    if(cad){
+      var cadTs=nowISO(), cadSent=state.cad.updatedAt||"";
+      work.push(sb.from("nd_meta").upsert({id:CAD_ID,data:cadPayload(),updated_at:cadTs},{onConflict:"id"}).select("id,updated_at").then(function(res){
+        if(res.error){ failed=true; reportSyncError(res.error,"saving the CAD board"); return; }
+        if(!(res.data&&res.data.length)){ // someone else saved a newer board: merge theirs in, then send ours again
+          cadMerging=true; pullCad().then(function(){ cadMerging=false; if(cadDirty) schedulePush(); });
+        } else if((state.cad.updatedAt||"")===cadSent) cadDirty=false;
       }));
     }
     Promise.all(work).then(function(){
@@ -2686,6 +3045,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   }
   function applyRemoteMeta(row){
     if(!row||!row.data) return;
+    if(row.id&&row.id!==META_ID) return; // other nd_meta rows (e.g. the CAD board) are handled separately
     if(editingNow()){ pendingRemoteMeta=row; return; }
     var remoteTs=isoOf(row.updated_at||"");
     if(!newer(remoteTs,state.metaUpdatedAt||"")) return;
@@ -2732,14 +3092,23 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     if(!sb) return Promise.resolve();
     return sb.from("nd_meta").select("id,data,updated_at").eq("id",META_ID).maybeSingle().then(function(res){ if(!res.error&&res.data) applyRemoteMeta(res.data); },function(){});
   }
+  function pullCad(){
+    if(!sb) return Promise.resolve();
+    return sb.from("nd_meta").select("id,data,updated_at").eq("id",CAD_ID).maybeSingle().then(function(res){ if(!res.error&&res.data) applyRemoteCad(res.data); },function(){});
+  }
   function pullCloud(initial){
     if(!sb) return Promise.resolve();
     return Promise.all([
       sb.from("nd_projects").select("id,data,updated_at"),
-      sb.from("nd_meta").select("id,data,updated_at").eq("id",META_ID).maybeSingle()
+      sb.from("nd_meta").select("id,data,updated_at").eq("id",META_ID).maybeSingle(),
+      sb.from("nd_meta").select("id,data,updated_at").eq("id",CAD_ID).maybeSingle()
     ]).then(function(r){
-      var pr=r[0], mr=r[1];
+      var pr=r[0], mr=r[1], cr=r[2];
       if(pr.error||mr.error){ reportSyncError(pr.error||mr.error,"loading from cloud"); return; }
+      if(!cr.error){
+        if(cr.data) applyRemoteCad(cr.data);
+        else { if(!state.cad.seeded) seedCad(); if(Object.keys(state.cad.cards).length||state.cad.seeded){ cadDirty=true; saveCadLocal(); } }
+      }
       var rows=pr.data||[];
       if(initial && rows.length===0){ return migrateFromLegacy(); }
       if(mr.data) applyRemoteMeta(mr.data);
@@ -2784,7 +3153,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
             applyingRemote=true; state.projects=state.projects.filter(function(p){return p.id!==id;}); delete knownFP[id]; finishRemoteApply(); applyingRemote=false;
           } else if(payload.new){ applyRemoteProjects([payload.new],false); }
         })
-        .on("postgres_changes",{event:"*",schema:"public",table:"nd_meta"},function(payload){ if(payload.new) applyRemoteMeta(payload.new); })
+        .on("postgres_changes",{event:"*",schema:"public",table:"nd_meta"},function(payload){ if(!payload.new) return; if(payload.new.id===CAD_ID) applyRemoteCad(payload.new); else applyRemoteMeta(payload.new); })
         .subscribe(function(status,err){
           if(status==="CHANNEL_ERROR"||status==="TIMED_OUT"){ try{ console.warn("[sync] realtime "+status,err); }catch(e){} scheduleRetry(); }
           else if(status==="SUBSCRIBED"){ pullCloud(false); } // catch up on anything missed while disconnected

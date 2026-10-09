@@ -308,6 +308,72 @@
   .pc-rev .rev-btn.add{width:auto;padding:0 8px;font-size:12px;}
   .pc-rev .icon-badge{top:-6px;right:-6px;}
 
+  /* dashboard: always-on summary of every development, right of the grid (PC screens only) */
+  .main-area{flex:1 1 auto;min-height:0;display:flex;align-items:stretch;}
+  .main-col{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;}
+  .dash{display:none;}
+  @media (min-width:1200px){
+    .main-area.dash-on .dash{display:flex;}
+    .main-area.dash-on .main-col .toolbar,.main-area.dash-on .main-col .wrap{padding-right:14px;}
+  }
+  .dash{flex:0 0 340px;width:340px;margin:12px 24px 12px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);flex-direction:column;overflow:hidden;min-height:0;}
+  @media (min-width:1600px){ .dash{flex-basis:380px;width:380px;} }
+  @media (min-width:1200px) and (max-width:1500px){
+    .dash{flex-basis:290px;width:290px;margin-right:16px;}
+    .main-area.dash-on .main-col .toolbar,.main-area.dash-on .main-col .wrap{padding-left:16px;padding-right:12px;}
+    .main-area.dash-on .pc-fields .customer-block{min-width:110px;}
+    .main-area.dash-on .pc-fields .date-block{min-width:132px;}
+    .main-area.dash-on .pc-fields .pc-rev{min-width:272px;}
+    .main-area.dash-on .pc-photos{min-width:150px;}
+    .main-area.dash-on th.c-process{width:22%;} .main-area.dash-on th.c-notes{width:18%;}
+    .dash-tile span{font-size:8.5px;}
+  }
+  .dash-head{background:linear-gradient(180deg,#1f4536,var(--green));color:#fff;padding:9px 14px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex:0 0 auto;}
+  .dash-title{font-size:13px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;}
+  .dash-date{font-size:11.5px;color:var(--gold-soft);font-weight:600;white-space:nowrap;}
+  .dash-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:9px 10px 8px;border-bottom:1px solid var(--line);flex:0 0 auto;}
+  .dash-tile{border-radius:9px;padding:5px 2px 4px;text-align:center;background:#F4F4F6;color:#6b6b70;}
+  .dash-tile b{display:block;font-size:19px;line-height:1.05;font-weight:800;}
+  .dash-tile span{display:block;font-size:9px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;line-height:1.15;margin-top:1px;}
+  .dash-tile.t-red{background:#FCE9E9;color:#C0392B;}
+  .dash-tile.t-orange{background:#FDF0DE;color:#B4630A;}
+  .dash-tile.t-green{background:#E4F6EB;color:#177A3F;}
+  .dash-tile.t-done{background:#E8EEF9;color:#2F5597;}
+  .dash-tile.zero{background:#F7F7F8;color:#B8B8BE;}
+  .dash-list{flex:1 1 auto;min-height:0;overflow-y:auto;padding:4px 8px 8px;scrollbar-width:thin;}
+  .dash-sec{font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);padding:8px 6px 4px;}
+  .dash-item{position:relative;display:block;width:100%;text-align:left;font-family:inherit;background:#fff;border:1px solid var(--line);border-left:5px solid #C4C4CA;border-radius:9px;padding:4px 9px 4px 10px;margin:0 0 4px;cursor:pointer;color:var(--ink);transition:background .12s,box-shadow .12s;}
+  .dash-item:hover{background:#FAFAF7;box-shadow:0 2px 8px rgba(20,30,25,.08);}
+  .dash-item.active{background:#FCFAF3;border-color:var(--gold);border-left-color:inherit;box-shadow:0 0 0 1px var(--gold);}
+  .dash-item.k-red{border-left-color:#C0392B;} .dash-item.k-orange{border-left-color:#E08A1E;} .dash-item.k-green{border-left-color:#2E9E5B;} .dash-item.k-done{border-left-color:#2F5597;} .dash-item.k-grey{border-left-color:#C4C4CA;}
+  .di-top{display:flex;align-items:baseline;gap:6px;}
+  .di-name{flex:1 1 auto;min-width:0;font-size:13px;font-weight:700;color:var(--green);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .di-name .di-rank{color:var(--gold);margin-right:3px;}
+  .di-when{flex:0 0 auto;font-size:11px;font-weight:800;white-space:nowrap;}
+  .di-when.t-red{color:#C0392B;} .di-when.t-orange{color:#B4630A;} .di-when.t-green{color:#177A3F;} .di-when.t-grey{color:#9A9AA0;font-weight:700;} .di-when.t-done{color:#2F5597;}
+  .di-mid{display:flex;align-items:center;gap:8px;margin-top:2px;font-size:11px;color:#6b6b70;}
+  .di-cust{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .di-steps{flex:0 0 auto;display:flex;align-items:center;gap:5px;font-weight:700;color:#4a4a50;white-space:nowrap;}
+  .di-bar{width:58px;height:6px;border-radius:999px;background:#ECECEF;overflow:hidden;}
+  .di-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#ab8a4f);border-radius:999px;}
+  .di-next{margin-top:2px;font-size:11px;color:#4a4a50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .di-next b{color:var(--ink);font-weight:650;}
+  .di-warn{margin-top:3px;font-size:10.5px;font-weight:700;color:#C0392B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dash-chips{display:flex;flex-wrap:wrap;gap:5px;padding:0 0 4px;}
+  .dash-chip{font-family:inherit;font-size:11.5px;font-weight:650;color:var(--green);background:#F4F4F6;border:1px solid var(--line);border-left:4px solid #C4C4CA;border-radius:8px;padding:3px 8px;cursor:pointer;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dash-chip:hover{background:#FAFAF7;}
+  .dash-chip.k-done{border-left-color:#2F5597;}
+  .dash-chip.active{background:#FCFAF3;border-color:var(--gold);border-left-color:var(--gold);}
+  .dash-list.compact .di-next,.dash-list.compact .di-warn{display:none;}
+  /* tightest: one line per development — name · status · steps */
+  .dash-list.tight .dash-item{display:flex;align-items:center;gap:8px;padding:4px 9px 4px 10px;margin-bottom:4px;}
+  .dash-list.tight .di-top{flex:1 1 auto;min-width:0;}
+  .dash-list.tight .di-mid{margin-top:0;flex:0 0 auto;}
+  .dash-list.tight .di-cust{display:none;}
+  .dash-list.tight .di-bar{width:40px;}
+  .dash-list.tight .dash-sec{padding-top:5px;}
+  .dash-empty{padding:18px 10px;text-align:center;color:var(--muted);font-size:12.5px;}
+  .icon-btn.on{background:rgba(200,168,110,.35);}
   .overlay{position:fixed;inset:0;background:rgba(15,25,20,.42);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;}
   .overlay.open{display:flex;}
   .modal{background:var(--card);border-radius:22px;width:100%;max-width:560px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.35);}
@@ -443,7 +509,7 @@
     .btn{padding:10px 14px;font-size:13.5px;}
     .photo-grid .thumb{width:calc(50% - 6px);height:auto;aspect-ratio:3/2;}
   }
-  @media print{.topbar,.toolbar,.projects-bar-wrap,.icon-btn,.del,.photos,.sched,.pc-rev{display:none!important;}body{background:#fff;}.wrap{margin:0;padding:16px;}.card{box-shadow:none;border-radius:0;}.grid-scroll{overflow:visible;max-height:none;}.proj-card{box-shadow:none;}thead th{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact;}select,input.cell{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+  @media print{.dash,.topbar,.toolbar,.projects-bar-wrap,.icon-btn,.del,.photos,.sched,.pc-rev{display:none!important;}body{background:#fff;}.wrap{margin:0;padding:16px;}.card{box-shadow:none;border-radius:0;}.grid-scroll{overflow:visible;max-height:none;}.proj-card{box-shadow:none;}thead th{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact;}select,input.cell{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
 </style>
 <script>
 /* PptxGenJS 3.12.0 @ 2023-03-20T03:12:31.375Z */
@@ -482,6 +548,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       <div class="version-tag" id="versionTag" title="App version — check this matches after a hard refresh">v2026.08.28-1</div>
       <div class="cloud-pill local" id="cloudPill" title="Sync status — click to sync now">● Local only</div>
       <button class="icon-btn" id="archiveBtn" title="Archived developments">🗄<span class="icon-badge" id="archiveBadge" hidden>0</span></button>
+      <button class="icon-btn" id="dashBtn" title="Show / hide the dashboard">◧</button>
       <button class="icon-btn" id="overviewBtn" title="Overview — all developments">▦</button>
       <button class="icon-btn" id="printBtn" title="Slide / print view">⎙</button>
       <button class="icon-btn" id="sortTabsBtn" title="Sort tabs by nearest deadline">⇅</button>
@@ -493,6 +560,8 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     <div class="projects-bar" id="projectsBar"></div>
     <button class="proj-scroll right" id="projScrollRight" title="Scroll right">›</button>
   </div>
+  <div class="main-area" id="mainArea">
+  <div class="main-col">
   <div class="toolbar">
     <div class="left">
       <div id="updateBanner" class="update-banner" hidden title="A newer version of this tracker is live — please reload before making more edits, so you don't overwrite someone else's work.">⚠️ Newer version live — reload before editing <button id="updateBannerReload" class="update-banner-btn">Reload now</button></div>
@@ -565,6 +634,14 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         </table>
       </div>
     </div>
+  </div>
+  </div>
+  <!-- Dashboard: one line per development, worst first; click one to open it -->
+  <aside class="dash" id="dash">
+    <div class="dash-head"><div class="dash-title">Dashboard</div><div class="dash-date" id="dashDate"></div></div>
+    <div class="dash-tiles" id="dashTiles"></div>
+    <div class="dash-list" id="dashList"></div>
+  </aside>
   </div>
 
   <div class="overlay" id="overlay">
@@ -909,6 +986,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     try{ localStorage.setItem(STORE_KEY,JSON.stringify(state)); }catch(e){}
     saveSyncQueue();
     if(sb && !applyingRemote && !initializing) schedulePush();
+    if(typeof scheduleDashboard==="function") scheduleDashboard();
     return true;
   }
 
@@ -926,7 +1004,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.09-1";
+  var APP_VERSION="2026.10.09-2";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -1531,7 +1609,100 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     var cu=document.getElementById("customerInput"); if(cu) cu.value=p.customer||"";
     var cd=document.getElementById("customerDeadlineInput"); if(cd) cd.value=p.customerDeadline||"";
   }
-  function renderAll(){ renderProjects(); renderHeading(); renderRevisionBar(); renderSched(); renderChecker(); renderGrid(); renderPhotos(); }
+  function renderAll(){ renderProjects(); renderHeading(); renderRevisionBar(); renderSched(); renderChecker(); renderGrid(); renderPhotos(); renderDashboard(); }
+
+  /* dashboard: always-on summary of every (non-archived) development.
+     Uses the same time-tracking status as the project card (trackStatus) and the same step counts (computeStats). */
+  var mainArea=document.getElementById("mainArea"), dashBtn=document.getElementById("dashBtn");
+  var dashTiles=document.getElementById("dashTiles"), dashList=document.getElementById("dashList"), dashDate=document.getElementById("dashDate");
+  var DASH_KEY="coreNewDevTracker_dash", DASH_ORDER={red:0,orange:1,green:2,grey:3,done:4};
+  var DAY_SHORT=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  function dashOn(){ try{ return localStorage.getItem(DASH_KEY)!=="off"; }catch(e){ return true; } }
+  function applyDashToggle(){ var on=dashOn(); mainArea.classList.toggle("dash-on",on); dashBtn.classList.toggle("on",on); }
+  dashBtn.addEventListener("click",function(){ try{ localStorage.setItem(DASH_KEY,dashOn()?"off":"on"); }catch(e){} applyDashToggle(); renderDashboard(); fitGrid(); });
+  function dashShortDate(iso){ var d=parseISO(iso); return d?d.d+" "+MON_SHORT[d.mo-1]:""; }
+  function dashInfo(p){
+    var rev=activeRevisionOf(p), t=trackStatus(p), st=computeStats(rev);
+    var due=cleanDate(p.targetDate), cust=cleanDate(p.customerDeadline), now=dayIndex(isoDate(new Date()));
+    var when;
+    if(t.kind==="done") when="Completed";
+    else if(t.kind==="grey") when=t.label==="Check dates"?"Check dates":"No dates";
+    else if(t.label==="Not started yet") when="Starts in "+(dayIndex(cleanDate(rev.startedAt))-now)+"d";
+    else { var left=dayIndex(due)-now; when=left<0?(-left)+"d overdue":left===0?"Due today":left+"d left"; }
+    var next=null; rev.rows.filter(hasContent).some(function(r){ if(!isDone(r)){ next=r; return true; } return false; });
+    var warn="";
+    if(due&&cust&&dayIndex(due)>dayIndex(cust)) warn="⚠ Elmo's due date is after the customer deadline ("+dashShortDate(cust)+")";
+    else if(t.kind!=="done"&&t.kind!=="red"&&cust&&dayIndex(cust)<now) warn="⚠ Customer deadline passed ("+dashShortDate(cust)+")";
+    return {p:p,rev:rev,t:t,st:st,due:due,cust:cust,when:when,next:next,warn:warn,active:isActiveDevelopment(p)};
+  }
+  function openFromDash(p){
+    if(p.id===state.activeProjectId) return;
+    state.activeProjectId=p.id; persist(); renderAll();
+    var tab=bar.querySelector('.proj-tab[data-pid="'+p.id+'"]'); if(tab&&tab.scrollIntoView) tab.scrollIntoView({block:"nearest",inline:"nearest"});
+  }
+  function dashChip(info){
+    var p=info.p, b=document.createElement("button");
+    b.type="button"; b.className="dash-chip k-"+info.t.kind+(p.id===state.activeProjectId?" active":"");
+    b.textContent=(p.priority?priorityBadgeText(p)+" ":"")+p.name; b.title=p.name+" — "+info.t.label+"\nClick to open";
+    b.addEventListener("click",function(){ openFromDash(p); });
+    return b;
+  }
+  function dashItem(info,slim){
+    var p=info.p, b=document.createElement("button");
+    b.type="button"; b.className="dash-item k-"+info.t.kind+(slim?" slim":"")+(p.id===state.activeProjectId?" active":"");
+    b.title=p.name+" — "+info.t.label+(info.t.detail?" · "+info.t.detail:"")+"\nClick to open";
+    var rank=p.priority?priorityBadgeText(p):"";
+    var html='<div class="di-top"><span class="di-name">'+(rank?'<span class="di-rank">'+rank+'</span>':'')+escapeHtml(p.name)+'</span><span class="di-when t-'+info.t.kind+'">'+escapeHtml(info.when)+'</span></div>';
+    if(!slim){
+      var custBits=[]; if(p.customer) custBits.push(escapeHtml(p.customer)); if(info.due) custBits.push("Due "+dashShortDate(info.due));
+      html+='<div class="di-mid"><span class="di-cust">'+(custBits.join(" · ")||"&nbsp;")+'</span><span class="di-steps"><span class="di-bar"><i style="width:'+info.st.pct+'%"></i></span>'+info.st.stepsDone+'/'+info.st.stepsTotal+'</span></div>';
+      if(info.next){ var who=splitPersons(info.next.person).join(", "); html+='<div class="di-next">Next: <b>'+escapeHtml(info.next.process||"(unnamed step)")+'</b>'+(who?' · '+escapeHtml(who):'')+(info.next.status?' · '+escapeHtml(info.next.status):'')+'</div>'; }
+      if(info.warn) html+='<div class="di-warn">'+escapeHtml(info.warn)+'</div>';
+    }
+    b.innerHTML=html;
+    b.addEventListener("click",function(){ openFromDash(p); });
+    return b;
+  }
+  function renderDashboard(){
+    if(!dashList) return;
+    applyDashToggle();
+    if(!mainArea.classList.contains("dash-on")) return;
+    var today=new Date(); dashDate.textContent=DAY_SHORT[today.getDay()]+" "+today.getDate()+" "+MON_SHORT[today.getMonth()]+" "+today.getFullYear();
+    var infos=state.projects.filter(function(p){ return !p.archived; }).map(dashInfo);
+    var count={red:0,orange:0,green:0,grey:0,done:0}; infos.forEach(function(i){ count[i.t.kind]++; });
+    var tiles=[["red","Behind"],["orange","Falling behind"],["green","On track"],["grey","No dates"],["done","Completed"]];
+    dashTiles.innerHTML=tiles.map(function(x){ return '<div class="dash-tile t-'+x[0]+(count[x[0]]?'':' zero')+'"><b>'+count[x[0]]+'</b><span>'+x[1]+'</span></div>'; }).join("");
+    // worst first; then the nearest due date; projects without a due date last
+    infos.sort(function(a,b){ return DASH_ORDER[a.t.kind]-DASH_ORDER[b.t.kind] || (a.due?dayIndex(a.due):1e9)-(b.due?dayIndex(b.due):1e9) || a.p.name.localeCompare(b.p.name); });
+    var inProgress=infos.filter(function(i){ return i.active&&i.t.kind!=="done"; });
+    var notStarted=infos.filter(function(i){ return !i.active&&i.t.kind!=="done"; });
+    var finished=infos.filter(function(i){ return i.t.kind==="done"; });
+    dashList.innerHTML=""; dashList.classList.remove("compact","tight");
+    function section(title,list,chips){
+      if(!list.length) return; var h=document.createElement("div"); h.className="dash-sec"; h.textContent=title+" ("+list.length+")"; dashList.appendChild(h);
+      if(!chips){ list.forEach(function(i){ dashList.appendChild(dashItem(i,false)); }); return; }
+      var box=document.createElement("div"); box.className="dash-chips"; list.forEach(function(i){ box.appendChild(dashChip(i)); }); dashList.appendChild(box);
+    }
+    section("In progress",inProgress,false);
+    section("Not started yet",notStarted,true);
+    section("Completed",finished,true);
+    if(!infos.length) dashList.innerHTML='<div class="dash-empty">No developments yet.</div>';
+    // short screens: drop the "Next" line before resorting to scrolling
+    fitDashboard();
+    var act=dashList.querySelector(".dash-item.active"); if(act&&act.scrollIntoView&&dashList.scrollHeight>dashList.clientHeight) act.scrollIntoView({block:"nearest"});
+  }
+  // short screens: drop the "Next" line, then go to one line per development, before resorting to scrolling
+  function fitDashboard(){
+    dashList.classList.remove("compact","tight");
+    if(dashList.scrollHeight>dashList.clientHeight+2) dashList.classList.add("compact");
+    if(dashList.scrollHeight>dashList.clientHeight+2) dashList.classList.add("tight");
+  }
+  if(window.ResizeObserver&&dashList) new ResizeObserver(function(){ if(mainArea.classList.contains("dash-on")) fitDashboard(); }).observe(dashList);
+  // keep the dashboard current while people edit (persist runs on every change) and when the date rolls over
+  var dashTimer=null;
+  function scheduleDashboard(){ clearTimeout(dashTimer); dashTimer=setTimeout(renderDashboard,250); }
+  setInterval(renderDashboard,10*60*1000);
+  window.addEventListener("resize",scheduleDashboard);
 
   /* revision picker */
   var revisionSelect=document.getElementById("revisionSelect"),addRevisionBtn=document.getElementById("addRevisionBtn"),renameRevisionBtn=document.getElementById("renameRevisionBtn"),archiveRevisionBtn=document.getElementById("archiveRevisionBtn"),deleteRevisionBtn=document.getElementById("deleteRevisionBtn");

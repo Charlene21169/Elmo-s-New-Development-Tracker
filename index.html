@@ -300,10 +300,11 @@
   .pc-dates{display:contents;}
   .pc-fields .date-block{min-width:165px;border-color:var(--line);}
   .pc-fields .date-block label{color:var(--muted);}
-  .pc-fields .pc-rev{min-width:260px;border-color:var(--line);}
+  /* the revision box sizes to its content, so the revision name is never cut off */
+  .pc-fields .pc-rev{flex:0 0 auto;min-width:0;border-color:var(--line);}
   .pc-fields .pc-rev label{color:var(--muted);}
   .pc-rev-line{display:flex;align-items:center;gap:4px;}
-  .pc-rev .rev-select{flex:1 1 auto;min-width:0;border:none;padding:1px 4px 1px 0;font-size:13.5px;font-weight:700;color:var(--green);max-width:none;background:transparent;}
+  .pc-rev .rev-select{flex:0 0 auto;width:auto;min-width:0;border:none;padding:1px 4px 1px 0;font-size:13.5px;font-weight:700;color:var(--green);max-width:none;background:transparent;}
   .pc-rev .rev-btn{width:26px;height:26px;font-size:12px;border-radius:7px;}
   .pc-rev .rev-btn.add{width:auto;padding:0 8px;font-size:12px;}
   .pc-rev .icon-badge{top:-6px;right:-6px;}
@@ -323,7 +324,6 @@
     .main-area.dash-on .main-col .toolbar,.main-area.dash-on .main-col .wrap{padding-left:12px;padding-right:16px;}
     .main-area.dash-on .pc-fields .customer-block{min-width:110px;}
     .main-area.dash-on .pc-fields .date-block{min-width:132px;}
-    .main-area.dash-on .pc-fields .pc-rev{min-width:272px;}
     .main-area.dash-on .pc-photos{min-width:150px;}
     .main-area.dash-on th.c-process{width:22%;} .main-area.dash-on th.c-notes{width:18%;}
     .dash-tile span{font-size:8.5px;}
@@ -605,7 +605,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
           <input id="customerDeadlineInput" type="date">
         </div>
         <div class="customer-block checker-block">
-          <label for="checkerInput">Start to Finish Inspector</label>
+          <label for="checkerInput">Inspector</label>
           <input id="checkerInput" type="text" placeholder="Type name…" autocomplete="off">
         </div>
         <div class="pc-dates" id="schedDates"></div>
@@ -1010,7 +1010,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.09-5";
+  var APP_VERSION="2026.10.09-6";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};

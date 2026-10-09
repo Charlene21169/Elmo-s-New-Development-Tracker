@@ -353,6 +353,9 @@
   .di-when.t-red{color:#C0392B;} .di-when.t-orange{color:#B4630A;} .di-when.t-green{color:#177A3F;} .di-when.t-grey{color:#9A9AA0;font-weight:700;} .di-when.t-done{color:#2F5597;}
   .di-mid{display:flex;align-items:center;gap:8px;margin-top:2px;font-size:11px;color:#6b6b70;}
   .di-cust{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .di-cust b{color:var(--ink);font-weight:700;}
+  .di-none{color:#B8B8BE;font-style:italic;}
+  .di-custname{font-size:11px;font-weight:500;color:var(--muted);margin-left:6px;}
   .di-steps{flex:0 0 auto;display:flex;align-items:center;gap:5px;font-weight:700;color:#4a4a50;white-space:nowrap;}
   .di-bar{width:58px;height:6px;border-radius:999px;background:#ECECEF;overflow:hidden;}
   .di-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#ab8a4f);border-radius:999px;}
@@ -365,13 +368,16 @@
   .dash-chip.k-done{border-left-color:#2F5597;}
   .dash-chip.active{background:#FCFAF3;border-color:var(--gold);border-left-color:var(--gold);}
   .dash-list.compact .di-next,.dash-list.compact .di-warn{display:none;}
-  /* tightest: one line per development — name · status · steps */
-  .dash-list.tight .dash-item{display:flex;align-items:center;gap:8px;padding:4px 9px 4px 10px;margin-bottom:4px;}
-  .dash-list.tight .di-top{flex:1 1 auto;min-width:0;}
-  .dash-list.tight .di-mid{margin-top:0;flex:0 0 auto;}
-  .dash-list.tight .di-cust{display:none;}
-  .dash-list.tight .di-bar{width:40px;}
-  .dash-list.tight .dash-sec{padding-top:5px;}
+  /* tightest: two small lines per development — name · status, then inspector · steps (due date and customer drop off) */
+  .dash-list.tight .dash-item{padding:2px 8px 3px 9px;margin-bottom:3px;}
+  .dash-list.tight .di-name{font-size:12px;}
+  .dash-list.tight .di-when{font-size:10.5px;}
+  .dash-list.tight .di-mid{margin-top:0;font-size:10.5px;}
+  .dash-list.tight .di-due,.dash-list.tight .di-custname{display:none;}
+  .dash-list.tight .di-bar{width:44px;height:5px;}
+  .dash-list.tight .dash-chips{gap:4px;}
+  .dash-list.tight .dash-chip{font-size:10.5px;padding:2px 7px;}
+  .dash-list.tight .dash-sec{padding:5px 6px 3px;}
   .dash-empty{padding:18px 10px;text-align:center;color:var(--muted);font-size:12.5px;}
   .icon-btn.on{background:rgba(200,168,110,.35);}
   .overlay{position:fixed;inset:0;background:rgba(15,25,20,.42);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;}
@@ -1004,7 +1010,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.09-4";
+  var APP_VERSION="2026.10.09-5";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -1652,10 +1658,12 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     b.type="button"; b.className="dash-item k-"+info.t.kind+(slim?" slim":"")+(p.id===state.activeProjectId?" active":"");
     b.title=p.name+" — "+info.t.label+(info.t.detail?" · "+info.t.detail:"")+"\nClick to open";
     var rank=p.priority?priorityBadgeText(p):"";
-    var html='<div class="di-top"><span class="di-name">'+(rank?'<span class="di-rank">'+rank+'</span>':'')+escapeHtml(p.name)+'</span><span class="di-when t-'+info.t.kind+'">'+escapeHtml(info.when)+'</span></div>';
+    var html='<div class="di-top"><span class="di-name">'+(rank?'<span class="di-rank">'+rank+'</span>':'')+escapeHtml(p.name)+(p.customer&&!slim?'<span class="di-custname">'+escapeHtml(p.customer)+'</span>':'')+'</span><span class="di-when t-'+info.t.kind+'">'+escapeHtml(info.when)+'</span></div>';
     if(!slim){
-      var custBits=[]; if(p.customer) custBits.push(escapeHtml(p.customer)); if(info.due) custBits.push("Due "+dashShortDate(info.due));
-      html+='<div class="di-mid"><span class="di-cust">'+(custBits.join(" · ")||"&nbsp;")+'</span><span class="di-steps"><span class="di-bar"><i style="width:'+info.st.pct+'%"></i></span>'+info.st.stepsDone+'/'+info.st.stepsTotal+'</span></div>';
+      var insp=(p.checker||"").trim();
+      var dueTxt=info.due?'Due <b>'+dashShortDate(info.due)+'</b>':'<span class="di-none">No due date</span>';
+      var inspTxt=insp?'<span class="di-lbl">Inspector </span><b>'+escapeHtml(insp)+'</b>':'<span class="di-none">No inspector</span>';
+      html+='<div class="di-mid"><span class="di-cust"><span class="di-due">'+dueTxt+' · </span>'+inspTxt+'</span><span class="di-steps"><span class="di-bar"><i style="width:'+info.st.pct+'%"></i></span>'+info.st.stepsDone+'/'+info.st.stepsTotal+'</span></div>';
       if(info.next){ var who=splitPersons(info.next.person).join(", "); html+='<div class="di-next">Next: <b>'+escapeHtml(info.next.process||"(unnamed step)")+'</b>'+(who?' · '+escapeHtml(who):'')+(info.next.status?' · '+escapeHtml(info.next.status):'')+'</div>'; }
       if(info.warn) html+='<div class="di-warn">'+escapeHtml(info.warn)+'</div>';
     }
@@ -1673,17 +1681,21 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     var tiles=[["red","Behind"],["orange","Falling behind"],["green","On track"],["grey","No dates"],["done","Completed"]];
     dashTiles.innerHTML=tiles.map(function(x){ return '<div class="dash-tile t-'+x[0]+(count[x[0]]?'':' zero')+'"><b>'+count[x[0]]+'</b><span>'+x[1]+'</span></div>'; }).join("");
     // worst first; then the nearest due date; projects without a due date last
-    infos.sort(function(a,b){ return DASH_ORDER[a.t.kind]-DASH_ORDER[b.t.kind] || (a.due?dayIndex(a.due):1e9)-(b.due?dayIndex(b.due):1e9) || a.p.name.localeCompare(b.p.name); });
-    var inProgress=infos.filter(function(i){ return i.active&&i.t.kind!=="done"; });
-    var notStarted=infos.filter(function(i){ return !i.active&&i.t.kind!=="done"; });
-    var finished=infos.filter(function(i){ return i.t.kind==="done"; });
+    // Top 6 priorities first, in their ① to ⑥ order; everything else by nearest due date (no due date last)
+    infos.sort(function(a,b){ return (a.due?dayIndex(a.due):1e9)-(b.due?dayIndex(b.due):1e9) || DASH_ORDER[a.t.kind]-DASH_ORDER[b.t.kind] || a.p.name.localeCompare(b.p.name); });
+    var priorities=infos.filter(function(i){ return priorityRankOf(i.p)>=0; }).sort(function(a,b){ return priorityRankOf(a.p)-priorityRankOf(b.p); });
+    var others=infos.filter(function(i){ return priorityRankOf(i.p)<0; });
+    var inProgress=others.filter(function(i){ return i.active&&i.t.kind!=="done"; });
+    var notStarted=others.filter(function(i){ return !i.active&&i.t.kind!=="done"; });
+    var finished=others.filter(function(i){ return i.t.kind==="done"; });
     dashList.innerHTML=""; dashList.classList.remove("compact","tight");
     function section(title,list,chips){
       if(!list.length) return; var h=document.createElement("div"); h.className="dash-sec"; h.textContent=title+" ("+list.length+")"; dashList.appendChild(h);
       if(!chips){ list.forEach(function(i){ dashList.appendChild(dashItem(i,false)); }); return; }
       var box=document.createElement("div"); box.className="dash-chips"; list.forEach(function(i){ box.appendChild(dashChip(i)); }); dashList.appendChild(box);
     }
-    section("In progress",inProgress,false);
+    section("Top priorities",priorities,false);
+    section(priorities.length?"Other developments in progress":"In progress",inProgress,false);
     section("Not started yet",notStarted,true);
     section("Completed",finished,true);
     if(!infos.length) dashList.innerHTML='<div class="dash-empty">No developments yet.</div>';

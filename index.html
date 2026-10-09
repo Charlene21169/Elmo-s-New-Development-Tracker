@@ -317,7 +317,7 @@
     .main-area.dash-on .dash{display:flex;}
     .main-area.dash-on .main-col .toolbar,.main-area.dash-on .main-col .wrap{padding-left:14px;}
   }
-  .dash{order:-1;flex:0 0 340px;width:340px;margin:12px 0 12px 24px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);flex-direction:column;overflow:hidden;min-height:0;}
+  .dash{order:-1;flex:0 0 340px;width:340px;margin:12px 0 12px 24px;background:var(--green-soft);border:1px solid var(--green-line);border-radius:14px;box-shadow:var(--shadow);flex-direction:column;overflow:hidden;min-height:0;}
   @media (min-width:1600px){ .dash{flex-basis:380px;width:380px;} }
   @media (min-width:1200px) and (max-width:1500px){
     .dash{flex-basis:290px;width:290px;margin-left:16px;}
@@ -331,7 +331,7 @@
   .dash-head{background:linear-gradient(180deg,#1f4536,var(--green));color:#fff;padding:9px 14px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex:0 0 auto;}
   .dash-title{font-size:13px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;}
   .dash-date{font-size:11.5px;color:var(--gold-soft);font-weight:600;white-space:nowrap;}
-  .dash-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:9px 10px 8px;border-bottom:1px solid var(--line);flex:0 0 auto;}
+  .dash-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:9px 10px 8px;border-bottom:1px solid var(--green-line);flex:0 0 auto;}
   .dash-tile{border-radius:9px;padding:5px 2px 4px;text-align:center;background:#F4F4F6;color:#6b6b70;}
   .dash-tile b{display:block;font-size:19px;line-height:1.05;font-weight:800;}
   .dash-tile span{display:block;font-size:9px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;line-height:1.15;margin-top:1px;}
@@ -339,9 +339,9 @@
   .dash-tile.t-orange{background:#FDF0DE;color:#B4630A;}
   .dash-tile.t-green{background:#E4F6EB;color:#177A3F;}
   .dash-tile.t-done{background:#E8EEF9;color:#2F5597;}
-  .dash-tile.zero{background:#F7F7F8;color:#B8B8BE;}
-  .dash-list{flex:1 1 auto;min-height:0;overflow-y:auto;padding:4px 8px 8px;scrollbar-width:thin;}
-  .dash-sec{font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);padding:8px 6px 4px;}
+  .dash-tile.zero{background:rgba(255,255,255,.08);color:rgba(228,211,172,.55);}
+  .dash-list{flex:1 1 auto;min-height:0;overflow-y:auto;padding:4px 8px 8px;scrollbar-width:thin;scrollbar-color:var(--green-line) transparent;}
+  .dash-sec{font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--gold);padding:8px 6px 4px;}
   .dash-item{position:relative;display:block;width:100%;text-align:left;font-family:inherit;background:#fff;border:1px solid var(--line);border-left:5px solid #C4C4CA;border-radius:9px;padding:4px 9px 4px 10px;margin:0 0 4px;cursor:pointer;color:var(--ink);transition:background .12s,box-shadow .12s;}
   .dash-item:hover{background:#FAFAF7;box-shadow:0 2px 8px rgba(20,30,25,.08);}
   .dash-item.active{background:#FCFAF3;border-color:var(--gold);border-left-color:inherit;box-shadow:0 0 0 1px var(--gold);}
@@ -378,7 +378,7 @@
   .dash-list.tight .dash-chips{gap:4px;}
   .dash-list.tight .dash-chip{font-size:10.5px;padding:2px 7px;}
   .dash-list.tight .dash-sec{padding:5px 6px 3px;}
-  .dash-empty{padding:18px 10px;text-align:center;color:var(--muted);font-size:12.5px;}
+  .dash-empty{padding:18px 10px;text-align:center;color:var(--gold-soft);font-size:12.5px;}
   .icon-btn.on{background:rgba(200,168,110,.35);}
   .overlay{position:fixed;inset:0;background:rgba(15,25,20,.42);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;}
   .overlay.open{display:flex;}
@@ -1010,7 +1010,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.09-6";
+  var APP_VERSION="2026.10.09-7";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};

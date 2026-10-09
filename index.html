@@ -1004,7 +1004,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.09-2";
+  var APP_VERSION="2026.10.09-3";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -2791,13 +2791,18 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     fetch(VERSION_CHECK_URL+"?t="+Date.now(),{cache:"no-store"}).then(function(r){ return r.text(); }).then(function(txt){
       var m=txt.match(/APP_VERSION\s*=\s*"([^"]+)"/);
       if(m && m[1] && m[1]!==APP_VERSION){
-        updateBannerShown=true;
+        updateBannerShown=true; latestLiveVersion=m[1];
         var b=document.getElementById("updateBanner"); if(b) b.hidden=false;
       }
     }).catch(function(){});
   }
   var ubBtn=document.getElementById("updateBannerReload");
-  if(ubBtn) ubBtn.addEventListener("click",function(){ location.reload(); });
+  // A plain reload can come back from the browser cache (GitHub Pages allows 10 minutes), which shows the old
+  // version again. A new ?v= address forces a fresh copy; the address is tidied up again after loading.
+  var latestLiveVersion="";
+  function reloadFresh(){ location.replace(location.pathname+"?v="+encodeURIComponent(latestLiveVersion||String(Date.now()))+location.hash); }
+  if(/[?&]v=/.test(location.search)&&window.history&&history.replaceState){ try{ history.replaceState(null,"",location.pathname+location.hash); }catch(e){} }
+  if(ubBtn) ubBtn.addEventListener("click",reloadFresh);
   document.addEventListener("visibilitychange",function(){ if(document.visibilityState==="visible") checkForNewerVersion(); });
   setInterval(checkForNewerVersion, 5*60*1000);
   setTimeout(checkForNewerVersion, 4000);

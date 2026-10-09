@@ -308,19 +308,19 @@
   .pc-rev .rev-btn.add{width:auto;padding:0 8px;font-size:12px;}
   .pc-rev .icon-badge{top:-6px;right:-6px;}
 
-  /* dashboard: always-on summary of every development, right of the grid (PC screens only) */
+  /* dashboard: always-on summary of every development, left of the grid (PC screens only) */
   .main-area{flex:1 1 auto;min-height:0;display:flex;align-items:stretch;}
   .main-col{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;}
   .dash{display:none;}
   @media (min-width:1200px){
     .main-area.dash-on .dash{display:flex;}
-    .main-area.dash-on .main-col .toolbar,.main-area.dash-on .main-col .wrap{padding-right:14px;}
+    .main-area.dash-on .main-col .toolbar,.main-area.dash-on .main-col .wrap{padding-left:14px;}
   }
-  .dash{flex:0 0 340px;width:340px;margin:12px 24px 12px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);flex-direction:column;overflow:hidden;min-height:0;}
+  .dash{order:-1;flex:0 0 340px;width:340px;margin:12px 0 12px 24px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);flex-direction:column;overflow:hidden;min-height:0;}
   @media (min-width:1600px){ .dash{flex-basis:380px;width:380px;} }
   @media (min-width:1200px) and (max-width:1500px){
-    .dash{flex-basis:290px;width:290px;margin-right:16px;}
-    .main-area.dash-on .main-col .toolbar,.main-area.dash-on .main-col .wrap{padding-left:16px;padding-right:12px;}
+    .dash{flex-basis:290px;width:290px;margin-left:16px;}
+    .main-area.dash-on .main-col .toolbar,.main-area.dash-on .main-col .wrap{padding-left:12px;padding-right:16px;}
     .main-area.dash-on .pc-fields .customer-block{min-width:110px;}
     .main-area.dash-on .pc-fields .date-block{min-width:132px;}
     .main-area.dash-on .pc-fields .pc-rev{min-width:272px;}
@@ -1004,7 +1004,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Per-project sync bookkeeping: knownFP = last fingerprint we saw for each project (local or cloud),
   // dirtyIds = projects edited here and not yet confirmed saved, deletedIds = id -> ISO time it was deleted here.
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
-  var APP_VERSION="2026.10.09-3";
+  var APP_VERSION="2026.10.09-4";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};

@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f4536">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <title>CORE · New Developments Tracker</title>
 <style>
   :root{
@@ -441,6 +444,93 @@
   .cad-switch input{width:18px;height:18px;accent-color:#2ECC71;}
   .cad-form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;}
   .cad-form-actions .btn-danger{margin-right:auto;}
+  /* who is using this device */
+  .user-chip{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 12px;border-radius:12px;border:none;background:rgba(255,255,255,.12);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .user-chip:hover{background:rgba(255,255,255,.22);}
+  .user-chip .tag{font-size:10px;font-weight:700;background:rgba(255,255,255,.18);border-radius:6px;padding:1px 6px;}
+  .who-list{display:grid;gap:8px;margin:6px 0 4px;}
+  .who-btn{display:flex;align-items:center;gap:12px;width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-family:inherit;font-size:16px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;}
+  .who-btn:hover{border-color:var(--gold);}
+  .who-btn small{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-top:1px;}
+  .who-btn i{width:12px;height:12px;border-radius:50%;flex:0 0 auto;background:#C4C4CA;}
+  .who-btn.cur{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,168,110,.18);}
+  .who-note{font-size:12.5px;color:var(--muted);margin:4px 0 10px;}
+  .pin-box input{width:100%;font-size:26px;letter-spacing:12px;text-align:center;padding:12px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;margin-top:8px;}
+  .pin-box input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,168,110,.18);}
+  .pin-err{color:#C0392B;font-weight:700;font-size:13px;min-height:18px;margin-top:8px;}
+  /* view only: everyone except Charlene (CAD people can still edit their own CAD cards) */
+  body.ro #addRowBtn,body.ro #clearBtn,body.ro #renameBtn,body.ro .add-photo,body.ro .rev-btn:not(#revArchiveBtn),body.ro #settingsBtn,body.ro #sortTabsBtn,
+  body.ro .row-actions,body.ro .thumb-actions,body.ro .proj-del,body.ro .proj-archive,body.ro .proj-add,body.ro .arch-acts,
+  body.ro #cadAddPersonBtn,body.ro #cadClearFinishBtn,body.ro:not(.cad-user) #cadAddBtn{display:none!important;}
+  body.ro .proj-star,body.ro #projSub,body.ro .wrap td input,body.ro .wrap td select,body.ro .wrap td textarea,body.ro .pc-fields input,body.ro .pc-fields select:not(#revisionSelect){pointer-events:none;}
+  body.ro .wrap td select,body.ro .pc-fields input[type=date]{-webkit-appearance:none;appearance:none;background-image:none;}
+  body.ro .note-input::placeholder{color:transparent;}
+  body.ro .cad-person{cursor:default;}
+  .cad-card.locked{cursor:default;}
+  .cad-card .lamp-on{position:absolute;right:5px;top:6px;width:10px;height:10px;border-radius:50%;background:#2ECC71;box-shadow:0 0 8px rgba(46,204,113,.95);}
+  /* CAD board on phones: one person at a time, cards as a list per step */
+  .cad-phone{display:flex;flex-direction:column;gap:14px;padding:0 12px 28px;}
+  .cad-ptabs{display:flex;gap:6px;overflow-x:auto;position:sticky;top:0;z-index:3;background:var(--bg);padding:10px 0;scrollbar-width:none;}
+  .cad-ptab{flex:0 0 auto;border:none;border-radius:999px;padding:9px 14px;font-family:inherit;font-size:14px;font-weight:700;background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);display:inline-flex;align-items:center;gap:7px;cursor:pointer;}
+  .cad-ptab i{width:10px;height:10px;border-radius:50%;}
+  .cad-ptab.cur{background:var(--green);color:#fff;box-shadow:none;}
+  .cad-sec h3{margin:0 0 7px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+  .cad-sec h3 .n{background:#E9E9EC;color:var(--ink);border-radius:999px;padding:0 7px;font-size:11px;}
+  .cad-sec .list{display:flex;flex-direction:column;gap:8px;font-size:15px;}
+  .cad-sec.finish .toggle{border:none;background:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--green);padding:2px 0;cursor:pointer;}
+  .cad-pcard{background:#fff;border:1px solid #E2E2E6;border-left:5px solid var(--own,#9A9AA0);border-radius:10px;padding:10px 12px;box-shadow:0 1px 2px rgba(0,0,0,.07);}
+  .cad-pcard.on{box-shadow:0 0 0 2px #2ECC71,0 2px 8px rgba(46,204,113,.25);}
+  .cad-pcard .top{display:flex;gap:10px;align-items:flex-start;}
+  .cad-pcard .ttl{flex:1 1 auto;min-width:0;font-weight:700;color:var(--ink);overflow-wrap:anywhere;font-size:15px;}
+  .cad-pcard .sub{display:block;font-size:12px;font-weight:700;color:var(--green);margin-top:3px;}
+  .cad-pcard .sub.own{color:var(--own);text-transform:uppercase;letter-spacing:.3px;font-size:11px;}
+  .cad-pcard .lampb{flex:0 0 auto;border:none;border-radius:999px;padding:7px 11px;font-family:inherit;font-size:12px;font-weight:700;background:#F1F1F3;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer;}
+  .cad-pcard .lampb .dot{width:10px;height:10px;border-radius:50%;background:#C9C9CF;}
+  .cad-pcard.on .lampb{background:#E3F8EC;color:#1E8E50;}
+  .cad-pcard.on .lampb .dot{background:#2ECC71;box-shadow:0 0 6px #2ECC71;}
+  .cad-pcard .acts{display:flex;gap:8px;margin-top:10px;}
+  .cad-pcard .acts button{flex:1 1 0;min-width:0;min-height:42px;border-radius:9px;border:1.5px solid var(--line);background:#fff;font-family:inherit;font-size:13px;font-weight:700;color:var(--green);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 8px;}
+  .cad-pcard .acts button.next{background:var(--green);border-color:var(--green);color:#fff;}
+  .cad-pcard .acts button.edit{flex:0 0 46px;}
+  .cad-padd{min-height:48px;border-radius:10px;border:1.5px dashed var(--gold);background:#FCF8EF;color:#8a6a2f;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;}
+  .cad-pempty{font-size:14px;color:var(--muted);text-align:center;padding:18px 0;}
+  .cad-phone .cad-dev{font-size:15px;padding:9px 12px;}
+  .cad-phone .cad-dev .chip{font-size:12px;padding:3px 8px;}
+  @media (max-width:760px){
+    .overlay.cad-full{padding:0;}
+    .cad-modal{border-radius:0;}
+    .cad-head{padding:10px 12px;gap:8px;flex-wrap:nowrap;}
+    .cad-head h2{flex:1 1 auto;}
+    .cad-legend,#cadAddPersonBtn,#cadClearFinishBtn{display:none!important;}
+    .cad-board-wrap{padding:0;}
+    .cad-form .two{grid-template-columns:1fr;gap:0;}
+  }
+  /* main app on phones */
+  @media (max-width:640px){
+    .topbar{flex-wrap:wrap;row-gap:10px;}
+    .brand h1{font-size:14px;line-height:1.15;}
+    .top-actions{width:100%;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:6px;scrollbar-width:none;}
+    .top-actions>*{flex:0 0 auto;}
+    .user-chip{height:38px;}
+    .toolbar .left{flex-wrap:wrap;gap:8px;}
+    /* process steps as stacked cards instead of a wide table */
+    .wrap>.card table,.wrap>.card tbody{display:block;width:100%;min-width:0;}
+    .wrap>.card thead{display:none;}
+    .wrap>.card tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"proc proc" "person status" "mach equip" "notes notes";gap:2px 10px;padding:8px 10px;border-bottom:1px solid var(--line);}
+    .wrap>.card tbody td{display:block;width:auto;height:auto;border:none;padding:0;min-width:0;}
+    .wrap>.card tbody td:nth-child(2){grid-area:proc;}
+    .wrap>.card tbody td:nth-child(2),.wrap>.card tbody td:nth-child(2) *{font-weight:700;color:var(--green);}
+    .wrap>.card tbody td{background:transparent!important;}
+    .wrap>.card tbody td .cellwrap{padding:2px 0;}
+    .wrap>.card tbody td:nth-child(3){grid-area:mach;display:block;}
+    .wrap>.card tbody td:nth-child(4){grid-area:equip;display:block;}
+    .wrap>.card tbody td:nth-child(5){grid-area:person;}
+    .wrap>.card tbody td:nth-child(6){grid-area:notes;}
+    .wrap>.card tbody td:nth-child(7){grid-area:status;justify-self:end;align-self:center;}
+    .wrap>.card tbody td.cell-na,.wrap>.card tbody td:nth-child(1),.wrap>.card tbody td:nth-child(8){display:none!important;}
+    body.ro .wrap>.card tbody td:nth-child(6):has(.note-input:placeholder-shown){display:none;}
+    .wrap>.card tbody td[colspan]{grid-column:1/-1;}
+  }
   .overlay{position:fixed;inset:0;background:rgba(15,25,20,.42);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;}
   .overlay.open{display:flex;}
   .modal{background:var(--card);border-radius:22px;width:100%;max-width:560px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.35);}
@@ -613,6 +703,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     </div>
     <div class="top-actions">
       <div class="version-tag" id="versionTag" title="App version — check this matches after a hard refresh">v2026.08.28-1</div>
+      <button class="user-chip" id="userChip" type="button" title="Who is using this device — tap to change">👤 Who are you?</button>
       <div class="cloud-pill local" id="cloudPill" title="Sync status — click to sync now">● Local only</div>
       <button class="icon-btn" id="archiveBtn" title="Archived developments">🗄<span class="icon-badge" id="archiveBadge" hidden>0</span></button>
       <button class="icon-btn" id="cadBtn" title="CAD Board — the CAD office whiteboard" style="font-size:11px;font-weight:800;letter-spacing:.3px;">CAD</button>
@@ -761,6 +852,12 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     </div>
   </div>
 
+  <div class="overlay" id="whoOverlay" style="z-index:300;">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-head"><h2 id="whoTitle">Who's using this device?</h2><button class="icon-btn" id="closeWho" type="button">✕</button></div>
+      <div class="modal-body" id="whoBody"></div>
+    </div>
+  </div>
   <div class="overlay cad-full" id="cadOverlay">
     <div class="cad-modal">
       <div class="cad-head">
@@ -1063,7 +1160,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   }
   function loadRaw(key){ try{ var r=localStorage.getItem(key); return r?JSON.parse(r):null; }catch(e){ return null; } }
   function projectFP(p){ var o={}; for(var k in p){ if(k!=="updatedAt") o[k]=p[k]; } try{ return JSON.stringify(o); }catch(e){ return String(Math.random()); } }
-  function metaPayload(){ return {lists:state.lists,priorityReviewedWeek:state.priorityReviewedWeek||"",projectOrder:state.projects.map(function(p){return p.id;}),
+  function metaPayload(){ return {adminPinHash:state.adminPinHash||"",lists:state.lists,priorityReviewedWeek:state.priorityReviewedWeek||"",projectOrder:state.projects.map(function(p){return p.id;}),
     flags:{processOptionsMigrated:!!state.processOptionsMigrated,processOptionsMigratedV2:!!state.processOptionsMigratedV2,processOptionsMigratedV3:!!state.processOptionsMigratedV3,personOptionsMigrated:!!state.personOptionsMigrated}}; }
   function metaFP(){ try{ return JSON.stringify(metaPayload()); }catch(e){ return String(Math.random()); } }
   function nowISO(){ return new Date().toISOString(); }
@@ -1074,6 +1171,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   // Called after every edit. Any project whose content changed since we last saw it gets a fresh
   // updatedAt (the edit time) and is queued for push; a project that vanished is queued for delete.
   function markChanges(){
+    if(!isAdmin()) return; // view-only devices never send changes to developments or settings
     var seen={}, ts=nowISO();
     state.projects.forEach(function(p){
       seen[p.id]=true;
@@ -1110,10 +1208,10 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
   // CAD board: synced as its own row ("cad") in nd_meta; merged card-by-card (newest edit of each card wins).
   var CAD_ID="cad", cadDirty=false, cadMerging=false;
-  var APP_VERSION="2026.10.28-1";
+  var APP_VERSION="2026.10.28-2";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
-  var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
+  var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:"",adminPinHash:""};
   var saved=loadRaw(STORE_KEY);
   if(saved&&Array.isArray(saved.projects)&&saved.projects.length){
     state.lists=mergeLists(saved.lists);
@@ -1121,6 +1219,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     state.activeProjectId=saved.activeProjectId||state.projects[0].id;
     state.priorityReviewedWeek=saved.priorityReviewedWeek||"";
     state.cad=saved.cad;
+    state.adminPinHash=saved.adminPinHash||"";
   } else {
     state.projects=seedProjects();
     state.activeProjectId=state.projects[0].id;
@@ -1245,6 +1344,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());
   }
   function checkPriorityReview(){
+    if(!isAdmin()) return;
     var wk=mondayKey(new Date());
     if(state.priorityReviewedWeek===wk) return;
     var current=state.projects.filter(function(p){return p.priority&&!p.archived;});
@@ -1829,7 +1929,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     if(r.updatedAt>L.updatedAt) L.updatedAt=r.updatedAt;
     if(ahead){ cadDirty=true; L.updatedAt=nowISO(); }
     saveCadLocal();
-    if(changed){ renderCad(); renderProjects(); renderDashboard(); setTimeout(unifyNames,0); }
+    if(changed){ applyRole(); renderCad(); renderProjects(); renderDashboard(); setTimeout(unifyNames,0); }
     if(ahead) schedulePush();
   }
   // One name for Quintin everywhere: 'Quintin' (and spellings like 'Quintin Jr') become 'Quintin Jnr'.
@@ -1837,6 +1937,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   var QUINTIN="Quintin Jnr";
   function isQuintinVariant(n){ n=String(n||""); return n!==QUINTIN&&/^\s*quintin(\s+j(n)?r\.?)?\s*$/i.test(n); }
   function unifyNames(){
+    if(!isAdmin()) return;
     if(applyingRemote||editingNow()){ setTimeout(unifyNames,2000); return; }
     var ts=nowISO(), any=false, cadAny=false;
     state.projects.forEach(function(p){
@@ -1861,6 +1962,79 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     }
     if(any||cadAny){ persist(); renderAll(); renderCad(); }
   }
+  // Who is using this device (remembered per device). Only Charlene (with her PIN) can change developments and settings;
+  // CAD people can change their own CAD cards; everyone else views only. This guards against mix-ups, it is not hard security.
+  var USER_KEY="coreNewDevTracker_user", ADMIN_NAME="Charlene";
+  var curUser=loadRaw(USER_KEY);
+  function meName(){ return (curUser&&curUser.name)||""; }
+  function pinHash(pin){ var h=2166136261, t="elmo-nd|"+pin; for(var r=0;r<400;r++){ for(var i=0;i<t.length;i++){ h^=t.charCodeAt(i); h=Math.imul(h,16777619)>>>0; } t=h.toString(36)+"|"+pin; } return "p1-"+h.toString(36); }
+  function isAdmin(){ return !!(curUser&&curUser.name===ADMIN_NAME&&state.adminPinHash&&curUser.adminHash===state.adminPinHash); }
+  function isCadUser(){ return !!(curUser&&state.cad&&state.cad.people.some(function(x){ return x.name===curUser.name; })); }
+  function canEditCad(k){ return isAdmin()||(isCadUser()&&k.person===meName()); }
+  function canAddCadFor(person){ return isAdmin()||(isCadUser()&&person===meName()); }
+  var userChip=document.getElementById("userChip"), whoOverlay=document.getElementById("whoOverlay"), whoBody=document.getElementById("whoBody");
+  function applyRole(){
+    var adm=isAdmin(), cadU=isCadUser();
+    document.body.classList.toggle("ro",!adm);
+    document.body.classList.toggle("cad-user",cadU&&!adm);
+    if(userChip) userChip.innerHTML=curUser?'👤 '+escapeHtml(curUser.name)+(adm?'':' <span class="tag">'+(cadU?'CAD cards':'View only')+'</span>'):'👤 Who are you?';
+  }
+  function saveUser(u){ curUser=u; try{ if(u) localStorage.setItem(USER_KEY,JSON.stringify(u)); else localStorage.removeItem(USER_KEY); }catch(e){} }
+  function rebaseline(){ state.projects.forEach(function(p){ if(!dirtyIds[p.id]) knownFP[p.id]=projectFP(p); }); knownMetaFP=metaFP(); }
+  function userChanged(){
+    applyRole(); whoOverlay.classList.remove("open");
+    renderAll(); renderCad();
+    if(isCadUser()&&!isAdmin()&&cadPhoneOn()&&!cadOverlay.classList.contains("open")){ cadPhonePerson=meName(); openCad(); }
+  }
+  function openWho(){
+    var people=(state.cad&&state.cad.people)||[];
+    document.getElementById("whoTitle").textContent="Who's using this device?";
+    document.getElementById("closeWho").hidden=!curUser;
+    whoBody.innerHTML='<div class="who-note">The app remembers this on this device. You can change it any time with the 👤 button at the top.</div><div class="who-list"></div>';
+    var list=whoBody.querySelector(".who-list");
+    function item(name,color,note,cur,fn){
+      var b=document.createElement("button"); b.type="button"; b.className="who-btn"+(cur?" cur":"");
+      b.innerHTML='<i style="background:'+color+'"></i><span>'+escapeHtml(name)+'<small>'+escapeHtml(note)+'</small></span>';
+      b.addEventListener("click",fn); list.appendChild(b);
+    }
+    item(ADMIN_NAME,"#1f4536","Full edit access · PIN",meName()===ADMIN_NAME,openPin);
+    people.forEach(function(x){ if(x.name===ADMIN_NAME) return; item(x.name,x.color,"Edit my own CAD Board cards · view the rest",meName()===x.name,function(){ saveUser({name:x.name}); userChanged(); }); });
+    item("Someone else","#C4C4CA","View only",!!curUser&&meName()==="",function(){ saveUser({name:""}); userChanged(); });
+    whoOverlay.classList.add("open");
+  }
+  function openPin(){
+    var setting=!state.adminPinHash;
+    document.getElementById("whoTitle").textContent=setting?"Choose your PIN, Charlene":"Charlene's PIN";
+    whoBody.innerHTML='<div class="pin-box"><div class="who-note">'+(setting?"No PIN has been set yet. Choose a 4–8 digit PIN and type it twice. It is asked once on each device.":"Type your PIN. It is asked once on each device.")+'</div>'+
+      '<input id="pin1" type="password" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="PIN">'+(setting?'<input id="pin2" type="password" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="again">':'')+
+      '<div class="pin-err" id="pinErr"></div><div class="cad-form-actions"><button class="btn btn-ghost" id="pinBack" type="button">Back</button><button class="btn btn-primary" id="pinOk" type="button">'+(setting?"Set PIN":"Unlock")+'</button></div></div>';
+    var p1=document.getElementById("pin1"), p2=document.getElementById("pin2"), err=document.getElementById("pinErr");
+    document.getElementById("pinBack").addEventListener("click",openWho);
+    function ok(){
+      var a=p1.value.trim();
+      if(!/^\d{4,8}$/.test(a)){ err.textContent="Use 4 to 8 digits."; return; }
+      if(setting){
+        if(!p2||p2.value.trim()!==a){ err.textContent="The two PINs don't match."; return; }
+        var h=pinHash(a);
+        saveUser({name:ADMIN_NAME,adminHash:h});
+        rebaseline(); state.adminPinHash=h; persist(); // the new PIN is synced so every device asks for the same one
+        toast("PIN set");
+      } else {
+        if(pinHash(a)!==state.adminPinHash){ err.textContent="Wrong PIN."; p1.value=""; p1.focus(); return; }
+        saveUser({name:ADMIN_NAME,adminHash:state.adminPinHash});
+        rebaseline();
+      }
+      userChanged();
+    }
+    document.getElementById("pinOk").addEventListener("click",ok);
+    [p1,p2].forEach(function(x){ if(x) x.addEventListener("keydown",function(e){ if(e.key==="Enter") ok(); }); });
+    setTimeout(function(){ p1.focus(); },30);
+  }
+  userChip.addEventListener("click",openWho);
+  document.getElementById("closeWho").addEventListener("click",function(){ whoOverlay.classList.remove("open"); });
+  // view-only devices: no dragging of tabs / rows, no double-click renaming
+  document.addEventListener("dragstart",function(e){ if(isAdmin()) return; var c=e.target&&e.target.closest&&e.target.closest(".cad-card"); if(!(c&&c.draggable)) e.preventDefault(); },true);
+  document.addEventListener("dblclick",function(e){ if(!isAdmin()) e.stopPropagation(); },true);
   function cadCards(){ var c=state.cad.cards; return Object.keys(c).map(function(id){ return c[id]; }); }
   function cadWorkingFor(pid){ if(!state.cad) return []; return cadCards().filter(function(k){ return k.working&&k.projectId===pid&&k.stage!=="finish"; }); }
   function cadWorkingCount(){ return state.cad?cadCards().filter(function(k){ return k.working&&k.stage!=="finish"; }).length:0; }
@@ -1877,6 +2051,8 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   document.addEventListener("keydown",function(e){ if(e.key==="Escape"){ if(cadEditOverlay.classList.contains("open")) closeCadEdit(); else if(cadOverlay.classList.contains("open")) closeCad(); } });
   function renderCad(){
     if(!cadOverlay.classList.contains("open")) return;
+    if(cadPhoneOn()){ renderCadPhone(); return; }
+    cadBoard.className="cad-board";
     var people=state.cad.people, cards=cadCards();
     var nWork=cardsWorking(cards);
     cadLegend.innerHTML=people.map(function(x){ return '<span><i style="background:'+x.color+'"></i>'+escapeHtml(x.name)+'</span>'; }).join("")+
@@ -1898,7 +2074,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       var mine=cards.filter(function(k){ return (known[k.person]?k.person:"")===person; });
       var active=mine.filter(function(k){ return k.stage!=="finish"&&k.stage!=="wait"; }).length, on=mine.filter(function(k){ return k.working&&k.stage!=="finish"; }).length;
       pc.innerHTML='<div class="sw" style="background:'+(person?cadPersonColor(person):"#C4C4CA")+'"></div>'+escapeHtml(person||"(no person)")+'<small>'+active+' on the go'+(on?' · '+on+' working':'')+'</small>';
-      if(person){ pc.title="Click to rename or remove "+person; pc.addEventListener("click",function(){ editCadPerson(person); }); }
+      if(person&&isAdmin()){ pc.title="Click to rename or remove "+person; pc.addEventListener("click",function(){ editCadPerson(person); }); }
       cadBoard.appendChild(pc);
       var dc=document.createElement("div"); dc.className="cad-cell devs";
       (devsBy[person]||[]).forEach(function(p){ dc.appendChild(cadDevEl(p,person,cards)); });
@@ -1907,11 +2083,13 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         var cell=document.createElement("div"); cell.className="cad-cell "+st[0];
         mine.filter(function(k){ return k.stage===st[0]&&!(k.projectId&&inDevCol[k.projectId]); }).sort(function(a,b){ return a.order-b.order||(a.updatedAt<b.updatedAt?-1:1); })
           .forEach(function(k){ cell.appendChild(cadCardEl(k)); });
-        var add=document.createElement("button"); add.type="button"; add.className="cad-add"; add.textContent="＋"; add.title="Add a card here";
-        add.addEventListener("click",function(){ openCadEdit(null,{person:person,stage:st[0]}); }); cell.appendChild(add);
-        cell.addEventListener("dragover",function(e){ if(!cadDragId) return; e.preventDefault(); cell.classList.add("drop"); });
+        if(person&&canAddCadFor(person)){
+          var add=document.createElement("button"); add.type="button"; add.className="cad-add"; add.textContent="＋"; add.title="Add a card here";
+          add.addEventListener("click",function(){ openCadEdit(null,{person:person,stage:st[0]}); }); cell.appendChild(add);
+        }
+        cell.addEventListener("dragover",function(e){ if(!cadDragId||!canAddCadFor(person)) return; e.preventDefault(); cell.classList.add("drop"); });
         cell.addEventListener("dragleave",function(){ cell.classList.remove("drop"); });
-        cell.addEventListener("drop",function(e){ e.preventDefault(); cell.classList.remove("drop"); moveCadCard(cadDragId,person,st[0]); cadDragId=null; });
+        cell.addEventListener("drop",function(e){ e.preventDefault(); cell.classList.remove("drop"); if(canAddCadFor(person)) moveCadCard(cadDragId,person,st[0]); cadDragId=null; });
         cadBoard.appendChild(cell);
       });
     });
@@ -1919,12 +2097,85 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   }
   // One-page view for meetings: largest text size at which the whole board fits the window without scrolling.
   function fitCadBoard(){
-    if(!cadOverlay.classList.contains("open")) return;
+    if(!cadOverlay.classList.contains("open")||cadPhoneOn()) return;
     var fs=16;
     cadBoard.style.setProperty("--cadfs",fs+"px");
     while(fs>7&&(cadBoard.scrollHeight>cadBoard.clientHeight+1||cadBoard.scrollWidth>cadBoard.clientWidth+1)){ fs-=0.5; cadBoard.style.setProperty("--cadfs",fs+"px"); }
   }
-  window.addEventListener("resize",fitCadBoard);
+  var cadWasPhone=null;
+  window.addEventListener("resize",function(){ var ph=cadPhoneOn(); if(ph!==cadWasPhone){ cadWasPhone=ph; renderCad(); } else fitCadBoard(); });
+  function cadPhoneOn(){ return window.innerWidth<=760; }
+  var cadPhonePerson="", cadShowFinish=false;
+  function renderCadPhone(){
+    var people=state.cad.people, cards=cadCards();
+    if(!people.some(function(x){ return x.name===cadPhonePerson; })) cadPhonePerson=isCadUser()?meName():((people[0]||{}).name||"");
+    var person=cadPhonePerson;
+    cadBoard.className="cad-phone"; cadBoard.removeAttribute("style"); cadBoard.innerHTML="";
+    var tabs=document.createElement("div"); tabs.className="cad-ptabs";
+    people.forEach(function(x){
+      var t=document.createElement("button"); t.type="button"; t.className="cad-ptab"+(x.name===person?" cur":"");
+      t.innerHTML='<i style="background:'+x.color+'"></i>'+escapeHtml(x.name)+(x.name===meName()?" (me)":"");
+      t.addEventListener("click",function(){ cadPhonePerson=x.name; renderCad(); });
+      tabs.appendChild(t);
+    });
+    cadBoard.appendChild(tabs);
+    if(!person){ var e0=document.createElement("div"); e0.className="cad-pempty"; e0.textContent="No CAD people yet."; cadBoard.appendChild(e0); return; }
+    if(canAddCadFor(person)){
+      var add=document.createElement("button"); add.type="button"; add.className="cad-padd"; add.textContent="＋ Add card";
+      add.addEventListener("click",function(){ openCadEdit(null,{person:person,stage:"wait"}); });
+      cadBoard.appendChild(add);
+    }
+    var devsBy=cadDevsByPerson(people), inDevCol={};
+    Object.keys(devsBy).forEach(function(n){ devsBy[n].forEach(function(p){ inDevCol[p.id]=true; }); });
+    var mine=cards.filter(function(k){ return k.person===person&&!(k.projectId&&inDevCol[k.projectId]); });
+    if((devsBy[person]||[]).length){
+      var ds=document.createElement("div"); ds.className="cad-sec";
+      ds.innerHTML='<h3>Developments <span class="n">'+devsBy[person].length+'</span></h3><div class="list"></div>';
+      devsBy[person].forEach(function(p){ ds.querySelector(".list").appendChild(cadDevEl(p,person,cards)); });
+      cadBoard.appendChild(ds);
+    }
+    var shown=0;
+    CAD_STAGES.forEach(function(st,i){
+      var list=mine.filter(function(k){ return k.stage===st[0]; }).sort(function(a,b){ return a.order-b.order||(a.updatedAt<b.updatedAt?-1:1); });
+      if(!list.length) return;
+      shown+=list.length;
+      var sec=document.createElement("div"); sec.className="cad-sec "+st[0];
+      sec.innerHTML='<h3>'+escapeHtml(st[1])+' <span class="n">'+list.length+'</span></h3><div class="list"></div>';
+      var box=sec.querySelector(".list");
+      if(st[0]==="finish"&&!cadShowFinish){
+        var tg=document.createElement("button"); tg.type="button"; tg.className="toggle"; tg.textContent="Show finished cards";
+        tg.addEventListener("click",function(){ cadShowFinish=true; renderCad(); }); box.appendChild(tg);
+      } else list.forEach(function(k){ box.appendChild(cadPhoneCardEl(k,i)); });
+      cadBoard.appendChild(sec);
+    });
+    if(!shown&&!(devsBy[person]||[]).length){ var e1=document.createElement("div"); e1.className="cad-pempty"; e1.textContent="No cards on "+person+"'s board yet."; cadBoard.appendChild(e1); }
+  }
+  function cadPhoneCardEl(k,i){
+    var can=canEditCad(k), on=k.working&&k.stage!=="finish", lp=k.projectId?projectById(k.projectId):null, own=k.owner||k.person||"";
+    var el=document.createElement("div"); el.className="cad-pcard"+(on?" on":""); el.style.setProperty("--own",cadPersonColor(own));
+    var top=document.createElement("div"); top.className="top";
+    var ttl=document.createElement("div"); ttl.className="ttl"; ttl.textContent=k.title||"(no name)";
+    if(own&&own!==k.person){ var so=document.createElement("span"); so.className="sub own"; so.textContent=own+"'s item"; ttl.appendChild(so); }
+    if(lp){ var sl=document.createElement("span"); sl.className="sub"; sl.textContent="🔗 "+lp.name; ttl.appendChild(sl); }
+    top.appendChild(ttl);
+    if(k.stage!=="finish"&&(can||on)){
+      var lamp=document.createElement("button"); lamp.type="button"; lamp.className="lampb"; lamp.innerHTML='<span class="dot"></span>'+(on?"Working on it":"Not working");
+      if(can) lamp.addEventListener("click",function(){ k.working=!k.working; cadTouch(k); }); else lamp.disabled=true;
+      top.appendChild(lamp);
+    }
+    el.appendChild(top);
+    if(can){
+      var acts=document.createElement("div"); acts.className="acts";
+      if(i>0){ var pv=document.createElement("button"); pv.type="button"; pv.textContent="◀ "+CAD_STAGES[i-1][1]; pv.title="Move back to "+CAD_STAGES[i-1][1];
+        pv.addEventListener("click",function(){ moveCadCard(k.id,k.person,CAD_STAGES[i-1][0]); }); acts.appendChild(pv); }
+      var ed=document.createElement("button"); ed.type="button"; ed.className="edit"; ed.textContent="✎"; ed.title="Edit card";
+      ed.addEventListener("click",function(){ openCadEdit(k); }); acts.appendChild(ed);
+      if(i<CAD_STAGES.length-1){ var nx=document.createElement("button"); nx.type="button"; nx.className="next"; nx.textContent=CAD_STAGES[i+1][1]+" ▶"; nx.title="Move on to "+CAD_STAGES[i+1][1];
+        nx.addEventListener("click",function(){ moveCadCard(k.id,k.person,CAD_STAGES[i+1][0]); }); acts.appendChild(nx); }
+      el.appendChild(acts);
+    }
+    return el;
+  }
   // A development belongs to a CAD Board person when the person on its CAD step has the same first name ("Quintin Jnr" → Quintin).
   function cadFirstName(s){ return String(s||"").trim().split(/\s+/)[0].toLowerCase(); }
   function cadDevsByPerson(people){
@@ -1958,7 +2209,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       var b=document.createElement("button"); b.type="button"; b.className="chip";
       b.innerHTML=(k.working&&k.stage!=="finish"?'<span class="cad-light"></span>':'')+escapeHtml(CAD_STAGE_NAME[k.stage]);
       b.title="CAD Board card: "+k.title+" ("+(k.person||"no person")+")\nClick to edit or move this card";
-      b.addEventListener("click",function(e){ e.stopPropagation(); openCadEdit(k); });
+      b.addEventListener("click",function(e){ e.stopPropagation(); if(canEditCad(k)) openCadEdit(k); });
       el.appendChild(b);
     });
     el.addEventListener("click",function(){ state.activeProjectId=p.id; persist(); closeCad(); renderAll(); });
@@ -1966,14 +2217,16 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   }
   function cardsWorking(cards){ return cards.filter(function(k){ return k.working&&k.stage!=="finish"; }).length; }
   function cadCardEl(k){
-    var el=document.createElement("div"); el.className="cad-card"+(k.working&&k.stage!=="finish"?" on":"")+(k.stage==="finish"?" done":""); el.draggable=true;
+    var can=canEditCad(k);
+    var el=document.createElement("div"); el.className="cad-card"+(k.working&&k.stage!=="finish"?" on":"")+(k.stage==="finish"?" done":"")+(can?"":" locked"); el.draggable=can;
     var lp=k.projectId?projectById(k.projectId):null;
     var own=k.owner||k.person||"";
     el.style.setProperty("--own",cadPersonColor(own));
     // the row already shows the person's name; only tag items that belong to someone else
     el.innerHTML=(own&&own!==k.person?'<span class="lbl">'+escapeHtml(own)+'</span>':'')+'<span class="ttl"></span>'+(lp?'<span class="lnk">🔗 '+escapeHtml(lp.name)+'</span>':'');
     el.querySelector(".ttl").textContent=k.title||"(no name)";
-    el.title=(k.title||"")+(lp?"\nLinked to: "+lp.name:"")+"\nClick to edit · drag to move";
+    el.title=(k.title||"")+(lp?"\nLinked to: "+lp.name:"")+(can?"\nClick to edit · drag to move":"");
+    if(!can){ if(k.working&&k.stage!=="finish"){ var lo=document.createElement("span"); lo.className="lamp-on"; lo.title="Working on it now"; el.appendChild(lo); } return el; }
     if(k.stage!=="finish"){
       var lamp=document.createElement("button"); lamp.type="button"; lamp.className="cad-lamp"; lamp.title=k.working?"Working on it now — click to switch off":"Click when working on it now";
       lamp.addEventListener("click",function(e){ e.stopPropagation(); k.working=!k.working; cadTouch(k); });
@@ -1985,7 +2238,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     return el;
   }
   function moveCadCard(id,person,stage){
-    var k=state.cad.cards[id]; if(!k) return;
+    var k=state.cad.cards[id]; if(!k||!canEditCad(k)) return;
     if(k.person===person&&k.stage===stage) return;
     var maxO=0; cadCards().forEach(function(x){ if(x.person===person&&x.stage===stage) maxO=Math.max(maxO,x.order); });
     if(person) k.person=person; k.stage=stage; k.order=maxO+1;
@@ -2018,7 +2271,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     var ts=nowISO(); done.forEach(function(k){ delete state.cad.cards[k.id]; state.cad.deleted[k.id]=ts; });
     cadTouch(null); toast(done.length+" finished cards cleared");
   });
-  document.getElementById("cadAddBtn").addEventListener("click",function(){ openCadEdit(null,{person:(state.cad.people[0]||{}).name||"",stage:"wait"}); });
+  document.getElementById("cadAddBtn").addEventListener("click",function(){ openCadEdit(null,{person:isAdmin()?((cadPhoneOn()&&cadPhonePerson)||(state.cad.people[0]||{}).name||""):meName(),stage:"wait"}); });
 
   /* card editor */
   var cadEditOverlay=document.getElementById("cadEditOverlay"), cadEditId=null;
@@ -2030,7 +2283,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     document.getElementById("cadEditTitle").textContent=card?"Edit CAD card":"New CAD card";
     var ppl=state.cad.people.map(function(x){ return [x.name,x.name]; });
     cadF.title.value=k.title;
+    if(!isAdmin()) k.person=meName();
     fillSelect(cadF.person,ppl,k.person);
+    cadF.person.disabled=!isAdmin();
     fillSelect(cadF.owner,[["","(same as CAD person)"]].concat(ppl),k.owner&&k.owner!==k.person?k.owner:"");
     fillSelect(cadF.stage,CAD_STAGES,k.stage);
     var projs=state.projects.filter(function(p){ return !p.archived||p.id===k.projectId; }).slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
@@ -2038,7 +2293,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     cadF.working.checked=!!k.working;
     document.getElementById("cadFDelete").hidden=!card;
     cadEditOverlay.classList.add("open");
-    setTimeout(function(){ cadF.title.focus(); },30);
+    if(!card||window.innerWidth>760) setTimeout(function(){ cadF.title.focus(); },30); // phones: no keyboard pop-up when just moving a card
   }
   function closeCadEdit(){ cadEditOverlay.classList.remove("open"); cadEditId=null; }
   document.getElementById("closeCadEdit").addEventListener("click",closeCadEdit);
@@ -2047,6 +2302,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   document.getElementById("cadFSave").addEventListener("click",function(){
     var title=cadF.title.value.trim(); if(!title){ toast("Give the card a name"); cadF.title.focus(); return; }
     var c=state.cad, k=cadEditId?c.cards[cadEditId]:null;
+    if(k&&!canEditCad(k)){ closeCadEdit(); return; }
+    if(!isAdmin()) cadF.person.value=meName();
+    if(!canAddCadFor(cadF.person.value)){ toast("You can only add cards to your own row"); return; }
     if(!k){ var id="cad-"+uid(); k={id:id,order:0}; c.cards[id]=k; }
     var stageChanged=k.stage!==cadF.stage.value||k.person!==cadF.person.value;
     k.title=title; k.person=cadF.person.value; k.owner=cadF.owner.value===k.person?"":cadF.owner.value; k.stage=cadF.stage.value; k.projectId=cadF.project.value;
@@ -2055,7 +2313,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     closeCadEdit(); cadTouch(k);
   });
   document.getElementById("cadFDelete").addEventListener("click",function(){
-    var k=cadEditId&&state.cad.cards[cadEditId]; if(!k) return;
+    var k=cadEditId&&state.cad.cards[cadEditId]; if(!k||!canEditCad(k)) return;
     if(!confirm("Delete the card \""+k.title+"\"?")) return;
     delete state.cad.cards[k.id]; state.cad.deleted[k.id]=nowISO(); closeCadEdit(); cadTouch(null);
   });
@@ -3042,7 +3300,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     retryTimer=setTimeout(function(){ retryDelay=Math.min(60000,retryDelay*2); if(sb){ pullCloud(false).then(function(){ if(hasPending()) doPush(); }); } },retryDelay);
   }
   function syncOk(){ retryDelay=5000; clearTimeout(retryTimer); lastSyncError=""; var el=document.getElementById("cloudPill"); if(el) el.title="Sync status — click to sync now"; }
-  function hasPending(){ return Object.keys(dirtyIds).length>0 || Object.keys(deletedIds).length>0 || metaDirty || cadDirty; }
+  function hasPending(){ return (isAdmin()&&(Object.keys(dirtyIds).length>0 || Object.keys(deletedIds).length>0 || metaDirty)) || cadDirty; }
   function projectById(id){ for(var i=0;i<state.projects.length;i++) if(state.projects[i].id===id) return state.projects[i]; return null; }
   function schedulePush(){ if(!sb) return; clearTimeout(pushTimer); pushTimer=null; setCloud("saving"); pushTimer=setTimeout(doPush,1200); }
   function doPush(){
@@ -3051,7 +3309,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     if(pushInFlight){ pushAgain=true; return; }
     if(!hasPending()){ setCloud("synced"); return; }
     pushInFlight=true; setCloud("saving");
-    var ids=Object.keys(dirtyIds), dels=Object.keys(deletedIds), meta=metaDirty, cad=cadDirty&&!cadMerging;
+    var adm=isAdmin(), ids=adm?Object.keys(dirtyIds):[], dels=adm?Object.keys(deletedIds):[], meta=adm&&metaDirty, cad=cadDirty&&!cadMerging;
     var rows=[]; ids.forEach(function(id){ var p=projectById(id); if(p){ if(!p.updatedAt) p.updatedAt=nowISO(); rows.push({id:p.id,data:p,updated_at:p.updatedAt}); } });
     var delSnapshot={}; dels.forEach(function(id){ delSnapshot[id]=deletedIds[id]; });
     var metaTs=state.metaUpdatedAt||nowISO();
@@ -3153,6 +3411,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     if(d.lists) state.lists=mergeLists(d.lists);
     if(d.flags){ ["processOptionsMigrated","processOptionsMigratedV2","processOptionsMigratedV3","personOptionsMigrated"].forEach(function(k){ if(d.flags[k]) state[k]=true; }); }
     if(d.priorityReviewedWeek!==undefined) state.priorityReviewedWeek=d.priorityReviewedWeek||"";
+    if(d.adminPinHash!==undefined) state.adminPinHash=d.adminPinHash||"";
     if(Array.isArray(d.projectOrder)) applyProjectOrder(d.projectOrder);
     state.metaUpdatedAt=remoteTs; metaDirty=false;
     finishRemoteApply();
@@ -3172,6 +3431,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     // Re-baseline so the self-healing normalisers above don't count as local edits.
     state.projects.forEach(function(p){ if(!dirtyIds[p.id]) knownFP[p.id]=projectFP(p); });
     try{ localStorage.setItem(STORE_KEY,JSON.stringify(state)); }catch(e){}
+    applyRole();
     renderAll();
     setTimeout(unifyNames,0);
   }
@@ -3213,7 +3473,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       if(initial && rows.length===0){ return migrateFromLegacy(); }
       if(mr.data) applyRemoteMeta(mr.data);
       applyRemoteProjects(rows,true);
-      if(initial){
+      if(initial&&isAdmin()){
         // Anything that exists only locally and was never synced is new -> push it.
         state.projects.forEach(function(p){ if(!rows.some(function(r){return r.id===p.id;})){ if(!p.updatedAt) p.updatedAt=nowISO(); dirtyIds[p.id]=true; } });
         if(!mr.data){ metaDirty=true; state.metaUpdatedAt=state.metaUpdatedAt||nowISO(); }
@@ -3289,8 +3549,11 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   setInterval(checkForNewerVersion, 5*60*1000);
   setTimeout(checkForNewerVersion, 4000);
 
+  applyRole();
   renderAll();
   initializing=false;
+  if(!curUser) setTimeout(openWho,300);
+  else if(isCadUser()&&!isAdmin()&&cadPhoneOn()) setTimeout(function(){ cadPhonePerson=meName(); openCad(); },300);
   if(cloudOn){ setCloud("connecting"); pullCloud(true).then(startRealtime); }
   else { setCloud("local"); unifyNames(); }
   setTimeout(checkPriorityReview,500);

@@ -399,29 +399,39 @@
   .cad-head .btn-ghost{background:rgba(255,255,255,.12);color:#fff;box-shadow:none;}
   .cad-head .btn-ghost:hover{background:rgba(255,255,255,.22);}
   .cad-board-wrap{flex:1 1 auto;min-height:0;overflow:auto;padding:10px 12px 12px;}
-  .cad-board{display:grid;gap:0;background:#fff;border:1px solid var(--line);border-radius:12px;min-width:1100px;}
-  .cad-colh{position:sticky;top:0;z-index:2;background:var(--green);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:8px 6px;text-align:center;border-right:1px solid var(--green-line);line-height:1.2;display:flex;align-items:center;justify-content:center;}
+  /* one-page view: the board fills the window; fitCadBoard() sets --cadfs so everything fits without scrolling */
+  .cad-board{display:grid;gap:0;background:#fff;border:1px solid var(--line);border-radius:12px;height:100%;font-size:var(--cadfs,12px);}
+  .cad-colh{position:sticky;top:0;z-index:2;background:var(--green);color:#fff;font-size:.9em;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:.6em .4em;text-align:center;border-right:1px solid var(--green-line);line-height:1.2;display:flex;align-items:center;justify-content:center;}
   .cad-colh:first-child{border-top-left-radius:11px;} .cad-colh:last-child{border-top-right-radius:11px;border-right:none;}
   .cad-colh.wait{background:#5d6b64;} .cad-colh.finish{background:#2F5597;}
-  .cad-person{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:3px;padding:8px 10px;border-right:2px solid var(--line);border-bottom:2px solid var(--line);font-size:15px;font-weight:800;color:var(--green);cursor:pointer;}
-  .cad-person small{font-size:10.5px;font-weight:600;color:var(--muted);}
+  .cad-person{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:.25em;padding:.6em .8em;border-right:2px solid var(--line);border-bottom:2px solid var(--line);font-size:1.25em;font-weight:800;color:var(--green);cursor:pointer;min-width:0;}
+  .cad-person small{font-size:.7em;font-weight:600;color:var(--muted);}
   .cad-person .sw{width:100%;height:4px;border-radius:2px;}
-  .cad-cell{border-right:1px solid var(--line);border-bottom:2px solid var(--line);padding:5px;display:flex;flex-direction:column;gap:5px;min-height:70px;position:relative;transition:background .1s;}
+  .cad-cell{border-right:1px solid var(--line);border-bottom:2px solid var(--line);padding:.35em;display:flex;flex-direction:column;gap:.35em;position:relative;transition:background .1s;min-width:0;}
   .cad-cell.wait{background:#F7F8F7;} .cad-cell.finish{background:#F4F7FC;}
   .cad-cell.drop{background:#FCF6E7;box-shadow:inset 0 0 0 2px var(--gold);}
-  .cad-cell .cad-add{opacity:0;border:1.5px dashed var(--line);background:transparent;color:var(--muted);border-radius:7px;font-size:12px;padding:2px 0;cursor:pointer;margin-top:auto;}
+  .cad-colh.devs{background:#1f4536;} .cad-cell.devs{background:#F3F7F4;border-right:2px solid var(--line);}
+  .cad-dev{background:#fff;border:1px solid #E2E2E6;border-left:4px solid var(--own,#9A9AA0);border-radius:7px;padding:.3em .5em .35em;cursor:pointer;line-height:1.25;box-shadow:0 1px 2px rgba(0,0,0,.07);}
+  .cad-dev:hover{box-shadow:0 3px 10px rgba(0,0,0,.12);}
+  .cad-dev.on{box-shadow:0 0 0 2px #2ECC71,0 2px 8px rgba(46,204,113,.25);}
+  .cad-dev .nm{display:block;font-weight:700;color:var(--ink);overflow-wrap:break-word;}
+  .cad-dev .st{display:block;font-size:.8em;font-weight:600;color:var(--muted);}
+  .cad-dev .chip{display:inline-flex;align-items:center;margin:.25em .3em 0 0;font:inherit;font-size:.78em;font-weight:700;color:var(--green);background:#E8F1EC;border:none;border-radius:5px;padding:.1em .45em;cursor:pointer;}
+  .cad-dev .chip:hover{background:#D5E7DC;}
+  .cad-cell .cad-add{position:absolute;right:3px;bottom:3px;width:20px;height:20px;opacity:0;border:1.5px dashed var(--line);background:#fff;color:var(--muted);border-radius:6px;font-size:12px;line-height:1;padding:0;cursor:pointer;}
   .cad-cell:hover .cad-add{opacity:1;}
-  .cad-card{position:relative;background:#fff;border:1px solid #E2E2E6;border-radius:7px;box-shadow:0 1px 2px rgba(0,0,0,.07);cursor:grab;overflow:hidden;font-size:12px;line-height:1.25;}
+  .cad-card{position:relative;background:#fff;border:1px solid #E2E2E6;border-top:4px solid var(--own,#9A9AA0);border-radius:7px;box-shadow:0 1px 2px rgba(0,0,0,.07);cursor:grab;overflow:hidden;line-height:1.25;}
   .cad-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.12);}
   .cad-card.dragging{opacity:.4;}
-  .cad-card .lbl{display:block;font-size:9px;font-weight:700;text-align:center;padding:2px 20px;min-height:17px;color:#fff;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .cad-card .ttl{display:block;padding:4px 7px 5px;font-weight:650;color:var(--ink);overflow-wrap:break-word;hyphens:auto;}
-  .cad-card .lnk{display:block;padding:0 7px 4px;font-size:10px;font-weight:700;color:var(--green);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  /* name tag only when the item belongs to someone other than the row's person */
+  .cad-card .lbl{display:block;margin:.3em 1.6em 0 .55em;font-size:.72em;font-weight:700;color:var(--own,#9A9AA0);letter-spacing:.3px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cad-card .ttl{display:block;padding:.3em 1.6em .4em .55em;font-weight:650;color:var(--ink);overflow-wrap:break-word;hyphens:auto;}
+  .cad-card .lbl+.ttl{padding-top:.05em;}
+  .cad-card .lnk{display:block;padding:0 .55em .35em;font-size:.82em;font-weight:700;color:var(--green);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .cad-card.on{border-color:#2ECC71;box-shadow:0 0 0 1px #2ECC71,0 2px 8px rgba(46,204,113,.25);}
   .cad-card.done{opacity:.72;}
-  .cad-lamp{position:absolute;right:3px;top:2px;width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:rgba(0,0,0,.18);cursor:pointer;padding:0;}
-  .cad-lamp:hover{border-color:#fff;background:rgba(46,204,113,.55);}
-  @media (max-width:1500px){ .cad-card{font-size:11px;} .cad-card .ttl{padding:3px 6px 4px;} .cad-cell{padding:4px;gap:4px;} .cad-person{font-size:13.5px;padding:6px 8px;} }
+  .cad-lamp{position:absolute;right:4px;top:4px;width:13px;height:13px;border-radius:50%;border:2px solid #D3D3D8;background:#F1F1F3;cursor:pointer;padding:0;}
+  .cad-lamp:hover{border-color:#2ECC71;background:rgba(46,204,113,.55);}
   .cad-card.on .cad-lamp{border-color:#fff;background:#2ECC71;box-shadow:0 0 8px rgba(46,204,113,.95);}
   .cad-form label{display:block;font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--muted);margin:12px 0 4px;}
   .cad-form input[type=text],.cad-form select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff;}
@@ -1100,7 +1110,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   var knownFP={}, knownMetaFP="", dirtyIds={}, metaDirty=false, deletedIds={}, pendingRemoteRows=null, pendingRemoteMeta=null;
   // CAD board: synced as its own row ("cad") in nd_meta; merged card-by-card (newest edit of each card wins).
   var CAD_ID="cad", cadDirty=false, cadMerging=false;
-  var APP_VERSION="2026.10.09-8";
+  var APP_VERSION="2026.10.28-1";
   var vtEl=document.getElementById("versionTag"); if(vtEl) vtEl.textContent="v"+APP_VERSION;
 
   var state={lists:mergeLists(null),projects:[],activeProjectId:null,priorityReviewedWeek:""};
@@ -1397,6 +1407,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   }
   projSub.addEventListener("click",startSubEdit);
   document.getElementById("checkerInput").addEventListener("input",function(e){ activeProject().checker=e.target.value; persist(); });
+  document.getElementById("checkerInput").addEventListener("change",function(e){ if(isQuintinVariant(e.target.value)){ e.target.value=QUINTIN; activeProject().checker=QUINTIN; persist(); } });
   document.getElementById("customerInput").addEventListener("input",function(e){ activeProject().customer=e.target.value; persist(); });
   document.getElementById("customerDeadlineInput").addEventListener("change",function(e){ activeProject().customerDeadline=cleanDate(e.target.value); persist(); });
   function startSubEdit(){
@@ -1720,23 +1731,23 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   var CAD_SEED_TS="2026-10-09T00:00:00.000Z";
   // Read from the CAD office whiteboard photo (9 Oct 2026): [row person, card label, step, item, linked development]
   var CAD_SEED=[
-    ["Quintin","Quintin","wait","Gigolo Diner Redraw – B2"],
-    ["Quintin","Quintin","wait","Kauai Diner Welding Jig"],
-    ["Quintin","Quintin","prediscus","Steel Dust Extractor Exhaust"],
-    ["Quintin","Quintin","draftcad","RCP Bowtie Cylinder Improvement"],
-    ["Quintin","Quintin","finaldiscus","Kirsten Bar Feedback"],
-    ["Quintin","Maria","program","Devon Diner","Devon Diner"],
-    ["Quintin","Quintin","program","Eydie Bar Up"],
-    ["Quintin","Quintin","program","OBI Grande"],
-    ["Quintin","Quintin","program","Waterfall Bar Up FC6"],
-    ["Quintin","Maria","factorysample","Kirsten Hout","Kirsten Hout Pote"],
-    ["Quintin","Maria","factorysample","OBI Large Bar Steel / Wood Sleeve"],
-    ["Quintin","Maria","factorysample","Slope Wood","Slope Wood Leg"],
-    ["Quintin","Quintin","jigs","Monica Press Jig"],
-    ["Quintin","Quintin","finish","Davis Diner (CoriCraft)"],
-    ["Quintin","Quintin","finish","Mell Café Sit Werk","Mell Café"],
-    ["Quintin","Maria","finish","OBI Large Steel Sleeve"],
-    ["Quintin","Maria","finish","Weld Gun Stander"],
+    ["Quintin Jnr","Quintin Jnr","wait","Gigolo Diner Redraw – B2"],
+    ["Quintin Jnr","Quintin Jnr","wait","Kauai Diner Welding Jig"],
+    ["Quintin Jnr","Quintin Jnr","prediscus","Steel Dust Extractor Exhaust"],
+    ["Quintin Jnr","Quintin Jnr","draftcad","RCP Bowtie Cylinder Improvement"],
+    ["Quintin Jnr","Quintin Jnr","finaldiscus","Kirsten Bar Feedback"],
+    ["Quintin Jnr","Maria","program","Devon Diner","Devon Diner"],
+    ["Quintin Jnr","Quintin Jnr","program","Eydie Bar Up"],
+    ["Quintin Jnr","Quintin Jnr","program","OBI Grande"],
+    ["Quintin Jnr","Quintin Jnr","program","Waterfall Bar Up FC6"],
+    ["Quintin Jnr","Maria","factorysample","Kirsten Hout","Kirsten Hout Pote"],
+    ["Quintin Jnr","Maria","factorysample","OBI Large Bar Steel / Wood Sleeve"],
+    ["Quintin Jnr","Maria","factorysample","Slope Wood","Slope Wood Leg"],
+    ["Quintin Jnr","Quintin Jnr","jigs","Monica Press Jig"],
+    ["Quintin Jnr","Quintin Jnr","finish","Davis Diner (CoriCraft)"],
+    ["Quintin Jnr","Quintin Jnr","finish","Mell Café Sit Werk","Mell Café"],
+    ["Quintin Jnr","Maria","finish","OBI Large Steel Sleeve"],
+    ["Quintin Jnr","Maria","finish","Weld Gun Stander"],
     ["Maria","Maria","prediscus","Charlie Curved Back Hout Holder"],
     ["Maria","Maria","prediscus","3D Print Boksies"],
     ["Maria","Maria","draftcad","Gigolo Diner Check Jig"],
@@ -1786,7 +1797,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   function findProjectByName(n){ var k=normName(n); if(!k) return null; var hit=null; state.projects.forEach(function(p){ if(!hit&&normName(p.name)===k) hit=p; }); return hit; }
   function seedCad(){
     var c=state.cad; c.seeded=true; c.peopleUpdatedAt=c.peopleUpdatedAt||CAD_SEED_TS; c.updatedAt=nowISO();
-    if(!c.people.length) c.people=[{name:"Quintin",color:CAD_COLORS[0]},{name:"Maria",color:CAD_COLORS[1]},{name:"Pieter",color:CAD_COLORS[2]}];
+    if(!c.people.length) c.people=[{name:"Quintin Jnr",color:CAD_COLORS[0]},{name:"Maria",color:CAD_COLORS[1]},{name:"Pieter",color:CAD_COLORS[2]}];
     CAD_SEED.forEach(function(x,i){
       var id="cad-seed-"+(i<9?"0":"")+(i+1); if(c.cards[id]||c.deleted[id]) return;
       var lp=x[4]?findProjectByName(x[4]):null;
@@ -1818,8 +1829,37 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     if(r.updatedAt>L.updatedAt) L.updatedAt=r.updatedAt;
     if(ahead){ cadDirty=true; L.updatedAt=nowISO(); }
     saveCadLocal();
-    if(changed){ renderCad(); renderProjects(); renderDashboard(); }
+    if(changed){ renderCad(); renderProjects(); renderDashboard(); setTimeout(unifyNames,0); }
     if(ahead) schedulePush();
+  }
+  // One name for Quintin everywhere: 'Quintin' (and spellings like 'Quintin Jr') become 'Quintin Jnr'.
+  // Runs only right after the latest cloud data has been applied, so an out-of-date copy never overwrites newer edits.
+  var QUINTIN="Quintin Jnr";
+  function isQuintinVariant(n){ n=String(n||""); return n!==QUINTIN&&/^\s*quintin(\s+j(n)?r\.?)?\s*$/i.test(n); }
+  function unifyNames(){
+    if(applyingRemote||editingNow()){ setTimeout(unifyNames,2000); return; }
+    var ts=nowISO(), any=false, cadAny=false;
+    state.projects.forEach(function(p){
+      if(isQuintinVariant(p.checker)){ p.checker=QUINTIN; any=true; }
+      (p.revisions||[]).forEach(function(r){ (r.rows||[]).forEach(function(row){ if(isQuintinVariant(row.person)){ row.person=QUINTIN; any=true; } }); });
+    });
+    if(state.lists&&Array.isArray(state.lists.person)&&state.lists.person.some(isQuintinVariant)){
+      var seen={}; state.lists.person=state.lists.person.map(function(n){ return isQuintinVariant(n)?QUINTIN:n; }).filter(function(n){ if(seen[n]) return false; seen[n]=true; return true; }); any=true;
+    }
+    var c=state.cad;
+    if(c){
+      if(c.people.some(function(x){ return isQuintinVariant(x.name); })){
+        var have={}; c.people=c.people.map(function(x){ return isQuintinVariant(x.name)?{name:QUINTIN,color:x.color}:x; }).filter(function(x){ if(have[x.name]) return false; have[x.name]=true; return true; });
+        c.peopleUpdatedAt=ts; cadAny=true;
+      }
+      Object.keys(c.cards).forEach(function(id){ var k=c.cards[id], hit=false;
+        if(isQuintinVariant(k.person)){ k.person=QUINTIN; hit=true; }
+        if(isQuintinVariant(k.owner)){ k.owner=QUINTIN; hit=true; }
+        if(hit){ k.updatedAt=ts; cadAny=true; }
+      });
+      if(cadAny){ c.updatedAt=ts; cadDirty=true; }
+    }
+    if(any||cadAny){ persist(); renderAll(); renderCad(); }
   }
   function cadCards(){ var c=state.cad.cards; return Object.keys(c).map(function(id){ return c[id]; }); }
   function cadWorkingFor(pid){ if(!state.cad) return []; return cadCards().filter(function(k){ return k.working&&k.projectId===pid&&k.stage!=="finish"; }); }
@@ -1841,13 +1881,18 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     var nWork=cardsWorking(cards);
     cadLegend.innerHTML=people.map(function(x){ return '<span><i style="background:'+x.color+'"></i>'+escapeHtml(x.name)+'</span>'; }).join("")+
       '<span class="working"><span class="cad-light"></span>'+nWork+' working on it now</span>';
-    cadBoard.style.gridTemplateColumns="120px repeat("+CAD_STAGES.length+",minmax(96px,1fr))";
+    cadBoard.style.gridTemplateColumns="9em minmax(0,1.3fr) repeat("+CAD_STAGES.length+",minmax(0,1fr))";
     cadBoard.innerHTML="";
     var corner=document.createElement("div"); corner.className="cad-colh"; corner.textContent="CAD person"; cadBoard.appendChild(corner);
+    var dh=document.createElement("div"); dh.className="cad-colh devs"; dh.textContent="Developments"; dh.title="Developments whose CAD step is allocated to this person"; cadBoard.appendChild(dh);
     CAD_STAGES.forEach(function(st){ var h=document.createElement("div"); h.className="cad-colh "+st[0]; h.textContent=st[1]; h.title=st[1]; cadBoard.appendChild(h); });
+    // Developments column: cards linked to a development listed there are shown only in that column (not repeated as a card).
+    var devsBy=cadDevsByPerson(people), inDevCol={};
+    Object.keys(devsBy).forEach(function(n){ devsBy[n].forEach(function(p){ inDevCol[p.id]=true; }); });
     var known={}; people.forEach(function(x){ known[x.name]=true; });
     var rows=people.map(function(x){ return x.name; });
     if(cards.some(function(k){ return !known[k.person]; })) rows.push(""); // cards whose person was removed
+    cadBoard.style.gridTemplateRows="auto repeat("+rows.length+",1fr)";
     rows.forEach(function(person){
       var pc=document.createElement("div"); pc.className="cad-person";
       var mine=cards.filter(function(k){ return (known[k.person]?k.person:"")===person; });
@@ -1855,9 +1900,12 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       pc.innerHTML='<div class="sw" style="background:'+(person?cadPersonColor(person):"#C4C4CA")+'"></div>'+escapeHtml(person||"(no person)")+'<small>'+active+' on the go'+(on?' · '+on+' working':'')+'</small>';
       if(person){ pc.title="Click to rename or remove "+person; pc.addEventListener("click",function(){ editCadPerson(person); }); }
       cadBoard.appendChild(pc);
+      var dc=document.createElement("div"); dc.className="cad-cell devs";
+      (devsBy[person]||[]).forEach(function(p){ dc.appendChild(cadDevEl(p,person,cards)); });
+      cadBoard.appendChild(dc);
       CAD_STAGES.forEach(function(st){
         var cell=document.createElement("div"); cell.className="cad-cell "+st[0];
-        mine.filter(function(k){ return k.stage===st[0]; }).sort(function(a,b){ return a.order-b.order||(a.updatedAt<b.updatedAt?-1:1); })
+        mine.filter(function(k){ return k.stage===st[0]&&!(k.projectId&&inDevCol[k.projectId]); }).sort(function(a,b){ return a.order-b.order||(a.updatedAt<b.updatedAt?-1:1); })
           .forEach(function(k){ cell.appendChild(cadCardEl(k)); });
         var add=document.createElement("button"); add.type="button"; add.className="cad-add"; add.textContent="＋"; add.title="Add a card here";
         add.addEventListener("click",function(){ openCadEdit(null,{person:person,stage:st[0]}); }); cell.appendChild(add);
@@ -1867,12 +1915,63 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         cadBoard.appendChild(cell);
       });
     });
+    fitCadBoard();
+  }
+  // One-page view for meetings: largest text size at which the whole board fits the window without scrolling.
+  function fitCadBoard(){
+    if(!cadOverlay.classList.contains("open")) return;
+    var fs=16;
+    cadBoard.style.setProperty("--cadfs",fs+"px");
+    while(fs>7&&(cadBoard.scrollHeight>cadBoard.clientHeight+1||cadBoard.scrollWidth>cadBoard.clientWidth+1)){ fs-=0.5; cadBoard.style.setProperty("--cadfs",fs+"px"); }
+  }
+  window.addEventListener("resize",fitCadBoard);
+  // A development belongs to a CAD Board person when the person on its CAD step has the same first name ("Quintin Jnr" → Quintin).
+  function cadFirstName(s){ return String(s||"").trim().split(/\s+/)[0].toLowerCase(); }
+  function cadDevsByPerson(people){
+    var by={}, idx={};
+    people.forEach(function(x){ by[x.name]=[]; idx[cadFirstName(x.name)]=x.name; });
+    state.projects.forEach(function(p){
+      if(p.archived) return;
+      var rev=findRevision(p,p.activeRevisionId)||p.revisions[p.revisions.length-1]; if(!rev) return;
+      var seen={};
+      (rev.rows||[]).forEach(function(r){
+        if(!/^CAD\b/i.test(r.process||"")) return;
+        var n=idx[cadFirstName(r.person)]; if(n&&!seen[n]){ seen[n]=true; by[n].push(p); }
+      });
+    });
+    Object.keys(by).forEach(function(n){ by[n].sort(function(a,b){ return a.name.localeCompare(b.name); }); });
+    return by;
+  }
+  function cadDevStatus(p,person){
+    var rev=findRevision(p,p.activeRevisionId)||p.revisions[p.revisions.length-1], st="";
+    (rev.rows||[]).forEach(function(r){ if(/^CAD\b/i.test(r.process||"")&&cadFirstName(r.person)===cadFirstName(person)&&!st) st=r.status||""; });
+    return st;
+  }
+  function cadDevEl(p,person,cards){
+    var el=document.createElement("div"), linked=cards.filter(function(k){ return k.projectId===p.id; });
+    var on=linked.some(function(k){ return k.working&&k.stage!=="finish"; }), st=cadDevStatus(p,person);
+    el.className="cad-dev"+(on?" on":""); el.style.setProperty("--own",cadPersonColor(person));
+    el.innerHTML='<span class="nm"></span>'+(st?'<span class="st">CAD: '+escapeHtml(st)+'</span>':'');
+    el.querySelector(".nm").textContent=p.name;
+    el.title=p.name+"\nClick to open this development";
+    linked.forEach(function(k){
+      var b=document.createElement("button"); b.type="button"; b.className="chip";
+      b.innerHTML=(k.working&&k.stage!=="finish"?'<span class="cad-light"></span>':'')+escapeHtml(CAD_STAGE_NAME[k.stage]);
+      b.title="CAD Board card: "+k.title+" ("+(k.person||"no person")+")\nClick to edit or move this card";
+      b.addEventListener("click",function(e){ e.stopPropagation(); openCadEdit(k); });
+      el.appendChild(b);
+    });
+    el.addEventListener("click",function(){ state.activeProjectId=p.id; persist(); closeCad(); renderAll(); });
+    return el;
   }
   function cardsWorking(cards){ return cards.filter(function(k){ return k.working&&k.stage!=="finish"; }).length; }
   function cadCardEl(k){
     var el=document.createElement("div"); el.className="cad-card"+(k.working&&k.stage!=="finish"?" on":"")+(k.stage==="finish"?" done":""); el.draggable=true;
     var lp=k.projectId?projectById(k.projectId):null;
-    el.innerHTML='<span class="lbl" style="background:'+cadPersonColor(k.owner||k.person)+'">'+escapeHtml(k.owner||k.person||"")+'</span><span class="ttl"></span>'+(lp?'<span class="lnk">🔗 '+escapeHtml(lp.name)+'</span>':'');
+    var own=k.owner||k.person||"";
+    el.style.setProperty("--own",cadPersonColor(own));
+    // the row already shows the person's name; only tag items that belong to someone else
+    el.innerHTML=(own&&own!==k.person?'<span class="lbl">'+escapeHtml(own)+'</span>':'')+'<span class="ttl"></span>'+(lp?'<span class="lnk">🔗 '+escapeHtml(lp.name)+'</span>':'');
     el.querySelector(".ttl").textContent=k.title||"(no name)";
     el.title=(k.title||"")+(lp?"\nLinked to: "+lp.name:"")+"\nClick to edit · drag to move";
     if(k.stage!=="finish"){
@@ -3074,6 +3173,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     state.projects.forEach(function(p){ if(!dirtyIds[p.id]) knownFP[p.id]=projectFP(p); });
     try{ localStorage.setItem(STORE_KEY,JSON.stringify(state)); }catch(e){}
     renderAll();
+    setTimeout(unifyNames,0);
   }
   document.addEventListener("focusout",function(){ setTimeout(function(){
     if(editingNow()) return;
@@ -3118,6 +3218,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         state.projects.forEach(function(p){ if(!rows.some(function(r){return r.id===p.id;})){ if(!p.updatedAt) p.updatedAt=nowISO(); dirtyIds[p.id]=true; } });
         if(!mr.data){ metaDirty=true; state.metaUpdatedAt=state.metaUpdatedAt||nowISO(); }
       }
+      unifyNames();
       if(hasPending()) doPush(); else { syncOk(); setCloud("synced"); }
     },function(err){ reportSyncError(err,"loading from cloud"); });
   }
@@ -3191,7 +3292,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   renderAll();
   initializing=false;
   if(cloudOn){ setCloud("connecting"); pullCloud(true).then(startRealtime); }
-  else { setCloud("local"); }
+  else { setCloud("local"); unifyNames(); }
   setTimeout(checkPriorityReview,500);
 })();
 </script>
